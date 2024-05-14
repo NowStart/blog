@@ -1,0 +1,1217 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Spring Boot Test （二、注解详解）, java,spring,spring-boot,mysql,git,hibernate,jvm">
+    <meta name="description" content="Spring为了避免的繁琐难懂的xml配置，引入大量annotation进行系统配置，确实减轻了配置工作量。由此，理解这些annotation变得尤为重要，一定程度上讲，对Spring Boot Test的使用，就是对其相关annotati">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Spring Boot Test （二、注解详解） | 沉迷思考</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 7.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">沉迷思考</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">沉迷思考</div>
+        <div class="logo-desc">
+            
+            风不撑伞，雨不倾盆，就是好天气
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+<style>
+  .bg-cover:before {
+    background: url(/medias/featureimages/7.jpg) 0 / cover fixed}
+</style>
+<div class="bg-cover pd-header post-cover">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s3">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/spring/">
+                                <span class="chip bg-color">spring</span>
+                            </a>
+                        
+                            <a href="/tags/spring-boot/">
+                                <span class="chip bg-color">spring-boot</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s6 page-title">
+                    Spring Boot Test （二、注解详解）
+                </div>
+                <div class="col s3 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/spring-boot/" class="post-category">
+                                spring-boot
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2018-11-20
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.3k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    9 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>Spring为了避免的繁琐难懂的xml配置，引入大量annotation进行系统配置，确实减轻了配置工作量。由此，理解这些annotation变得尤为重要，一定程度上讲，对Spring Boot Test的使用，就是对其相关annotation的使用。</p>
+<p>掌握这些annotation（及部分关联的类），可以从注解功能分类，相互之间的搭配组合，及相似注解的差异这三方面着手。</p>
+<span id="more"></span>
+
+<h2 id="1-按功能分类"><a href="#1-按功能分类" class="headerlink" title="1.按功能分类"></a>1.按功能分类</h2><blockquote>
+<p>本文仅讨论Spring Boot Test（版本：2.1.1.BUILD-SNAPSHOT）中的注解，原Spring Test中的注解将在其他文章中讨论。</p>
+</blockquote>
+<blockquote>
+<p>由于使用这些注解的使用方式大多比较简单，为避免干扰阅读，本文不再罗列代码示例。若有想观看示例的开发者，可以查看<a href="https://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-test">GitHub官方Sample</a>或<a href="https://github.com/spring-projects/spring-boot/tree/master/spring-boot-project">spring-boot-test和spring-boot-test-autoconfigure的单元测试</a></p>
+</blockquote>
+<p>从功能上讲，Spring Boot Test中的注解主要分如下几类：</p>
+<p>类别|示例|格式|说明<br>–|–<br>配置类型  |<code>@TestConfiguration</code>等| | 提供一些测试相关的配置入口<br>mock类型  |<code>@MockBean</code>等 | |提供mock支持<br>启动测试类型  |<code>@SpringBootTest</code> | <code>@\*Test</code> |以Test结尾的注解，具有加载applicationContext的能力<br>自动配置类型  |<code>@AutoConfigureJdbc</code>等   |  <code>@AutoConfigure*</code> | 以AutoConfigure开头的注解，具有加载测试支持功能的能力。</p>
+<h3 id="1-1-配置类型的注解"><a href="#1-1-配置类型的注解" class="headerlink" title="1.1 配置类型的注解"></a>1.1 配置类型的注解</h3><p>注解 | 作用 | 实践中的使用<br>–|–<br><code>@TestComponent</code> | 该注解另一种<code>@Component</code>，在语义上用来指定某个Bean是专门用于测试的。| 该注解适用于测试代码和正式混合在一起时，不加载被该注解描述的Bean，使用不多。<br><code>@TestConfiguration</code> | 该注解是另一种<code>@TestComponent</code>，它用于补充额外的Bean或覆盖已存在的Bean | 在不修改正式代码的前提下，使配置更加灵活<br><code>@TypeExcludeFilters</code>  | 用来排除<code>@TestConfiguration</code>和<code>@TestComponent</code> | 适用于测试代码和正式代码混合的场景，使用不多<br><code>@OverrideAutoConfiguration</code> | 可用于覆盖<code>@EnableAutoConfiguration</code>，与<code>ImportAutoConfiguration</code>结合使用，以限制所加载的自动配置类 | 在不修改正式代码的前提下，提供了修改配置自动配置类的能力<br><code>@PropertyMapping</code>  | 定义<code>@AutoConfigure*</code>注解中用到的变量名称，例如在<code>@AutoConfigureMockMvc</code>中定义名为spring.test.mockmvc.webclient.enabled的变量 | 一般不使用</p>
+<blockquote>
+<p>使用<code>@SpringBootApplication</code>启动测试或者生产代码，被<code>@TestComponent</code>描述的Bean会自动被排除掉。如果不是则需要向<code>@SpringBootApplication</code>添加TypeExcludeFilter。</p>
+</blockquote>
+<h3 id="1-2-mock类型的注解"><a href="#1-2-mock类型的注解" class="headerlink" title="1.2 mock类型的注解"></a>1.2 mock类型的注解</h3><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>@MockBean</code></td>
+<td>用于mock指定的class或被注解的属性</td>
+</tr>
+<tr>
+<td><code>@MockBeans</code></td>
+<td>使<code>@MockBean</code>支持在同一类型或属性上多次出现</td>
+</tr>
+<tr>
+<td><code>@SpyBean</code></td>
+<td>用于spy指定的class或被注解的属性</td>
+</tr>
+<tr>
+<td><code>@SpyBeans</code></td>
+<td>使<code>@SpyBeans</code>支持在同一类型或属性上多次出现</td>
+</tr>
+</tbody></table>
+<p><code>@MockBean</code>和<code>@SpyBean</code>这两个注解，在mockito框架中本来已经存在，且功能基本相同。Spring Boot Test又定义一份重复的注解，目的在于使<code>MockBean</code>和<code>SpyBean</code>被ApplicationContext管理，从而方便使用。</p>
+<blockquote>
+<p>MockBean和SpyBean功能非常相似，都能模拟方法的各种行为。不同之处在于MockBean是全新的对象，跟正式对象没有关系；而SpyBean与正式对象紧密联系，可以模拟正式对象的部分方法，没有被模拟的方法仍然可以运行正式代码。</p>
+</blockquote>
+<h3 id="1-3-自动配置类型的注解（-AutoConfigure-）"><a href="#1-3-自动配置类型的注解（-AutoConfigure-）" class="headerlink" title="1.3 自动配置类型的注解（@AutoConfigure*）"></a>1.3 自动配置类型的注解（@AutoConfigure*）</h3><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>@AutoConfigureJdbc</code></td>
+<td>自动配置JDBC</td>
+</tr>
+<tr>
+<td><code>@AutoConfigureCache</code></td>
+<td>自动配置缓存</td>
+</tr>
+<tr>
+<td><code>@AutoConfigureDataLdap</code></td>
+<td>自动配置LDAP</td>
+</tr>
+<tr>
+<td><code>@AutoConfigureJson</code></td>
+<td>自动配置JSON</td>
+</tr>
+<tr>
+<td><code>@AutoConfigureJsonTesters</code></td>
+<td>自动配置JsonTester</td>
+</tr>
+<tr>
+<td><code>@AutoConfigureDataJpa</code></td>
+<td>自动配置JPA</td>
+</tr>
+<tr>
+<td><code>@AutoConfigureTestEntityManager</code></td>
+<td>自动配置TestEntityManager</td>
+</tr>
+<tr>
+<td><code>@AutoConfigureRestDocs</code></td>
+<td>自动配置Rest Docs</td>
+</tr>
+<tr>
+<td><code>@AutoConfigureMockRestServiceServer</code></td>
+<td>自动配置 MockRestServiceServer</td>
+</tr>
+<tr>
+<td><code>@AutoConfigureWebClient</code></td>
+<td>自动配置 WebClient</td>
+</tr>
+<tr>
+<td><code>@AutoConfigureWebFlux</code></td>
+<td>自动配置 WebFlux</td>
+</tr>
+<tr>
+<td><code>@AutoConfigureWebTestClient</code></td>
+<td>自动配置 WebTestClient</td>
+</tr>
+<tr>
+<td><code>@AutoConfigureMockMvc</code></td>
+<td>自动配置 MockMvc</td>
+</tr>
+<tr>
+<td><code>@AutoConfigureWebMvc</code></td>
+<td>自动配置WebMvc</td>
+</tr>
+<tr>
+<td><code>@AutoConfigureDataNeo4j</code></td>
+<td>自动配置 Neo4j</td>
+</tr>
+<tr>
+<td><code>@AutoConfigureDataRedis</code></td>
+<td>自动配置 Redis</td>
+</tr>
+<tr>
+<td><code>@AutoConfigureJooq</code></td>
+<td>自动配置 Jooq</td>
+</tr>
+<tr>
+<td><code>@AutoConfigureTestDatabase</code></td>
+<td>自动配置Test Database，可以使用内存数据库</td>
+</tr>
+</tbody></table>
+<p>这些注解可以搭配<code>@\*Test</code>使用，用于开启在<code>@\*Test</code>中未自动配置的功能。例如<code>@SpringBootTest</code>和<code>@AutoConfigureMockMvc</code>组合后，就可以注入<code>org.springframework.test.web.servlet.MockMvc</code>。</p>
+<blockquote>
+<p><strong>“自动配置类型”有两种使用方式：</strong></p>
+</blockquote>
+<ol>
+<li>在功能测试（即使用<code>@SpringBootTest</code>）时显示添加。</li>
+<li>一般在切片测试中被隐式使用，例如<code>@WebMvcTest</code>注解时，隐式添加了<code>@AutoConfigureCache</code>、<code>@AutoConfigureWebMvc</code>、<code>@AutoConfigureMockMvc</code>。</li>
+</ol>
+<blockquote>
+<p><strong>实现原理</strong><br>与<code>spring-boot-autoconfigure</code>中的<code>@\*AutoConfiguration</code>实现略有不同，Test包中的<code>@AutoConfigure\*</code>通过<code>DeterminableImports</code>接口作为指定代码的识别入口，通过<code>ImportAutoConfiguration</code>注解作为配置入口，从Test包下的<a href="https://github.com/spring-projects/spring-boot/blob/master/spring-boot-project/spring-boot-test-autoconfigure/src/main/resources/META-INF/spring.factories"><code>spring.factories</code></a>读取配置文件，每个<code>@AutoConfigure\*</code>中都可以包含多个Spring Boot的<code>@\*AutoConfiguration</code>，例如：<br><img src="/images/2018/12/autoconfigurewebmvc.png" alt="AutoConfigureWebMvc"></p>
+</blockquote>
+<h3 id="1-4-启动测试类型的注解（-Test）"><a href="#1-4-启动测试类型的注解（-Test）" class="headerlink" title="1.4 启动测试类型的注解（@*Test）"></a>1.4 启动测试类型的注解（@*Test）</h3><p>所有的@*Test注解都被<code>@BootstrapWith</code>注解，它们可以启动ApplicationContext，是测试的入口，所有的测试类必须声明一个@*Test注解。</p>
+<table>
+<thead>
+<tr>
+<th>注解</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>@SpringBootTest</code></td>
+<td>自动侦测并加载@SpringBootApplication或@SpringBootConfiguration中的配置，默认web环境为MOCK，不监听任务端口</td>
+</tr>
+<tr>
+<td><code>@DataRedisTest</code></td>
+<td>测试对Redis操作，自动扫描被@RedisHash描述的类，并配置Spring Data Redis的库</td>
+</tr>
+<tr>
+<td><code>@DataJpaTest</code></td>
+<td>测试基于JPA的数据库操作，同时提供了TestEntityManager替代JPA的EntityManager</td>
+</tr>
+<tr>
+<td><code>@DataJdbcTest</code></td>
+<td>测试基于Spring Data JDBC的数据库操作</td>
+</tr>
+<tr>
+<td><code>@JsonTest</code></td>
+<td>测试JSON的序列化和反序列化</td>
+</tr>
+<tr>
+<td><code>@WebMvcTest</code></td>
+<td>测试Spring MVC中的controllers</td>
+</tr>
+<tr>
+<td><code>@WebFluxTest</code></td>
+<td>测试Spring WebFlux中的controllers</td>
+</tr>
+<tr>
+<td><code>@RestClientTest</code></td>
+<td>测试对REST客户端的操作</td>
+</tr>
+<tr>
+<td><code>@DataLdapTest</code></td>
+<td>测试对LDAP的操作</td>
+</tr>
+<tr>
+<td><code>@DataMongoTest</code></td>
+<td>测试对MongoDB的操作</td>
+</tr>
+<tr>
+<td><code>@DataNeo4jTest</code></td>
+<td>测试对Neo4j的操作</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>除了<code>@SpringBootTest</code>之外的注解都是用来进行切面测试的，他们会默认导入一些自动配置，点击<a href="https://docs.spring.io/spring-boot/docs/2.1.0.RELEASE/reference/htmlsingle/#test-auto-configuration">官方docs</a>查看详情。</p>
+</blockquote>
+<p>一般情况下，推荐使用<code>@SpringBootTest</code>而非其它切片测试的注解，简单有效。若某次改动仅涉及特定切片，可以考虑使用切片测试。</p>
+<p><code>@SpringBootTest</code>是这些注解中最常用的一个，其中包含的配置项如下：</p>
+<table>
+<thead>
+<tr>
+<th>配置名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>value</code></td>
+<td>指定配置属性</td>
+</tr>
+<tr>
+<td><code>properties</code></td>
+<td>指定配置属性，和value意义相同</td>
+</tr>
+<tr>
+<td><code>classes</code></td>
+<td>指定配置类，等同于<code>@ContextConfiguration</code>中的class，若没有显示指定，将查找嵌套的<code>@Configuration</code>类，然后返回到<code>SpringBootConfiguration</code>搜索配置</td>
+</tr>
+<tr>
+<td><code>webEnvironment</code></td>
+<td>指定web环境，可选值有：<code>MOCK</code>、<code>RANDOM_PORT</code>、<code>DEFINED_PORT</code>、<code>NONE</code></td>
+</tr>
+</tbody></table>
+<p><code>webEnvironment</code>详细说明：</p>
+<table>
+<thead>
+<tr>
+<th>可选值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MOCK</code></td>
+<td>此值为默认值，该类型提供一个mock环境，此时内嵌的服务（servlet容器）并没有真正启动，也不会监听web端口。</td>
+</tr>
+<tr>
+<td><code>RANDOM_PORT</code></td>
+<td>启动一个真实的web服务，监听一个随机端口。</td>
+</tr>
+<tr>
+<td><code>DEFINED_PORT</code></td>
+<td>启动一个真实的web服务，监听一个定义好的端口（从配置中读取）。</td>
+</tr>
+<tr>
+<td><code>NONE</code></td>
+<td>启动一个非web的ApplicationContext，既不提供mock环境，也不提供真是的web服务。</td>
+</tr>
+</tbody></table>
+<h2 id="2-相互之间的搭配组合"><a href="#2-相互之间的搭配组合" class="headerlink" title="2. 相互之间的搭配组合"></a>2. 相互之间的搭配组合</h2><p>典型的搭配如下</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">sample<span class="token punctuation">.</span>test</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>junit<span class="token punctuation">.</span></span><span class="token class-name">Before</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>junit<span class="token punctuation">.</span></span><span class="token class-name">Test</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>junit<span class="token punctuation">.</span>runner<span class="token punctuation">.</span></span><span class="token class-name">RunWith</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">sample<span class="token punctuation">.</span>test<span class="token punctuation">.</span>domain<span class="token punctuation">.</span></span><span class="token class-name">VehicleIdentificationNumber</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">sample<span class="token punctuation">.</span>test<span class="token punctuation">.</span>service<span class="token punctuation">.</span></span><span class="token class-name">VehicleDetails</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">sample<span class="token punctuation">.</span>test<span class="token punctuation">.</span>service<span class="token punctuation">.</span></span><span class="token class-name">VehicleDetailsService</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>beans<span class="token punctuation">.</span>factory<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Autowired</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>boot<span class="token punctuation">.</span>test<span class="token punctuation">.</span>autoconfigure<span class="token punctuation">.</span>jdbc<span class="token punctuation">.</span></span><span class="token class-name">AutoConfigureTestDatabase</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>boot<span class="token punctuation">.</span>test<span class="token punctuation">.</span>context<span class="token punctuation">.</span></span><span class="token class-name">SpringBootTest</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>boot<span class="token punctuation">.</span>test<span class="token punctuation">.</span>context<span class="token punctuation">.</span></span><span class="token class-name">SpringBootTest</span><span class="token punctuation">.</span><span class="token class-name">WebEnvironment</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>boot<span class="token punctuation">.</span>test<span class="token punctuation">.</span>mock<span class="token punctuation">.</span>mockito<span class="token punctuation">.</span></span><span class="token class-name">MockBean</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>boot<span class="token punctuation">.</span>test<span class="token punctuation">.</span>web<span class="token punctuation">.</span>client<span class="token punctuation">.</span></span><span class="token class-name">TestRestTemplate</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>test<span class="token punctuation">.</span>context<span class="token punctuation">.</span>junit4<span class="token punctuation">.</span></span><span class="token class-name">SpringRunner</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token keyword">static</span> <span class="token import static"><span class="token namespace">org<span class="token punctuation">.</span>mockito<span class="token punctuation">.</span></span><span class="token class-name">BDDMockito</span><span class="token punctuation">.</span><span class="token static">given</span></span><span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * &#123;@code @SpringBootTest&#125; with a random port for &#123;@link SampleTestApplication&#125;.
+ *
+ * @author Phillip Webb
+ */</span>
+<span class="token annotation punctuation">@RunWith</span><span class="token punctuation">(</span><span class="token class-name">SpringRunner</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@SpringBootTest</span><span class="token punctuation">(</span>webEnvironment <span class="token operator">=</span> <span class="token class-name">WebEnvironment</span><span class="token punctuation">.</span><span class="token constant">RANDOM_PORT</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@AutoConfigureTestDatabase</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SampleTestApplicationWebIntegrationTests</span> <span class="token punctuation">&#123;</span>
+
+	<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">VehicleIdentificationNumber</span> <span class="token constant">VIN</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VehicleIdentificationNumber</span><span class="token punctuation">(</span>
+			<span class="token string">"01234567890123456"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+	<span class="token annotation punctuation">@Autowired</span>
+	<span class="token keyword">private</span> <span class="token class-name">TestRestTemplate</span> restTemplate<span class="token punctuation">;</span>
+
+	<span class="token annotation punctuation">@MockBean</span>
+	<span class="token keyword">private</span> <span class="token class-name">VehicleDetailsService</span> vehicleDetailsService<span class="token punctuation">;</span>
+
+	<span class="token annotation punctuation">@Before</span>
+	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token function">given</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>vehicleDetailsService<span class="token punctuation">.</span><span class="token function">getVehicleDetails</span><span class="token punctuation">(</span><span class="token constant">VIN</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+				<span class="token punctuation">.</span><span class="token function">willReturn</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">VehicleDetails</span><span class="token punctuation">(</span><span class="token string">"Honda"</span><span class="token punctuation">,</span> <span class="token string">"Civic"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+
+	<span class="token annotation punctuation">@Test</span>
+	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">this</span><span class="token punctuation">.</span>restTemplate<span class="token punctuation">.</span><span class="token function">getForEntity</span><span class="token punctuation">(</span><span class="token string">"/&#123;username&#125;/vehicle"</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token string">"sframework"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li>@RunWith(SpringRunner.class)是JUnit的注解，作用是关联Spring Boot Test，使运行JUnit时同时启动Spring</li>
+<li>@SpringBootTest(webEnvironment &#x3D; WebEnvironment.RANDOM_PORT) 作用是启动Spring的ApplicationContext，参数webEnvironment指定了运行的web环境</li>
+<li>@AutoConfigureTestDatabase 作用是启动一个内存数据库，不使用真实的数据库</li>
+</ul>
+<p>其中@RunWith和@*Test必须存在，@AutoConfigure*可以同时配置任意多个，而配置类型的注解可以在需要时添加。</p>
+<h2 id="3-相似注解的区别和联系"><a href="#3-相似注解的区别和联系" class="headerlink" title="3. 相似注解的区别和联系"></a>3. 相似注解的区别和联系</h2><h3 id="3-1-TestComment-vs-Comment"><a href="#3-1-TestComment-vs-Comment" class="headerlink" title="3.1 @TestComment vs @Comment"></a>3.1 @TestComment vs @Comment</h3><ul>
+<li><code>@TestComponent</code>是另一种<code>@Component</code>，在语义上用来指定某个Bean是专门用于测试的</li>
+<li>使用@SpringBootApplication服务时，<code>@TestComponent</code>会被自动排除</li>
+</ul>
+<h3 id="3-2-TestConfiguration-vs-Configuration"><a href="#3-2-TestConfiguration-vs-Configuration" class="headerlink" title="3.2 @TestConfiguration vs @Configuration"></a>3.2 @TestConfiguration vs @Configuration</h3><ul>
+<li><code>@TestConfiguration</code>是Spring Boot Boot Test提供的，<code>@Configuration</code>是Spring Framework提供的。</li>
+<li><code>@TestConfiguration</code>实际上是也是一种<code>@TestComponent</code>，只是这个<code>@TestComponent</code>专门用来做配置用。</li>
+<li><code>@TestConfiguration</code>和<code>@Configuration</code>不同，它不会阻止<code>@SpringBootTest</code>的查找机制，相当于是对既有配置的补充或覆盖。</li>
+</ul>
+<h3 id="3-3-SpringBootTest-vs-WebMvcTest-或-Test"><a href="#3-3-SpringBootTest-vs-WebMvcTest-或-Test" class="headerlink" title="3.3 @SpringBootTest vs @WebMvcTest(或@*Test)"></a>3.3 @SpringBootTest vs @WebMvcTest(或@*Test)</h3><ul>
+<li>都可以启动Spring的ApplicationContext</li>
+<li><code>@SpringBootTest</code>自动侦测并加载<code>@SpringBootApplication</code>或<code>@SpringBootConfiguration</code>中的配置，<code>@WebMvcTest</code>不侦测配置，只是默认加载一些自动配置。</li>
+<li><code>@SpringBootTest</code>测试范围一般比<code>@WebMvcTest</code>大。</li>
+</ul>
+<h3 id="3-4-MockBean-vs-SpyBean"><a href="#3-4-MockBean-vs-SpyBean" class="headerlink" title="3.4 @MockBean vs @SpyBean"></a>3.4 @MockBean vs @SpyBean</h3><p>详见<a href="#1-2-mock%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%B3%A8%E8%A7%A3">1.2 mock类型的注解</a></p>
+<h2 id="4-小结"><a href="#4-小结" class="headerlink" title="4. 小结"></a>4. 小结</h2><p>本文主要介绍了Spring Boot Test中新增的注解，笔者将这些注解分为这几个类型：配置类型、mock类型、启动测试类型、自动配置类型。</p>
+<ol>
+<li>“配置类型”中的<code>@TestComponent</code>、<code>@TestConfiguration</code>、<code>@OverrideAutoConfiguration</code>使配置更加灵活。</li>
+<li>封装了<code>mockito</code>的<code>@MockBean</code>和<code>@SpyBean</code>，使其可以自然的注入到Spring容器中。</li>
+<li>每个测试类必须包含一个“启动测试类型”的注解(<code>@\*Test</code>)，同时可以根据需要添加”自动配置类型”的注解(<code>@AutoConfigure*</code>)。</li>
+<li><code>@SpringBootTest</code>是最常用的“启动测试类型”注解</li>
+</ol>
+<p>参考：<br><a href="https://docs.spring.io/spring-boot/docs/2.1.0.RELEASE/reference/htmlsingle/#boot-features-testing">Spring Boot Reference Guide</a><br><a href="https://segmentfault.com/a/1190000010854811">Spring、Spring Boot和TestNG测试指南 - @TestConfiguration - 颇忒脱 - SegmentFault 思否</a><br><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/test/autoconfigure/OverrideAutoConfiguration.html">OverrideAutoConfiguration (Spring Boot Docs 2.1.0.RELEASE API)</a><br><a href="https://gooroo.io/GoorooTHINK/Article/16943/Spring-Boot-14--MockBean-and-SpyBean/24301#.W_UcsZN3hEI">Spring Boot 1.4: @MockBean and @SpyBean | GoorooThink Tech News | Articles | Skills Analytics | Gooroo</a></p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://www.ypk1226.com" rel="external nofollow noreferrer">沉迷思考的鱼</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://www.ypk1226.com/2018/11/20/spring-boot/spring-boot-test-2/">http://www.ypk1226.com/2018/11/20/spring-boot/spring-boot-test-2/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="http://www.ypk1226.com" target="_blank">沉迷思考的鱼</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/spring/">
+                                    <span class="chip bg-color">spring</span>
+                                </a>
+                            
+                                <a href="/tags/spring-boot/">
+                                    <span class="chip bg-color">spring-boot</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2018/11/27/spring-boot/spring-boot-index/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Spring Boot 入门介绍">
+                        
+                        <span class="card-title">Spring Boot 入门介绍</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            一个完善的应用程序，常常需要这些特性：精简明确的配置，快速集成第三方组件，统一的打包部署方式，方便单元测试&#x2F;功能测试，良好的监控能力等。Spring Boot出现之前，这些都需要开发者自行摸索解决，得到的方案可能大同小异，在尝到“
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-11-27
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/spring-boot/" class="post-category">
+                                    spring-boot
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/spring/">
+                        <span class="chip bg-color">spring</span>
+                    </a>
+                    
+                    <a href="/tags/spring-boot/">
+                        <span class="chip bg-color">spring-boot</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/11/17/spring-boot/spring-boot-test-1/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Spring Boot Test （一、快速入门）">
+                        
+                        <span class="card-title">Spring Boot Test （一、快速入门）</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            提起“单元测试”这几个字，一般开发者会条件反射般想起：“工作忙，没时间”，这是一个客观上的事实，在急于求成的大环境下，规范的单元测试却需要一些明确的代码产出及覆盖率指标，这的确很让人头疼。早几年的关于单元测试的文章，不停的鼓吹其好处，却对时
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-11-17
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/spring-boot/" class="post-category">
+                                    spring-boot
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/spring/">
+                        <span class="chip bg-color">spring</span>
+                    </a>
+                    
+                    <a href="/tags/spring-boot/">
+                        <span class="chip bg-color">spring-boot</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2018 - 2022</span>
+            <a href="http://www.ypk1226.com" target="_blank">沉迷思考的鱼</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+
+            
+            
+            
+            
+            
+            
+            
+            <br>
+            
+
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

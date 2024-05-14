@@ -1,0 +1,1020 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Spring Boot Auto-configuration 自动配置详解, java,spring,spring-boot,mysql,git,hibernate,jvm">
+    <meta name="description" content="毋庸置疑，Auto-configuration是Spring Boot的核心特性，其约定大于配置的思想，赋予了Spring Boot开箱即用的强大能力。本文从诞生背景、使用方式、实现原理这几个方面详细介绍这一特性。
+
+
+1. 诞生背景一直以">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Spring Boot Auto-configuration 自动配置详解 | 沉迷思考</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 7.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">沉迷思考</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">沉迷思考</div>
+        <div class="logo-desc">
+            
+            风不撑伞，雨不倾盆，就是好天气
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+<style>
+  .bg-cover:before {
+    background: url(/medias/featureimages/17.jpg) 0 / cover fixed}
+</style>
+<div class="bg-cover pd-header post-cover">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s3">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/spring/">
+                                <span class="chip bg-color">spring</span>
+                            </a>
+                        
+                            <a href="/tags/spring-boot/">
+                                <span class="chip bg-color">spring-boot</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s6 page-title">
+                    Spring Boot Auto-configuration 自动配置详解
+                </div>
+                <div class="col s3 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/spring-boot/" class="post-category">
+                                spring-boot
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2018-12-05
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.1k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    8 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>毋庸置疑，Auto-configuration是Spring Boot的核心特性，其约定大于配置的思想，赋予了Spring Boot开箱即用的强大能力。本文从诞生背景、使用方式、实现原理这几个方面详细介绍这一特性。</p>
+<span id="more"></span>
+
+<h2 id="1-诞生背景"><a href="#1-诞生背景" class="headerlink" title="1. 诞生背景"></a>1. 诞生背景</h2><p>一直以来，应用程序模块之间的依赖及相应的配置管理，都是件繁琐的事情；maven和gradle的出现，基本解决了<strong>依赖管理</strong>，使依赖管理变得优雅起来。但与之相对的，繁琐的<strong>配置工作</strong>仍然让开发者头疼不已，我们来看一段Spring集成Hibernate的配置代码：</p>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>dataSource<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>org.apache.commons.dbcp.BasicDataSource<span class="token punctuation">"</span></span> <span class="token attr-name">destroy-method</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>close<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>driverClassName<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>com.mysql.jdbc.Driver<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>url<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>jdbc:mysql://localhost/test<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>username<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>root<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>password<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>123456<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>bean</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sessionFactory<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>org.springframework.orm.hibernate4.LocalSessionFactoryBean<span class="token punctuation">"</span></span> <span class="token attr-name">lazy-init</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>false<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token comment">&lt;!-- 注入datasource，给sessionfactoryBean内setdatasource提供数据源 --></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>dataSource<span class="token punctuation">"</span></span> <span class="token attr-name">ref</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>dataSource<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>configLocation<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>classpath:hibernate.cfg.xml<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+    <span class="token comment">&lt;!-- //加载实体类的映射文件位置及名称 --></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>mappingLocations<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>classpath:com/demo/entities/*.hbm.xml<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>bean</span><span class="token punctuation">></span></span>
+
+<span class="token comment">&lt;!-- 配置Spring声明式事务 --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>transactionManager<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>org.springframework.orm.hibernate4.HibernateTransactionManager<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sessionFactory<span class="token punctuation">"</span></span> <span class="token attr-name">ref</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sessionFactory<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>bean</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这些代码很多开发者已经非常熟悉了，但是每次创建新项目，总是要带着它们（即使使用Java Config的形式，这些bean的也需要一个个声明出来）。有鉴于此，Spring团队提出了Auto-configuration机制，力图解决重复、复杂的配置问题。</p>
+<h2 id="2-定义"><a href="#2-定义" class="headerlink" title="2. 定义"></a>2. 定义</h2><p>顾名思义，Spring Boot Auto-configuration尝试根据项目的jar依赖关系，自动配置Spring应用程序。</p>
+<p>例如，如果HSQLDB在项目的classpath中，并且没有手动配置任何数据库链接相关的Bean，那么Spring Boot将自动配置一个的内存数据库。通过这种方式，大大减轻了配置的工作量，开发者通常只需要调整部分配置即可。为帮助理解，HSQLDB自动配置的流程如下：</p>
+<p><img src="/images/2018/12/auto.png" alt="auto"></p>
+<h2 id="3-使用方式"><a href="#3-使用方式" class="headerlink" title="3. 使用方式"></a>3. 使用方式</h2><p>笔者按照如下两个维度介绍使用方式，以求尽可能清晰明了:</p>
+<ol>
+<li>按具体配置方式分类</li>
+<li>按操作目的分类</li>
+</ol>
+<h3 id="3-1-按具体配置方式分类"><a href="#3-1-按具体配置方式分类" class="headerlink" title="3.1 按具体配置方式分类"></a>3.1 按具体配置方式分类</h3><p>按照具体配置方式分类，入口有这几种：相关注解、spring.factories、application.properties&#x2F;application.yml。</p>
+<h4 id="3-1-1-相关注解"><a href="#3-1-1-相关注解" class="headerlink" title="3.1.1 相关注解"></a>3.1.1 相关注解</h4><p>@EnableAutoConfiguration和@SpringBootApplication都有开启Spring Boot Auto-configuration能力。除了这两个注解之外，Spring Boot Auto-configuration没有其它面向用户的注解了。</p>
+<blockquote>
+<p><strong>@SpringBootApplication vs @EnableAutoConfiguration</strong><br/><br>@SpringBootApplication的作用等同于一起使用这三个注解：@Configuration、@EnableAutoConfiguration、和@ComponentScan</p>
+</blockquote>
+<h4 id="3-1-2-spring-factories文件"><a href="#3-1-2-spring-factories文件" class="headerlink" title="3.1.2 spring.factories文件"></a>3.1.2 spring.factories文件</h4><p>spring.factories文件指定了*AutoConfiguration类列表，只有在列表中的自动配置才会被检索到。Spring会检测classpath下所有的META-INF&#x2F;spring.factories文件；若要引入自定义的自动配置，需要将自定义的*AutoConfiguration类添加到spring.factories文件中。</p>
+<p>另外，该文件不是Spring Boot新增的特性，而是spring-core包中的SpringFactoriesLoader类负责检索并解析META-INF&#x2F;spring.factories文件</p>
+<h4 id="3-1-3-application-properties-application-yml"><a href="#3-1-3-application-properties-application-yml" class="headerlink" title="3.1.3 application.properties&#x2F;application.yml"></a>3.1.3 application.properties&#x2F;application.yml</h4><p>Spring会检测classpath中是否存在这application.properties或application.yml，若存在将获取其中配置作用到Auto-configuration上，覆盖默认配置。</p>
+<p>点击<a href="https://docs.spring.io/spring-boot/docs/2.1.0.RELEASE/reference/htmlsingle/#appendix">properties列表</a>可以查看所有Spring Boot内置的属性配置示例。</p>
+<h3 id="3-2-按操作目的分类"><a href="#3-2-按操作目的分类" class="headerlink" title="3.2 按操作目的分类"></a>3.2 按操作目的分类</h3><p>按照操作目的划分，通常有这几种：定制部分配置、排除、全局开启&#x2F;关闭、新增(相对复杂一些，会在另外一篇文章中单独介绍)。</p>
+<h4 id="3-2-1-定制部分配置"><a href="#3-2-1-定制部分配置" class="headerlink" title="3.2.1 定制部分配置"></a>3.2.1 定制部分配置</h4><p>自动配置开启后，特定组件的配置变量名称是固定的（即做好了“约定”），将特定配置写入application.properties或application.yml即可覆盖已有配置。</p>
+<p>以DataSourceAutoConfiguration为例，常用的配置为：</p>
+<pre class="line-numbers language-none"><code class="language-none">spring.datasource.url&#x3D;jdbc:mysql:&#x2F;&#x2F;localhost:3306&#x2F;test？characterEncoding&#x3D;utf8&amp;useSSL&#x3D;true
+spring.datasource.username&#x3D;root
+spring.datasource.password&#x3D;1234
+spring.datasource.driver-class-name&#x3D;com.mysql.jdbc.Driver<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="3-2-2-排除"><a href="#3-2-2-排除" class="headerlink" title="3.2.2 排除"></a>3.2.2 排除</h4><p>分为两种排除方式：自动排除特定Bean、手动排除指定的AutoConfiguration。</p>
+<p><strong>自动排除特定Bean</strong></p>
+<p>当开发者在项目中手动声明了某个组件的特定类，Spring Boot Auto-configuration通过@Condition机制实现了自动避让；即Spring探测到用户自己手动声明了某些特定类后，对应的Auto-configuration就不再加载了。</p>
+<blockquote>
+<p><strong>如何查看所谓“特定类”</strong><br/><br>AutoConfiguration类中，被@ConditionalOnMissingBean或@ConditionalOnMissingClass的value值，例如org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration：<br><img src="/images/2018/12/jdbc.png" alt="jdbc"></p>
+</blockquote>
+<p><strong>手动排除指定的AutoConfiguration</strong></p>
+<p>使用@SpringBootApplication或@EnableAutoConfiguration中的exclude和excludeName属性可以排除指定的AutoConfiguration，属性值通常是以*AutoConfiguration结尾的类。</p>
+<p>另外，在application.properties或application.yml中使用spring.autoconfigure.exclude也可以排除指定的AutoConfiguration。</p>
+<p>示例如下：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@EnableAutoConfiguration</span><span class="token punctuation">(</span>exclude <span class="token operator">=</span> <span class="token class-name">FreeMarkerAutoConfiguration</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token keyword">private</span> <span class="token keyword">class</span> <span class="token class-name">EnableAutoConfigurationWithClassExclusions</span> <span class="token punctuation">&#123;</span>
+
+<span class="token punctuation">&#125;</span>
+
+<span class="token annotation punctuation">@EnableAutoConfiguration</span><span class="token punctuation">(</span>excludeName <span class="token operator">=</span> <span class="token string">"org.springframework.boot.autoconfigure.mustache.MustacheAutoConfiguration"</span><span class="token punctuation">)</span>
+<span class="token keyword">private</span> <span class="token keyword">class</span> <span class="token class-name">EnableAutoConfigurationWithClassNameExclusions</span> <span class="token punctuation">&#123;</span>
+
+<span class="token punctuation">&#125;</span>
+
+<span class="token annotation punctuation">@EnableAutoConfiguration</span><span class="token punctuation">(</span>exclude <span class="token operator">=</span> <span class="token class-name">MustacheAutoConfiguration</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> excludeName <span class="token operator">=</span> <span class="token string">"org.springframework.boot.autoconfigure.freemarker.FreeMarkerAutoConfiguration"</span><span class="token punctuation">)</span>
+<span class="token keyword">private</span> <span class="token keyword">class</span> <span class="token class-name">EnableAutoConfigurationWithClassAndClassNameExclusions</span> <span class="token punctuation">&#123;</span>
+
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-none"><code class="language-none">spring.autoconfigure.exclude&#x3D;org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<blockquote>
+<p><strong>如何找到可选的*AutoConfiguration</strong><br/><br>方法1：添加启动参数-Ddebug，在日志中可以看到已经加载的<em>AutoConfiguration<br>方法2：spring-boot-autoconfigure包中存在<a href="https://github.com/spring-projects/spring-boot/blob/master/spring-boot-project/spring-boot-autoconfigure/src/main/resources/META-INF/spring.factories">spring.factories</a>文件，文件中org.springframework.boot.autoconfigure.EnableAutoConfiguration变量的值中，列出了所有Spring Boot内置的</em>AutoConfiguration类</p>
+</blockquote>
+<h4 id="3-2-3-全局开启-关闭自动配置"><a href="#3-2-3-全局开启-关闭自动配置" class="headerlink" title="3.2.3 全局开启&#x2F;关闭自动配置"></a>3.2.3 全局开启&#x2F;关闭自动配置</h4><p>全局开启：添加@SpringBootApplication或@EnableAutoConfiguration到配置类上，且spring.boot.enableautoconfiguration属性设置为true（默认为true）。</p>
+<p>全局关闭：不使用@SpringBootApplication或@EnableAutoConfiguration，或spring.boot.enableautoconfiguration属性设置为false。</p>
+<h2 id="4-实现原理"><a href="#4-实现原理" class="headerlink" title="4. 实现原理"></a>4. 实现原理</h2><p>得益于spring-context中的扩展机制@Import(ImportSelector)和@Conditional(Condition)，Spring Boot Auto-configuration自然地扩展选择器和过滤器，从而筛选出符合条件的配置组件。下面分两部分介绍其原理：Spring Framework的扩展点、调用流程。</p>
+<h3 id="4-1-Spring-Framework的扩展点"><a href="#4-1-Spring-Framework的扩展点" class="headerlink" title="4.1 Spring Framework的扩展点"></a>4.1 Spring Framework的扩展点</h3><p>@Import(ImportSelector)的使用，使配置可以委托到外部来处理，为Auto-configuration提供了的接入点。在接入点切入后，再使用各种自定义的@Conditional(Condition)筛选预先定义好的自动配置类和相关的Bean。</p>
+<p>可以说，@Conditional(Condition)是Spring Boot实现自动配置的关键。</p>
+<blockquote>
+<p><strong>@Import</strong><br/><br>@Import是Spring 3.0提供在spring-context中的注解，提供与Spring XML中的<import/>元素等效的功能。允许导入@Configuration类、ImportSelector实现、ImportBeanDefinitionRegistrar实现，以及常规的@Component类。</p>
+</blockquote>
+<blockquote>
+<p><strong>ImportSelector接口</strong><br/><br>ImportSelector接口是Spring 3.1提供在spring-context中的接口。<br>接口方法：String[]	selectImports(AnnotationMetadata importingClassMetadata)<br>提供根据传入的@Import类的元数据，返回需要加载的@Configuration类。</p>
+</blockquote>
+<blockquote>
+<p><strong>@Conditional</strong><br/><br>@Conditional是Spring 4.0提供在spring-context中的注解。<br>代表component只有在所有指定条件匹配时才有会被注册，允许指定一个Condition的实现类，以定义匹配规则。</p>
+</blockquote>
+<blockquote>
+<p><strong>Condition接口</strong><br/><br>Condition接口是Spring 4.0提供在spring-context中的接口。<br>接口方法：boolean	matches(ConditionContext context, AnnotatedTypeMetadata metadata)<br>根据传入的@Conditional类的元数据，返回是否加载该类。</p>
+</blockquote>
+<h3 id="4-2-调用流程"><a href="#4-2-调用流程" class="headerlink" title="4.2 调用流程"></a>4.2 调用流程</h3><p>下图描述了Spring Boot Auto-configuration启动加载的基本流程。</p>
+<p><img src="/images/2018/12/flow.jpg" alt="flow"></p>
+<ol>
+<li>调用SpringApplication#run，开始启动</li>
+<li>调用AbstractApplicationContext#refresh，进入容器启动的生命周期</li>
+<li>进入BeanFactoryPostProcessors</li>
+<li>解析@Import获得AutoConfigurationImportSelector类，该类是自动配置的核心，对配置列表的筛选、排序等操作在这里完成；同时该类实现了DeferredImportSelector接口，它时延迟执行的</li>
+<li>在需要的时候，读取META-INF&#x2F;spring.factories文件中配置的AutoConfigurationImportFilter列表、EnableAutoConfiguration列表、AutoConfigurationImportListener列表</li>
+<li>根据用户注解中的exclue配置，排除指定的AutoConfiguration</li>
+<li>调用AutoConfigurationImportFilter#match，以spring.factories文件中的EnableAutoConfiguration列表作为参数，进行筛选</li>
+<li>对自动配置结果进行排序</li>
+<li>根据@Condition类的条件对Bean进行筛选</li>
+<li>启动完成</li>
+</ol>
+<blockquote>
+<p>AutoConfigurationImportFilter<br>只有实现了该接口的Condition，才会在AutoConfigurationImportSelector被调用，Spring默认只配置了三个：OnBeanCondition、OnClassCondition、OnWebApplicationCondition</p>
+</blockquote>
+<blockquote>
+<p>@Condition类<br>@Condition注解是spring-context的扩展，@Condition类的实现其实是在离开spring-boot-autoconfigure之后，在spring-context中调用的</p>
+</blockquote>
+<blockquote>
+<p>注意<br>本文的代码分析，基于Spring Boot 2.1.2.BUILD-SNAPSHOT</p>
+</blockquote>
+<h2 id="5-小结"><a href="#5-小结" class="headerlink" title="5. 小结"></a>5. 小结</h2><p>自动配置特性使开发者节省了很多配置工作量，从重复繁琐的配置中解脱了出来。本文从诞生背景、使用方式、实现原理这几个方面详细介绍了Auto-configuration这一特性。<br>它的核心配置方式有三个：相关注解、spring.factories、application.properties&#x2F;application.yml。<br>原理上，得益于Spring Framework强大的扩展能力，使用@Import(ImportSelector)和@Conditional(Condition)后，Spring Boot优雅地实现了自动配置特性。</p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://www.ypk1226.com" rel="external nofollow noreferrer">沉迷思考的鱼</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://www.ypk1226.com/2018/12/05/spring-boot/spring-boot-auto-configuration-1/">http://www.ypk1226.com/2018/12/05/spring-boot/spring-boot-auto-configuration-1/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="http://www.ypk1226.com" target="_blank">沉迷思考的鱼</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/spring/">
+                                    <span class="chip bg-color">spring</span>
+                                </a>
+                            
+                                <a href="/tags/spring-boot/">
+                                    <span class="chip bg-color">spring-boot</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2018/12/12/spring-boot/spring-boot-auto-configuration-2/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Spring Boot 自定义Auto-configuration">
+                        
+                        <span class="card-title">Spring Boot 自定义Auto-configuration</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Spring Boot的Auto-configuration以其易用性和实用性，得到了开发者们的广泛认可；但与此同时，Spring Boot内置的Auto-configuration仅能满足基本需求，对于企业级的应用生态来说是不够的，所以自
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-12-12
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/spring-boot/" class="post-category">
+                                    spring-boot
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/spring/">
+                        <span class="chip bg-color">spring</span>
+                    </a>
+                    
+                    <a href="/tags/spring-boot/">
+                        <span class="chip bg-color">spring-boot</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/11/29/spring-boot/spring-boot-staters/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="Spring Boot Staters 详解">
+                        
+                        <span class="card-title">Spring Boot Staters 详解</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Maven和Gradle为Java开发者解决了依赖管理的心头大患，已然成为事实上的依赖管理标准。但贪心的开发者还想更“懒”，有没有办法使依赖管理更简单、更快捷？
+答案是肯定的，Spring Boot项目中引入了Starter的概念。
+
+
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-11-29
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/spring-boot/" class="post-category">
+                                    spring-boot
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/spring/">
+                        <span class="chip bg-color">spring</span>
+                    </a>
+                    
+                    <a href="/tags/spring-boot/">
+                        <span class="chip bg-color">spring-boot</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2018 - 2022</span>
+            <a href="http://www.ypk1226.com" target="_blank">沉迷思考的鱼</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+
+            
+            
+            
+            
+            
+            
+            
+            <br>
+            
+
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

@@ -1,0 +1,1071 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="认识CPU, java,spring,spring-boot,mysql,git,hibernate,jvm">
+    <meta name="description" content="以前听说过一个面试题：如何使CPU使用率达到100%的JAVA代码应该如何编写？笔者心想开几个死循环的线程也就差不多了，启动6个死循环线程，在mac系统中使用top查看，发现cpu达到了600%+，机器CPU是4核的，跑到400%还能接受，">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>认识CPU | 沉迷思考</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 7.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">沉迷思考</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">沉迷思考</div>
+        <div class="logo-desc">
+            
+            风不撑伞，雨不倾盆，就是好天气
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+<style>
+  .bg-cover:before {
+    background: url(/medias/featureimages/18.jpg) 0 / cover fixed}
+</style>
+<div class="bg-cover pd-header post-cover">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s3">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/cpu/">
+                                <span class="chip bg-color">cpu</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s6 page-title">
+                    认识CPU
+                </div>
+                <div class="col s3 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/system/" class="post-category">
+                                system
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-04-17
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.5k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    9 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>以前听说过一个面试题：如何使CPU使用率达到100%的JAVA代码应该如何编写？笔者心想开几个死循环的线程也就差不多了，启动6个死循环线程，在mac系统中使用top查看，发现cpu达到了600%+，机器CPU是4核的，跑到400%还能接受，600%就真的不懂了。</p>
+<p><img src="/images/2019/05/cpu-rate.png" alt="cpu-rate"></p>
+<p>由此，笔者发现围绕CPU，自身有一些知识盲点，曾经那些计算机基础课程全部还给老师了^_^，所以就有了这篇文章。</p>
+<span id="more"></span>
+
+<h2 id="1-什么是CPU"><a href="#1-什么是CPU" class="headerlink" title="1. 什么是CPU"></a>1. 什么是CPU</h2><p>中央处理器（英文Central Processing Unit，CPU）是一台计算机的运算核心和控制核心，其功能主要是解释计算机指令以及处理计算机软件中的数据。</p>
+<p>CPU的根本任务就是执行指令，对计算机来说最终都是一串由 0 和 1 组成的序列。CPU从逻辑上可以划分成3个模块，分别是控制单元、运算单元和存储单元。其内部架构如下：</p>
+<p><img src="/images/2019/05/cpu-principle.png" alt="cpu-principle"></p>
+<p>差不多所有的CPU的运作原理可分为四个阶段：提取（Fetch）、解码（Decode）、执行（Execute）和写回（Writeback）。CPU从存储器或高速缓冲存储器中取出指令，放入指令寄存器，并对指令译码，并执行指令。</p>
+<h2 id="2-描述CPU的关键参数"><a href="#2-描述CPU的关键参数" class="headerlink" title="2. 描述CPU的关键参数"></a>2. 描述CPU的关键参数</h2><p>这一节着重介绍几个描述CPU的关键概念：主频、缓存、核心数、线程数、负载和使用率。</p>
+<h2 id="2-1-主频"><a href="#2-1-主频" class="headerlink" title="2.1 主频"></a>2.1 主频</h2><p>CPU的主频，即CPU内核工作的时钟频率（CPU ClockSpeed）。通常所说的某某CPU是多少兆赫的，而这个多少兆赫就是“CPU的主频”。</p>
+<p>以Intel Core i3-8350k为例，它的默频是4GHz，意味着它内部时钟频率为4GHz，一秒钟可以产生40亿个脉冲信号，换句话说每一个脉冲信号仅仅用时0.25ns（时钟周期）。时钟周期作为CPU操作的最小时间单位，内部的所有操作都是以这个时钟周期作为基准。一般来说CPU都是以时钟脉冲的上升沿作为执行指令的基准，频率越高，CPU执行的指令数越多，工作速度越快。</p>
+<p>很多人认为CPU的主频就是其运行速度，其实不然。CPU的主频表示在CPU内数字脉冲信号震荡的速度，与CPU实际的运算能力并没有直接关系。主频和实际的运算速度存在一定的关系，但目前还没有一个确定的公式能够定量两者的数值关系，因为CPU的运算速度还要看CPU的流水线的各方面的性能指标（缓存、指令集，CPU的位数等等）。</p>
+<h2 id="2-3-缓存"><a href="#2-3-缓存" class="headerlink" title="2.3 缓存"></a>2.3 缓存</h2><p>在计算机系统中，CPU高速缓存（英语：CPU Cache，在本文中简称缓存）是用于减少处理器访问内存所需平均时间的部件。在金字塔式存储体系中它位于自顶向下的第二层，仅次于CPU寄存器。其容量远小于内存，但速度却可以接近处理器的频率。</p>
+<h2 id="2-4-核心数"><a href="#2-4-核心数" class="headerlink" title="2.4 核心数"></a>2.4 核心数</h2><p>CPU的核心数是指物理上，也就是硬件上存在着几个核心。比如，双核就是包括2个相对独立的CPU核心单元组，四核就包含4个相对独立的CPU核心单元组。</p>
+<h2 id="2-5-线程数-对应逻辑CPU"><a href="#2-5-线程数-对应逻辑CPU" class="headerlink" title="2.5 线程数(对应逻辑CPU)"></a>2.5 线程数(对应逻辑CPU)</h2><p>CPU 的线程数概念仅仅只针对 Intel 的 CPU 才有用，因为它是通过 Intel 超线程技术来实现的，最早应用在 Pentium4 上。如果没有超线程技术，一个 CPU 核心对应一个线程（因此对于一个CPU，线程数总是大于或等于核心数的）。所以，对于 AMD 的 CPU 来说，只有核心数的概念，没有线程数的概念。</p>
+<p>CPU 之所以要增加线程数，是源于多任务处理的需要：线程数越多，越有利于同时运行多个程序，因为线程数等同于在某个瞬间 CPU 能同时并行处理的任务数。因此，线程数是一种逻辑的概念，简单地说，就是模拟出的 CPU 核心数。一个核心最少对应一个线程，但英特尔有个超线程技术可以把一个物理线程模拟出两个线程来用，充分发挥 CPU 性能，即一个核心可以有两个到多个线程。</p>
+<blockquote>
+<p>正是因为逻辑CPU的存在，才会导致本文一开始产生的问题，4核cpu的使用率可以达到400%以上。</p>
+</blockquote>
+<p>linux 中查看cpu核数和线程数：</p>
+<pre class="line-numbers language-none"><code class="language-none"># 查看 cpu 型号
+sudo dmidecode -s processor-version
+# 查看 cpu 个数
+grep &#39;physical id&#39; &#x2F;proc&#x2F;cpuinfo | sort -u | wc -l
+# 查看核心数
+grep &#39;core id&#39; &#x2F;proc&#x2F;cpuinfo | sort -u | wc -l
+# 查看线程数
+grep &#39;processor&#39; &#x2F;proc&#x2F;cpuinfo | sort -u | wc -l<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>mac中查看cpu核数和线程数：</p>
+<pre class="line-numbers language-none"><code class="language-none"># 查看核心数
+sysctl hw.physicalcpu
+# 查看线程数
+sysctl hw.logicalcpu<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="2-6-负载核-vs-使用率"><a href="#2-6-负载核-vs-使用率" class="headerlink" title="2.6 负载核 vs 使用率"></a>2.6 负载核 vs 使用率</h2><p>这两个从一定程度上都可以反映一台机器的繁忙程度.</p>
+<p>cpu使用率反映的是当前cpu的繁忙程度，忽高忽低的原因在于占用cpu处理时间的进程可能处于io等待状态但却还未释放进入wait。</p>
+<p>平均负载（load average）是指某段时间内占用cpu时间的进程和等待cpu时间的进程数，这里等待cpu时间的进程是指等待被唤醒的进程，不包括处于wait状态进程。</p>
+<p>以上分析可以看出，一台机器很有可能处于低cpu使用率高负载的情况，因此看机器的繁忙程度应该结合两者，从实际的使用情况观察，自己的一台双核志强2.8GHZ，2G内存的机器在平均负载到50左右，cpu使用率才接近100%（应用有不少io操作），这种情况下应用还算流畅，实际访问延迟不是很高。因此在cpu还空闲的情况下，如何提高io响应是减少负载的关键，很多人认为负载到几十了机器就非常繁忙了，我倒觉得如果这个时候cpu使用率比较低，则负载高可能不能很好说明问题，一旦cpu处理的进程处理完后，那些等待的进程也能立刻得到响应，这种情况下应该优化io读写速度。真到cpu使用率一直90%以上，即使平均负载只有个位数（比如某一个进程一直在运算），那机器其实也已经繁忙了。</p>
+<blockquote>
+<p><strong>系统负荷的经验法则</strong><br/></p>
+<p>1.0是系统负荷的理想值吗？<br>不一定，系统管理员往往会留一点余地，当这个值达到0.7，就应当引起注意了。经验法则是这样的：<br>当系统负荷持续大于0.7，你必须开始调查了，问题出在哪里，防止情况恶化。<br>当系统负荷持续大于1.0，你必须动手寻找解决办法，把这个值降下来。<br>当系统负荷达到5.0，就表明你的系统有很严重的问题，长时间没有响应，或者接近死机了。你不应该让系统达到这个值。</p>
+</blockquote>
+<h2 id="3-使用top命令进行性能分析"><a href="#3-使用top命令进行性能分析" class="headerlink" title="3. 使用top命令进行性能分析"></a>3. 使用top命令进行性能分析</h2><p>top命令能够实时显示系统中各个进程的资源占用情况，默认5秒刷新一次进程列表。以mac系统为例，对top命令的结果说明如下：</p>
+<table>
+<thead>
+<tr>
+<th>实例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Processes: 315 total, 2 running, 313 sleeping,1728 threads</td>
+<td>进程数</td>
+</tr>
+<tr>
+<td>Load Avg: 2.42, 2.41, 2.19</td>
+<td>平均负载，1分钟系统负载、5分钟系统负载，15分钟系统负载</td>
+</tr>
+<tr>
+<td>CPU usage: 6.45% user, 9.67% sys, 83.87% idle</td>
+<td>cpu使用率，用户使用率、系统使用率、空闲</td>
+</tr>
+<tr>
+<td>SharedLibs: 146M resident, 51M data, 31M linkedit.</td>
+<td>共享库</td>
+</tr>
+<tr>
+<td>MemRegions: 53139 total, 4178M resident, 143M private, 766M shared.</td>
+<td>内存区域的数量和总大小</td>
+</tr>
+<tr>
+<td>PhysMem: 8156M used (1589M wired), 33M unused.</td>
+<td>物理内存使用</td>
+</tr>
+<tr>
+<td>VM: 1422G vsize, 1110M framework vsize, 0(0) swapins, 0(0) swapouts.</td>
+<td></td>
+</tr>
+<tr>
+<td>Networks: packets: 541527&#x2F;741M in, 107642&#x2F;129M out.</td>
+<td>输入和输出网络数据包的数量和总大小</td>
+</tr>
+<tr>
+<td>Disks: 122972&#x2F;3663M read, 28637&#x2F;519M written.</td>
+<td>磁盘读写的数量和总大小</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>表头</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PID</td>
+<td>进程 id</td>
+</tr>
+<tr>
+<td>COMMAND</td>
+<td>命令</td>
+</tr>
+<tr>
+<td>%CPU</td>
+<td>cup 占比</td>
+</tr>
+<tr>
+<td>TIME</td>
+<td>运行时间</td>
+</tr>
+<tr>
+<td>#TH</td>
+<td>线程数量</td>
+</tr>
+<tr>
+<td>#WQ</td>
+<td></td>
+</tr>
+<tr>
+<td>#PORT</td>
+<td></td>
+</tr>
+<tr>
+<td>MEM</td>
+<td>内存</td>
+</tr>
+<tr>
+<td>PURG</td>
+<td></td>
+</tr>
+<tr>
+<td>CMPRS</td>
+<td>表示属于您的进程的压缩数据的字节数（不是位）。</td>
+</tr>
+<tr>
+<td>PGRP</td>
+<td></td>
+</tr>
+<tr>
+<td>PPID</td>
+<td></td>
+</tr>
+<tr>
+<td>STATE</td>
+<td></td>
+</tr>
+<tr>
+<td>BOOSTS</td>
+<td></td>
+</tr>
+<tr>
+<td>%CPU_ME</td>
+<td></td>
+</tr>
+<tr>
+<td>%CPU_OTHRS</td>
+<td></td>
+</tr>
+<tr>
+<td>UID</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>命令示例：</p>
+<pre class="line-numbers language-none"><code class="language-none"># 查看文档
+man top
+# 帮助信息
+top -h
+# 根据CPU使用量(降序)和驻留内存大小(升序)对进程进行排序，每隔5秒对显示进行采样和更新，并将显示限制为20个进程。
+top -o cpu -O +rsize -s 5 -n 20
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<blockquote>
+<p><strong>top排序</strong><br/></p>
+<p>在linux机器上使用top命令。常用的快键键是:</p>
+<ul>
+<li>p键 - 按 cpu 使用率排序</li>
+<li>m键 - 按内存使用量排序<br>这2个快捷键在mac上不一样。对应的是，先输入o，然后输入cpu则按cpu使用量排序，输入rsize则按内存使用量排序。</li>
+</ul>
+</blockquote>
+<h2 id="4-小结"><a href="#4-小结" class="headerlink" title="4. 小结"></a>4. 小结</h2><p>本文简单介绍了CPU相关的基础概念、关键参数、top命令分析。作为软件开发工程师，了解这些知识后面对一些性能问题或性能瓶颈时，可以处理得更加得心应手。</p>
+<h2 id="参考的文章"><a href="#参考的文章" class="headerlink" title="参考的文章"></a>参考的文章</h2><p><a href="https://www.cnblogs.com/onepixel/p/8724526.html">简单介绍 CPU 的工作原理</a><br><a href="https://blog.csdn.net/he_jian1/article/details/41208915">8核、6核、4核、双核CPU是什么意思</a><br><a href="https://www.expreview.com/57334.html">超能课堂(111)：讲了这么多年的CPU频率，到底是什么？</a><br><a href="https://segmentfault.com/a/1190000008094866">mac获取cpu信息</a><br><a href="http://ju.outofmemory.cn/entry/173285">“Physical CPU”还是“logic CPU”？</a><br><a href="https://durant35.github.io/2017/05/16/hsw_CPUWipeoutIlliteracy/">CPU 扫盲（核心数&#x2F;线程数）</a><br><a href="https://www.cnblogs.com/muahao/p/6492665.html">理解Linux CPU负载和 CPU使用率</a><br><a href="https://www.cnblogs.com/cq90/p/8082311.html">CPU使用率和负载，物理CPU个数，核数，线程数</a></p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://www.ypk1226.com" rel="external nofollow noreferrer">沉迷思考的鱼</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://www.ypk1226.com/2019/04/17/java/cpu-usage/">http://www.ypk1226.com/2019/04/17/java/cpu-usage/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="http://www.ypk1226.com" target="_blank">沉迷思考的鱼</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/cpu/">
+                                    <span class="chip bg-color">cpu</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/05/17/javascript/typescript-1/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="TypeScript 笔记（一、简介）">
+                        
+                        <span class="card-title">TypeScript 笔记（一、简介）</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            由于近期时常会写一些前端页面和相关的js，每次写复杂js的时候都是一阵烦躁，对于没有语法检查、动态类型、难封装这些特点深恶痛绝。跟前端的同事了解了下他们用的技术栈，得知了一个前端利器：TypeScript。
+本文将从如下几个方面，介绍Typ
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-05-17
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/javascript/" class="post-category">
+                                    javascript
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%89%8D%E7%AB%AF/">
+                        <span class="chip bg-color">前端</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/03/12/spring-batch/spring-batch-1/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Spring Batch 快速入门">
+                        
+                        <span class="card-title">Spring Batch 快速入门</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            这篇文章中，我们将从如下四个方面对Spring Batch进行简要介绍， 旨在使读者清楚什么是Spring Batch，以及如何使用它。
+
+Spring Batch简介
+批处理中的基础概念
+简单示例
+并行处理
+
+
+
+1. Spring Ba
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-03-12
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/spring-batch/" class="post-category">
+                                    spring-batch
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/spring/">
+                        <span class="chip bg-color">spring</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2018 - 2022</span>
+            <a href="http://www.ypk1226.com" target="_blank">沉迷思考的鱼</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+
+            
+            
+            
+            
+            
+            
+            
+            <br>
+            
+
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

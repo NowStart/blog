@@ -1,0 +1,1147 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Spring Boot 自定义Auto-configuration, java,spring,spring-boot,mysql,git,hibernate,jvm">
+    <meta name="description" content="Spring Boot的Auto-configuration以其易用性和实用性，得到了开发者们的广泛认可；但与此同时，Spring Boot内置的Auto-configuration仅能满足基本需求，对于企业级的应用生态来说是不够的，所以自">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Spring Boot 自定义Auto-configuration | 沉迷思考</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 7.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">沉迷思考</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">沉迷思考</div>
+        <div class="logo-desc">
+            
+            风不撑伞，雨不倾盆，就是好天气
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+<style>
+  .bg-cover:before {
+    background: url(/medias/featureimages/6.jpg) 0 / cover fixed}
+</style>
+<div class="bg-cover pd-header post-cover">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s3">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/spring/">
+                                <span class="chip bg-color">spring</span>
+                            </a>
+                        
+                            <a href="/tags/spring-boot/">
+                                <span class="chip bg-color">spring-boot</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s6 page-title">
+                    Spring Boot 自定义Auto-configuration
+                </div>
+                <div class="col s3 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/spring-boot/" class="post-category">
+                                spring-boot
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2018-12-12
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.6k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    10 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>Spring Boot的Auto-configuration以其易用性和实用性，得到了开发者们的广泛认可；但与此同时，Spring Boot内置的Auto-configuration仅能满足基本需求，对于企业级的应用生态来说是不够的，所以自定义Auto-configuration变的尤为重要。</p>
+<p>本文将从这几个方面阐述如何自定义一个Auto-configuration： 原理、结构、实战步骤。</p>
+<span id="more"></span>
+
+<h2 id="1-原理"><a href="#1-原理" class="headerlink" title="1. 原理"></a>1. 原理</h2><p>Spring是如何发现自动配置的内容，并选择性的加载组件呢？</p>
+<p>自动配置功能的实现，得益于<code>spring-context</code>的强扩展性，主要使用了它两个扩展点： <code>@Import</code>和<code>ImportSelector</code>、<code>@Conditional</code>和<code>Condition</code>。</p>
+<ol>
+<li>在<code>@EnableAutoConfiguration</code>内部使用<code>@Import</code>和<code>ImportSelector</code>特性，使配置可以委托到外部来处理。</li>
+<li>在接入点切入后，再使用各种自定义的<code>@Conditional</code>和<code>Condition</code>来筛选预先定义好的自动配置类和相关的Bean。</li>
+</ol>
+<p>简单来讲，Spring Boot的Auto-configuration依靠<code>spring-context</code>中提供已有特性，做了大量的默认配置（通常也是最常见的重复性配置），使开发者的配置方式由“从头开始配置”转变为了“直接使用默认配置或覆盖小部分配置”，着实解放了双手。</p>
+<p>另外，<code>@Import</code>和<code>ImportSelector</code>是在入口处统一处理的，开发者只需要在<code>META-INF/spring.factories</code>中增加一个配置，即可让<code>ImportSelector</code>识别我们自定义的Auto-configuration; 所以，开发一个Auto-configuration，实质上就是基于<code>@Conditional</code>和<code>Condition</code>实现一个<code>@Configuration类</code>。</p>
+<blockquote>
+<p><strong>更详细的原理阐述</strong><br/><br>在笔者的上一篇文章中，曾尝试详细阐述其原理，在此不再赘述，有兴趣的开发者可以点击<a href='/2018/12/05/spring-boot/spring-boot-auto-configuration-1/' target='\_blank'>《Spring Boot Auto-configuration 自动配置详解》</a>查看。</p>
+</blockquote>
+<h2 id="2-结构"><a href="#2-结构" class="headerlink" title="2. 结构"></a>2. 结构</h2><p>想要自定义一个Auto-configuration，首先必须了解其内部结构，知晓哪些部分是开放给开发者实现的。<code>MultipartAutoConfiguration</code>具有自动配置<code>MultipartResolver</code>的功能， 现以<code>MultipartAutoConfiguration</code>为例，分析其类图如下：</p>
+<p><img src="/images/2018/12/uml.png" alt="uml"></p>
+<p>图中红框标识的四部分通常需要定制，以表格的形式展示如下：</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>名称</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>①</td>
+<td><code>@Configuration类</code></td>
+<td>若该配置被开启，指定具体配置的内容。</td>
+</tr>
+<tr>
+<td>②</td>
+<td><code>@Conditional*注解</code></td>
+<td>决定是否开启该配置，将具体决定权委托出去了;Spring Boot已经提供了很多此类注解，如<code>@ConditionalOnClass</code>，如果不够用再考虑新增。</td>
+</tr>
+<tr>
+<td>③</td>
+<td><code>On*Condition类</code></td>
+<td>接受<code>@Conditional*注解</code>的委托，指定如何决定的具体逻辑。</td>
+</tr>
+<tr>
+<td>④</td>
+<td><code>@ConfigurationProperties类</code></td>
+<td>指定该自动配置中可配置的变量（即application.properties&#x2F;application.yml中的变量）。</td>
+</tr>
+</tbody></table>
+<p>下面，我们将详细阐述四个类别的作用和原理。</p>
+<blockquote>
+<p><strong>注意</strong><br/></p>
+<p>另外，除了上述的Java代码之外，还需要配在classpath目录下的<code>META-INF/spring.factories</code>文件中，存在如下配置, Spring Boot启动时将检查文件中是否存在如上配置，若不存在则不加载该自动配置。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">org.springframework.boot.autoconfigure.EnableAutoConfiguration</span><span class="token punctuation">=</span><span class="token value attr-value">\
+org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</blockquote>
+<h3 id="2-1-Configuration类"><a href="#2-1-Configuration类" class="headerlink" title="2.1 @Configuration类"></a>2.1 @Configuration类</h3><ol>
+<li><code>@Configuration类</code>类中指定若启用该自动配置后，创建哪些Bean；同时添加@Conditional*和@EnableConfigurationProperties注解，用于限制条件和指定属性。</li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
+<span class="token annotation punctuation">@ConditionalOnClass</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token class-name">Servlet</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token class-name">StandardServletMultipartResolver</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span>
+		<span class="token class-name">MultipartConfigElement</span><span class="token punctuation">.</span><span class="token keyword">class</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@ConditionalOnProperty</span><span class="token punctuation">(</span>prefix <span class="token operator">=</span> <span class="token string">"spring.servlet.multipart"</span><span class="token punctuation">,</span> name <span class="token operator">=</span> <span class="token string">"enabled"</span><span class="token punctuation">,</span> matchIfMissing <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@ConditionalOnWebApplication</span><span class="token punctuation">(</span>type <span class="token operator">=</span> <span class="token class-name">Type</span><span class="token punctuation">.</span><span class="token constant">SERVLET</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@EnableConfigurationProperties</span><span class="token punctuation">(</span><span class="token class-name">MultipartProperties</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MultipartAutoConfiguration</span> <span class="token punctuation">&#123;</span>
+
+	<span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">MultipartProperties</span> multipartProperties<span class="token punctuation">;</span>
+
+	<span class="token keyword">public</span> <span class="token class-name">MultipartAutoConfiguration</span><span class="token punctuation">(</span><span class="token class-name">MultipartProperties</span> multipartProperties<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">this</span><span class="token punctuation">.</span>multipartProperties <span class="token operator">=</span> multipartProperties<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+
+	<span class="token annotation punctuation">@Bean</span>
+	<span class="token annotation punctuation">@ConditionalOnMissingBean</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token class-name">MultipartConfigElement</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span>
+			<span class="token class-name">CommonsMultipartResolver</span><span class="token punctuation">.</span><span class="token keyword">class</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+	<span class="token keyword">public</span> <span class="token class-name">MultipartConfigElement</span> <span class="token function">multipartConfigElement</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>multipartProperties<span class="token punctuation">.</span><span class="token function">createMultipartConfig</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+
+	<span class="token annotation punctuation">@Bean</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token class-name">DispatcherServlet</span><span class="token punctuation">.</span><span class="token constant">MULTIPART_RESOLVER_BEAN_NAME</span><span class="token punctuation">)</span>
+	<span class="token annotation punctuation">@ConditionalOnMissingBean</span><span class="token punctuation">(</span><span class="token class-name">MultipartResolver</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+	<span class="token keyword">public</span> <span class="token class-name">StandardServletMultipartResolver</span> <span class="token function">multipartResolver</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token class-name">StandardServletMultipartResolver</span> multipartResolver <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StandardServletMultipartResolver</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		multipartResolver<span class="token punctuation">.</span><span class="token function">setResolveLazily</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>multipartProperties<span class="token punctuation">.</span><span class="token function">isResolveLazily</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">return</span> multipartResolver<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-2-Conditional-注解"><a href="#2-2-Conditional-注解" class="headerlink" title="2.2 @Conditional*注解"></a>2.2 @Conditional*注解</h3><p>指定自动配置需要经过哪些条件的筛选，可以定义多个<code>@Conditional*注解</code>，必须同时满足这些条件，才允许开启自动配置。这类注解的作用，通常是收集参数，再讲决定权委托到<code>@Conditional</code>的value中，如<code>OnClassCondition</code>、<code>OnPropertyCondition</code>等。</p>
+<p>在<code>MultipartAutoConfiguration</code>中使用的<code>@ConditionalOnProperty</code>如下：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span><span class="token class-name">RetentionPolicy</span><span class="token punctuation">.</span><span class="token constant">RUNTIME</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token class-name">ElementType</span><span class="token punctuation">.</span><span class="token constant">TYPE</span><span class="token punctuation">,</span> <span class="token class-name">ElementType</span><span class="token punctuation">.</span><span class="token constant">METHOD</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Documented</span>
+<span class="token annotation punctuation">@Conditional</span><span class="token punctuation">(</span><span class="token class-name">OnPropertyCondition</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token annotation punctuation">@interface</span> <span class="token class-name">ConditionalOnProperty</span> <span class="token punctuation">&#123;</span>
+
+	<span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+	<span class="token class-name">String</span> <span class="token function">prefix</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
+
+	<span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+	<span class="token class-name">String</span> <span class="token function">havingValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
+
+	<span class="token keyword">boolean</span> <span class="token function">matchIfMissing</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>String Boot已经提供的<code>@Conditional*注解</code>注解如下：</p>
+<p>@ConditionalOnClass ： classpath中存在该类时起效<br>@ConditionalOnMissingClass ： classpath中不存在该类时起效<br>@ConditionalOnBean ： DI容器中存在该类型Bean时起效<br>@ConditionalOnMissingBean ： DI容器中不存在该类型Bean时起效<br>@ConditionalOnSingleCandidate ： DI容器中该类型Bean只有一个或@Primary的只有一个时起效<br>@ConditionalOnExpression ： SpEL表达式结果为true时<br>@ConditionalOnProperty ： 参数设置或者值一致时起效<br>@ConditionalOnResource ： 指定的文件存在时起效<br>@ConditionalOnJndi ： 指定的JNDI存在时起效<br>@ConditionalOnJava ： 指定的Java版本存在时起效<br>@ConditionalOnWebApplication ： Web应用环境下起效<br>@ConditionalOnNotWebApplication ： 非Web应用环境下起效</p>
+<h3 id="2-3-On-Condition类"><a href="#2-3-On-Condition类" class="headerlink" title="2.3 On*Condition类"></a>2.3 On*Condition类</h3><p>与<code>@Conditional*注解</code>是一对一的关系，接受<code>@Conditional*注解</code>的委托，同时获得传递过来的参数，<code>Condition</code>接口实现类根据参数返回一个boolean值，为true代表通过了该条件的校验。</p>
+<p>以<code>OnPropertyCondition</code>为例，其类图如下：<br><img src="/images/2018/12/onpropertycondition.png" alt="OnPropertyCondition"></p>
+<p>其中抽象类<code>SpringBootCondition</code>提供了日志上的优化，提供了合理的日志记录和一致的异常处理。</p>
+<h3 id="2-4-ConfigurationProperties类"><a href="#2-4-ConfigurationProperties类" class="headerlink" title="2.4 @ConfigurationProperties类"></a>2.4 @ConfigurationProperties类</h3><p><code>@ConfigurationProperties类</code>是通过<code>@EnableConfigurationProperties</code>开启的，它声明了一些属性，这些属性都可以在application.properties&#x2F;application.yml进行设置；同时，当前的自动配置也可以获得用户配置的属性值，根据不同的配置做出不同的动作。</p>
+<p><code>MultipartProperties</code>的代码片段如下：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@ConfigurationProperties</span><span class="token punctuation">(</span>prefix <span class="token operator">=</span> <span class="token string">"spring.servlet.multipart"</span><span class="token punctuation">,</span> ignoreUnknownFields <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MultipartProperties</span> <span class="token punctuation">&#123;</span>
+
+	<span class="token keyword">private</span> <span class="token keyword">boolean</span> enabled <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+
+	<span class="token keyword">private</span> <span class="token class-name">String</span> location<span class="token punctuation">;</span>
+
+	<span class="token keyword">private</span> <span class="token class-name">DataSize</span> maxFileSize <span class="token operator">=</span> <span class="token class-name">DataSize</span><span class="token punctuation">.</span><span class="token function">ofMegabytes</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="3-实战步骤"><a href="#3-实战步骤" class="headerlink" title="3. 实战步骤"></a>3. 实战步骤</h2><p>实现一个自定义自动配置，通常需要考虑这几个问题：</p>
+<ol>
+<li>自动配置到底配置了什么，内容有哪些；</li>
+<li>什么条件下开启自动配置；</li>
+<li>设计支持定制的参数开放给用户；</li>
+<li>确定多个自动配置之间的加载顺序；</li>
+<li>如何使自定义的自动配置被Spring纳入管理范围；</li>
+<li>用户如何确认系统是否开启了该自动配置。</li>
+</ol>
+<p>下面我们将搭配示例代码，对每一个问题进行详细阐述；整个工程代码已经提交到码云，点击<a href='https://gitee.com/ypk1226/custom-sample-spring-boot-auto-configuration' target='\_blank'>示例源码</a>查看；</p>
+<h3 id="3-1-定义自动配置的内容-Configuration类"><a href="#3-1-定义自动配置的内容-Configuration类" class="headerlink" title="3.1 定义自动配置的内容--@Configuration类"></a>3.1 定义自动配置的内容--@Configuration类</h3><p>定义自动配置的内容，即配置一个<code>@Configuration</code>类，在其内部声明想要创建的配置项；声明什么好呢，我们声明个girlfriend吧！</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//省略包</span>
+<span class="token annotation punctuation">@Configuration</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GirlfriendAutoConfiguration</span> <span class="token punctuation">&#123;</span>
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token keyword">public</span> <span class="token class-name">GirlfriendAtHome</span> <span class="token function">girlfriendAtHome</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">GirlfriendAtHome</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如此，一个简单的配置类就创建完了，当然目前它还只是个配置，不是自动的。</p>
+<h3 id="3-2-设定开启自动配置的条件-ConditionalOn-注解"><a href="#3-2-设定开启自动配置的条件-ConditionalOn-注解" class="headerlink" title="3.2 设定开启自动配置的条件--@ConditionalOn*注解"></a>3.2 设定开启自动配置的条件--@ConditionalOn*注解</h3><p>给<code>@Configuration</code>类增加<code>@ConditionalOn*</code>注解，设置条件。现在给<code>GirlfriendAutoConfiguration</code>增加条件<code>@ConditionalOnClass</code>和<code>@ConditionalOnMotherInLaw</code>，这样创建<code>GirlfriendAutoConfiguration</code>就多出了两个条件。</p>
+<ol>
+<li><code>@ConditionalOnClass</code> 是Spring Boot内置的注解，用来校验传入的类型在在classpath中是否存在，这里我们传入<code>GirlfriendAtHome.class</code></li>
+<li><code>@ConditionalOnMotherInLaw</code> 是我们自己创建的注解，用来校验岳母的信息，参数中传入心情为HAPPY；同时，为实现这个自定义条件，我们还创建了<code>OnMotherInLawCondition</code>类，该类继承自<code>SpringBootCondition</code>。</li>
+</ol>
+<p>此时代码是这样的：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//省略包</span>
+<span class="token annotation punctuation">@Configuration</span>
+<span class="token annotation punctuation">@ConditionalOnClass</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">GirlfriendAtHome</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token comment">//必须在家</span>
+<span class="token annotation punctuation">@ConditionalOnMotherInLaw</span><span class="token punctuation">(</span>mood <span class="token operator">=</span> <span class="token class-name">MoodConst</span><span class="token punctuation">.</span><span class="token constant">HAPPY</span><span class="token punctuation">)</span><span class="token comment">//必须高兴才加载这个自动配置</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GirlfriendAutoConfiguration</span> <span class="token punctuation">&#123;</span>
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token keyword">public</span> <span class="token class-name">GirlfriendAtHome</span> <span class="token function">girlfriendAtHome</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">GirlfriendAtHome</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//省略包</span>
+<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">ElementType</span><span class="token punctuation">.</span><span class="token constant">TYPE</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span><span class="token class-name">RetentionPolicy</span><span class="token punctuation">.</span><span class="token constant">RUNTIME</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Documented</span>
+<span class="token annotation punctuation">@Conditional</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">OnMotherInLawCondition</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token annotation punctuation">@interface</span> <span class="token class-name">ConditionalOnMotherInLaw</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">String</span> <span class="token function">mood</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//岳母心情</span>
+
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//省略包</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">OnMotherInLawCondition</span> <span class="token keyword">extends</span> <span class="token class-name">SpringBootCondition</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">String</span> <span class="token constant">DEFAULT_MOOD</span> <span class="token operator">=</span> <span class="token class-name">MoodConst</span><span class="token punctuation">.</span><span class="token constant">HAPPY</span><span class="token punctuation">;</span><span class="token comment">//假定一直很开心</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token class-name">ConditionOutcome</span> <span class="token function">getMatchOutcome</span><span class="token punctuation">(</span><span class="token class-name">ConditionContext</span> context<span class="token punctuation">,</span> <span class="token class-name">AnnotatedTypeMetadata</span> metadata<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> attributes <span class="token operator">=</span> metadata<span class="token punctuation">.</span><span class="token function">getAnnotationAttributes</span><span class="token punctuation">(</span><span class="token class-name">ConditionalOnMotherInLaw</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> mood <span class="token operator">=</span> attributes<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"mood"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">boolean</span> match <span class="token operator">=</span> <span class="token constant">DEFAULT_MOOD</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>mood<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> message <span class="token operator">=</span> match <span class="token operator">?</span> <span class="token string">"心情匹配"</span> <span class="token operator">:</span> <span class="token string">"心情不匹配"</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ConditionOutcome</span><span class="token punctuation">(</span>match<span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>至此，这个普通的<code>@Configuration</code>类拥有了两个限制条件，只有在两个条件都成立时才会被创建。</p>
+<h3 id="3-3-设计支持定制的参数-EnableConfigurationProperties"><a href="#3-3-设计支持定制的参数-EnableConfigurationProperties" class="headerlink" title="3.3 设计支持定制的参数--@EnableConfigurationProperties"></a>3.3 设计支持定制的参数--@EnableConfigurationProperties</h3><p>有时候，girlfriend的心情会发生变化，所以我们也要支持用户在application.properties&#x2F;application.yaml中定制心情，<code>@EnableConfigurationProperties</code>注解专门用来完成配置项的创建。</p>
+<p>为<code>GirlfriendAutoConfiguration</code>增加注解<code>@EnableConfigurationProperties</code>，同时指定具体的配置实现类<code>GirlfriendProperties</code>，代码如下：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//省略包</span>
+<span class="token annotation punctuation">@Configuration</span>
+<span class="token annotation punctuation">@ConditionalOnClass</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">GirlfriendAtHome</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token comment">//必须在家</span>
+<span class="token annotation punctuation">@ConditionalOnMotherInLaw</span><span class="token punctuation">(</span>mood <span class="token operator">=</span> <span class="token class-name">MoodConst</span><span class="token punctuation">.</span><span class="token constant">HAPPY</span><span class="token punctuation">)</span><span class="token comment">//必须高兴才加载这个自动配置</span>
+<span class="token annotation punctuation">@EnableConfigurationProperties</span><span class="token punctuation">(</span><span class="token class-name">GirlfriendProperties</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GirlfriendAutoConfiguration</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">GirlfriendProperties</span> properties<span class="token punctuation">;</span>
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token keyword">public</span> <span class="token class-name">GirlfriendAutoConfiguration</span><span class="token punctuation">(</span><span class="token class-name">GirlfriendProperties</span> properties<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>properties <span class="token operator">=</span> properties<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token keyword">public</span> <span class="token class-name">GirlfriendAtHome</span> <span class="token function">girlfriendAtHome</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">String</span> mood <span class="token operator">=</span> properties<span class="token punctuation">.</span><span class="token function">getMood</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        mood <span class="token operator">=</span> mood <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">?</span> <span class="token string">"未知"</span> <span class="token operator">:</span> mood<span class="token punctuation">;</span>
+        <span class="token class-name">GirlfriendAtHome</span> girlfriendAtHome <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">GirlfriendAtHome</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        girlfriendAtHome<span class="token punctuation">.</span><span class="token function">setMood</span><span class="token punctuation">(</span>mood<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        girlfriendAtHome<span class="token punctuation">.</span><span class="token function">setName</span><span class="token punctuation">(</span><span class="token string">"甄姬"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        girlfriendAtHome<span class="token punctuation">.</span><span class="token function">setAge</span><span class="token punctuation">(</span><span class="token string">"18"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> girlfriendAtHome<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//省略包</span>
+<span class="token annotation punctuation">@ConfigurationProperties</span><span class="token punctuation">(</span><span class="token string">"third.party.girlfriend"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GirlfriendProperties</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> mood<span class="token punctuation">;</span><span class="token comment">//心情</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getMood</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> mood<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setMood</span><span class="token punctuation">(</span><span class="token class-name">String</span> mood<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>mood <span class="token operator">=</span> mood<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这样，我们就可以在application.properties&#x2F;application.yaml中指定girlfriend的心情了：third.party.girlfriend.mood&#x3D;happy</p>
+<h3 id="3-4-确定加载顺序"><a href="#3-4-确定加载顺序" class="headerlink" title="3.4 确定加载顺序"></a>3.4 确定加载顺序</h3><p>Spring Boot为开发者提供了几个注解，专门用于指定自动配置的先后顺序，这些注解使用时注解在<code>@Configuration</code>类上即可。</p>
+<p><code>@AutoConfigureAfter</code>：在指定的配置类初始化后再加载, 如@AutoConfigureAfter(JacksonAutoConfiguration.class)<br><code>@AutoConfigureBefore</code>：在指定的配置类初始化前加载, 如@AutoConfigureBefore(JacksonAutoConfiguration.class)<br><code>@AutoConfigureOrder</code>：数越小越先初始化， 如@AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE)</p>
+<p>我们为<code>GirlfriendAutoConfiguration</code>增加<code>@AutoConfigureOrder</code>，使其优先级最高^_^。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//省略包</span>
+<span class="token annotation punctuation">@Configuration</span>
+<span class="token annotation punctuation">@ConditionalOnClass</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">GirlfriendAtHome</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@ConditionalOnMotherInLaw</span><span class="token punctuation">(</span>mood <span class="token operator">=</span> <span class="token class-name">MoodConst</span><span class="token punctuation">.</span><span class="token constant">HAPPY</span><span class="token punctuation">)</span><span class="token comment">//必须高兴才加载这个自动配置</span>
+<span class="token annotation punctuation">@EnableConfigurationProperties</span><span class="token punctuation">(</span><span class="token class-name">GirlfriendProperties</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@AutoConfigureOrder</span><span class="token punctuation">(</span><span class="token class-name">Ordered</span><span class="token punctuation">.</span><span class="token constant">HIGHEST_PRECEDENCE</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GirlfriendAutoConfiguration</span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">//省略</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="3-5-使自定义的自动配置被Spring纳入管理范围–META-INF-spring-factories"><a href="#3-5-使自定义的自动配置被Spring纳入管理范围–META-INF-spring-factories" class="headerlink" title="3.5 使自定义的自动配置被Spring纳入管理范围–META-INF&#x2F;spring.factories"></a>3.5 使自定义的自动配置被Spring纳入管理范围–META-INF&#x2F;spring.factories</h3><p>现在万事具备，只欠东风，Spring Boot在<code>META-INF/spring.factories</code>中设置有总开关，必须开启开行。增加如下配置</p>
+<pre class="line-numbers language-none"><code class="language-none">org.springframework.boot.autoconfigure.EnableAutoConfiguration&#x3D;\
+com.example.learn.girlfriend.spring.boot.autoconfigure.GirlfriendAutoConfiguration<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h3 id="3-6-用户如何确认系统是否开启了该自动配置–使用-Ddebug参数启动"><a href="#3-6-用户如何确认系统是否开启了该自动配置–使用-Ddebug参数启动" class="headerlink" title="3.6 用户如何确认系统是否开启了该自动配置–使用-Ddebug参数启动"></a>3.6 用户如何确认系统是否开启了该自动配置–使用-Ddebug参数启动</h3><p>启动服务时，增加VM参数-Ddebug，就能看到我们的girlfriend是否正常加载了：<br><img src="/images/2018/12/auto-configuration-result-check.png" alt="auto-configuration-result-check"></p>
+<h2 id="4-小结"><a href="#4-小结" class="headerlink" title="4. 小结"></a>4. 小结</h2><p>本文从这几个方面阐述如何自定义一个Auto-configuration： 原理、结构、实战步骤；在理解内部原理和结构之后，再实现了一个简单的自动配置。</p>
+<p>原理：基于Spring Framework的扩展机制<code>@Import</code>和<code>ImportSelector</code>、<code>@Conditional</code>和<code>Condition</code>，实现自动配置功能。</p>
+<p>结构：大体上由这几部分构成<code>@Configuration类</code>、<code>@Conditional*注解</code>、<code>On*Condition类</code>、 <code>@ConfigurationProperties类</code>。</p>
+<p>实战步骤中的各个操作，基本上就是创建上述结构中的各个部分内容，<a href='https://gitee.com/ypk1226/custom-sample-spring-boot-auto-configuration' target='\_blank'>示例源码</a>已提交码云，可下载查阅。</p>
+<p>参考：<br><a href="https://docs.spring.io/spring-boot/docs/2.1.0.RELEASE/reference/htmlsingle/#boot-features-developing-auto-configuration">Spring Boot Reference Guide</a><br><a href="https://github.com/snicoll-demos/spring-boot-master-auto-configuration">demo project</a></p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://www.ypk1226.com" rel="external nofollow noreferrer">沉迷思考的鱼</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://www.ypk1226.com/2018/12/12/spring-boot/spring-boot-auto-configuration-2/">http://www.ypk1226.com/2018/12/12/spring-boot/spring-boot-auto-configuration-2/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="http://www.ypk1226.com" target="_blank">沉迷思考的鱼</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/spring/">
+                                    <span class="chip bg-color">spring</span>
+                                </a>
+                            
+                                <a href="/tags/spring-boot/">
+                                    <span class="chip bg-color">spring-boot</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2018/12/22/java/java-loging-framework/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Java Logging Framework 现状">
+                        
+                        <span class="card-title">Java Logging Framework 现状</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            某日笔者心情不错，写代码时没有复制粘贴，打算手敲logger的相关代码，在IDE获得的提示是这样的：
+
+尽管知道ch.qos.logback.classic.Logger在项目中是正确的选择，上图中Logger同名类的数量确实确实让笔者惊讶
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-12-22
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Logging-Framework/" class="post-category">
+                                    Logging Framework
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/java/">
+                        <span class="chip bg-color">java</span>
+                    </a>
+                    
+                    <a href="/tags/logging/">
+                        <span class="chip bg-color">logging</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/12/05/spring-boot/spring-boot-auto-configuration-1/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Spring Boot Auto-configuration 自动配置详解">
+                        
+                        <span class="card-title">Spring Boot Auto-configuration 自动配置详解</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            毋庸置疑，Auto-configuration是Spring Boot的核心特性，其约定大于配置的思想，赋予了Spring Boot开箱即用的强大能力。本文从诞生背景、使用方式、实现原理这几个方面详细介绍这一特性。
+
+
+1. 诞生背景一直以
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-12-05
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/spring-boot/" class="post-category">
+                                    spring-boot
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/spring/">
+                        <span class="chip bg-color">spring</span>
+                    </a>
+                    
+                    <a href="/tags/spring-boot/">
+                        <span class="chip bg-color">spring-boot</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2018 - 2022</span>
+            <a href="http://www.ypk1226.com" target="_blank">沉迷思考的鱼</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+
+            
+            
+            
+            
+            
+            
+            
+            <br>
+            
+
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

@@ -1,0 +1,1055 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="温故知新--深入理解List, java,spring,spring-boot,mysql,git,hibernate,jvm">
+    <meta name="description" content="对于Java的集合认知一直以来都不够清晰，现在特地对List做一次总结，以加深印象。
+
+
+Map接口位于java.util包下，该包下一共提供了如下具体的实现类(基于JDK1.8)，java.util包中开放的实现类如下图所示：
+
+涉及的接">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>温故知新--深入理解List | 沉迷思考</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 7.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">沉迷思考</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">沉迷思考</div>
+        <div class="logo-desc">
+            
+            风不撑伞，雨不倾盆，就是好天气
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+<style>
+  .bg-cover:before {
+    background: url(/medias/featureimages/22.jpg) 0 / cover fixed}
+</style>
+<div class="bg-cover pd-header post-cover">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s3">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/java/">
+                                <span class="chip bg-color">java</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s6 page-title">
+                    温故知新--深入理解List
+                </div>
+                <div class="col s3 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/JDK/" class="post-category">
+                                JDK
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-12-13
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    7 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>对于Java的集合认知一直以来都不够清晰，现在特地对<code>List</code>做一次总结，以加深印象。</p>
+<span id="more"></span>
+
+<p><code>Map</code>接口位于java.util包下，该包下一共提供了如下具体的实现类(基于JDK1.8)，java.util包中开放的实现类如下图所示：</p>
+<p><img src="/images/2019/12/map2.png" alt="Map"></p>
+<p>涉及的接口和抽象类有如下几个：</p>
+<p>名称 | 说明<br>– | – | –<br>Map | 提供存放键值对的对象，要求key不能重复，包含get、put等方法<br>SortedMap | 提供有序的Map<br>NavigableMap | 在 SortedMap 基础上，支持快速搜索符合条件的最近的元素<br>ConcurrentMap | 提供线程安全和原子性的Map<br>ConcurrentNavigableMap | 继承自NavigableMap和ConcurrentMap，提供线程安全的同时，支持快速搜索<br>AbstractMap | 提供Map接口的框架实现</p>
+<blockquote>
+<p><strong><code>AbstractMap</code></strong><br>如果想要开发自定义的Map，建议扩展AbstractMap，其中提供了一些默认实现。除了 Hashtable 和 Properties，其它实现类都继承自AbstractMap。</p>
+</blockquote>
+<p>实现类供有10个，整理如下：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>数据结构</th>
+<th>初始化容量</th>
+<th>扩容方式</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HashMap</td>
+<td>数组 + 链表 + 红黑树</td>
+<td>16</td>
+<td>个数超过负载因子(默认0.75)指定值时，扩容2倍</td>
+<td>不保证读取顺序与写入数据一致</td>
+</tr>
+<tr>
+<td>LinkedHashMap</td>
+<td>双向链表 +（数组 + 链表 + 红黑树）</td>
+<td>同HashMap</td>
+<td>同HashMap</td>
+<td>继承自HashMap，保证读取顺序与写入数据一致</td>
+</tr>
+<tr>
+<td>IdentityHashMap</td>
+<td>数组</td>
+<td>16</td>
+<td>超出容量时，扩容2倍</td>
+<td>不使用equals比较key，直接使用&#x3D;&#x3D;比较key，因此不存在哈希冲突的问题，key和value相邻存储，存储16个元素时数组长度为32</td>
+</tr>
+<tr>
+<td>TreeMap</td>
+<td>红黑树</td>
+<td>0</td>
+<td>无</td>
+<td>自动以key做自然排序，要求key必须实现Comparable接口</td>
+</tr>
+<tr>
+<td>WeakHashMap</td>
+<td>数组 + 单向链表</td>
+<td>16</td>
+<td>个数超过负载因子(默认0.75)指定值时，扩容2倍</td>
+<td>当某个”弱键”不再正常使用时，会从WeakHashMap中被自动移除</td>
+</tr>
+<tr>
+<td>ConcurrentHashMap</td>
+<td>同HashMap</td>
+<td>同HashMap</td>
+<td>同HashMap</td>
+<td>并发场景下的Map</td>
+</tr>
+<tr>
+<td>ConcurrentSkipListMap</td>
+<td>跳表</td>
+<td>0</td>
+<td>无</td>
+<td>并发场景下的有序Map</td>
+</tr>
+<tr>
+<td>EnumMap</td>
+<td>数组</td>
+<td>与Enum个数相同</td>
+<td>无</td>
+<td>当key是枚举类型时，可以使用EnumMap，操作效率更高</td>
+</tr>
+<tr>
+<td>Hashtable</td>
+<td>数组 + 链表</td>
+<td>11</td>
+<td>个数超过负载因子(默认0.75)指定值时，扩容2倍+1</td>
+<td>线程安全的Map，目前已废弃</td>
+</tr>
+<tr>
+<td>Properties</td>
+<td>同Hashtable</td>
+<td>同Hashtable</td>
+<td>同Hashtable</td>
+<td>继承自Hashtable，用于加载属性配置文件</td>
+</tr>
+</tbody></table>
+<p>尝试按照日常的使用频率，做如下分类：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>使用频率</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HashMap、ConcurrentHashMap</td>
+<td>高</td>
+</tr>
+<tr>
+<td>LinkedHashMap、TreeMap</td>
+<td>中</td>
+</tr>
+<tr>
+<td>IdentityHashMap、WeakHashMap、ConcurrentSkipListMap、EnumMap</td>
+<td>低</td>
+</tr>
+<tr>
+<td>Hashtable、Properties</td>
+<td>极低</td>
+</tr>
+</tbody></table>
+<p>HashMap无疑是最热门的类，本文将继续详细介绍这个类。</p>
+<h2 id="1-hash相关的概念"><a href="#1-hash相关的概念" class="headerlink" title="1. hash相关的概念"></a>1. hash相关的概念</h2><p>为了更好的理解HashMap和ConcurrentHashMap，这里先介绍下hash相关的概念。</p>
+<p><strong>哈希(hash)</strong></p>
+<p>Hash，一般翻译做散列、杂凑，或音译为哈希，是把任意长度的输入通过<strong>散列算法</strong>变换成固定长度的输出，转换过程称为<strong>散列函数</strong>或<strong>哈希函数</strong>，转换结果就是散列值，也叫hash code或index。</p>
+<p><strong>哈希表(hash table)</strong></p>
+<p>哈希表（hash table，也叫散列表），是根据键（key）直接访问访问在内存储存位置的数据结构。 哈希表本质是一个数组，数组中的每一个元素成为一个箱子，箱子中存放的是键值对。</p>
+<blockquote>
+<p>哈希桶(hash bucket)，其中存储了hash code对应的所有数据；每个桶中包含了多个槽(slot)，即每个hash code可以对应多条数据。</p>
+</blockquote>
+<p>优点：哈希表可以提供快速的操作。</p>
+<p>缺点：哈希表通常是基于数组的，数组创建后难于扩展。 也没有一种简便的方法可以以任何一种顺序〔例如从小到大）遍历表中的数据项。</p>
+<p><strong>哈希冲突(hash collision)</strong></p>
+<p>由于哈希算法被计算的数据是无限的，而计算后的结果范围有限，因此总会存在不同的数据经过计算后得到的值相同，这就是哈希冲突。</p>
+<p>在Java语言中，体现为两个对象进行equals比较时不相等，但它们的hashCode相等。</p>
+<p><strong>哈希拉链法</strong></p>
+<p>由于存在哈希冲突，导致同一个hash code可能对应多条数据；为了解决该问题，将这些hash code相同的数据以链表的形式存储起来，以便正常查找。</p>
+<p>这种处理方式的数据结构，形似一个拉链，因此称为拉链法。</p>
+<p><img src="/images/2019/12/hash-zipper.png" alt="hash-zipper"></p>
+<h2 id="2-HashMap"><a href="#2-HashMap" class="headerlink" title="2. HashMap"></a>2. HashMap</h2><p>HashMap基于哈希表(hash table)的Map接口的实现，它并允许空值和空键。（HashMap 类与Hashtable大致等效，不同之处在于它是不同步的，并且允许为null。）该类不保证映射的顺序，它不能保证顺序会随着时间的推移保持恒定。jdk1.8中的数据结构如下：</p>
+<p><img src="/images/2019/12/map-data-structure.png" alt="map-data-structure"></p>
+<p>数据table即哈希桶数组，数组中每个元素都是一个哈希桶，每个哈希桶中以链表或红黑树的方式存储多个数据。下面从介绍HashMap的哈希函数和扩容机制。</p>
+<h3 id="新增数据"><a href="#新增数据" class="headerlink" title="新增数据"></a>新增数据</h3><p>HashMap外层结构是一个组数，数组的长度是固定的，需要考虑扩容问题。默认情况下，初始容量为16。</p>
+<p>调用put方法添加元素时的流程如下：</p>
+<p><img src="/images/2019/12/put.png" alt="put"></p>
+<p>其中有几个需要重点关注的步骤：哈希函数、扩容机制。</p>
+<p><strong>哈希函数</strong></p>
+<p>HashMap通过哈希函数计算key的哈希值，达到快速定位数组下标的目的。对于哈希函数，总是希望计算后的结果可以均匀分布在数组中，从而提高存取性能。</p>
+<p>一个优质的哈希函数对于HashMap的性能提升，是至关重要的。</p>
+<p>HashMap中哈希函数的伪代码如下：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span> h <span class="token operator">=</span> key<span class="token punctuation">.</span><span class="token function">hashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//1. 获得key的哈希值</span>
+
+<span class="token comment">// int hash ^= (h >>> 20) ^ (h >>> 12);</span>
+<span class="token comment">// hash = h ^ (h >>> 7) ^ (h >>> 4); // 2. jdk1.7中的hash计算方式，对h进行多次右移、异或运算。</span>
+
+<span class="token keyword">int</span> hash <span class="token operator">=</span> h <span class="token operator">^</span> <span class="token punctuation">(</span>h <span class="token operator">>>></span> <span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//2. jdk1.8中的hash计算方式，对h做右移、异或运算</span>
+
+<span class="token keyword">int</span> index <span class="token operator">=</span> <span class="token punctuation">(</span>table<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> hash<span class="token punctuation">;</span><span class="token comment">//3. 取模运算，获得数组下标</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/images/2019/12/%E8%AE%A1%E7%AE%97%E8%BF%87%E7%A8%8B.png" alt="计算过程"></p>
+<blockquote>
+<p>注意：int类型是一个32位的二进制数。</p>
+</blockquote>
+<p>第一步计算hashCode，不再赘述。</p>
+<p>第二步，jdk1.7的计算方式，保证了对象的hashCode的32位值只要有一位发生改变，整个hash返回值就会改变，高位的变化会反应到低位里。</p>
+<p>第二步，jdk1.8的计算方式，保证了对象的hashCode的高16位的变化能反应到低16位中，相比较而言减少了过多的位运算，是一种折中的设计。</p>
+<p>第三步，HashMap的容量长度固定为2的n次方，当length总是2的n次方时，该计算方式与<code>hash%length</code>相同，即对hash取模，但是&amp;比%效率更高。</p>
+<blockquote>
+<p>HashMap的容量长度固定为2的n次方，是为了用位运算替换%运算，提高效率。<br>另外，当数组长度为2的n次幂时，不同的key算得得index相同的几率较小，那么数据在数组上分布就比较均匀。</p>
+</blockquote>
+<p><strong>扩容机制</strong></p>
+<p>HashMap的扩容需要满足两个条件：当前数据存储的数量（即size()）大小必须大于等于阈值；当前加入的数据是否发生了hash冲突。</p>
+<p>1）创建一个新的Entry空数组，长度是原来的2倍。<br>2）遍历原Entry数组，把所有的Entry重新Hash到新数组里。为什么要重新Hash呢？因为长度扩大以后，Hash的规则也随之改变了。</p>
+<h2 id="3-小结"><a href="#3-小结" class="headerlink" title="3. 小结"></a>3. 小结</h2><p>本文整理了java.util包下的Map相关类，充分理解他们的适用场景，以便在使用时合理挑选。后面又介绍了HashMap的哈希函数和扩容机制，对HashMap的深入理解，就是对相关数据结构及算法的深入理解。</p>
+<h2 id="参考的文章"><a href="#参考的文章" class="headerlink" title="参考的文章"></a>参考的文章</h2><p><a href="https://zhuanlan.zhihu.com/p/21673805">Java 8系列之重新认识HashMap</a><br><a href="https://www.cnblogs.com/xiaoxi/p/6170590.html">Java集合之LinkedHashMap</a><br><a href="https://www.cnblogs.com/it-deepinmind/p/7309522.html">java中key值可以重复的map：IdentityHashMap</a><br><a href="https://baike.baidu.com/item/Hash/390310">Hash（散列函数）百度百科</a><br><a href="https://cloud.tencent.com/developer/article/1526646">夯实Java基础系列19</a><br><a href="https://juejin.im/post/5c6abfc86fb9a049c04396a7">搞iOS的，面试官问Hash干嘛？原因远比我下面要介绍的多</a><br><a href="https://www.cnblogs.com/tonyluis/p/5671873.html">Java中hashCode()方法以及HashMap()中hash()方法</a></p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://www.ypk1226.com" rel="external nofollow noreferrer">沉迷思考的鱼</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://www.ypk1226.com/2019/12/13/java/list/">http://www.ypk1226.com/2019/12/13/java/list/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="http://www.ypk1226.com" target="_blank">沉迷思考的鱼</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/java/">
+                                    <span class="chip bg-color">java</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/02/14/db/jooq/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="jOOQ –通过java语言以最简单的形式写SQL">
+                        
+                        <span class="card-title">jOOQ –通过java语言以最简单的形式写SQL</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            当下我们使用的ORM框架中，Hibernate&#x2F;Mybatis占了半边天，它们都有各自的优势和使用场景。
+最近发现了一个之前从来没用的ORM框架jOOQ，非常有意思，为数据处理提供了一种全新的方式。
+
+
+1. jOOQ是什么JOO
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-02-14
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/ORMS/" class="post-category">
+                                    ORMS
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/11/13/java/map/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="温故知新--深入理解Map">
+                        
+                        <span class="card-title">温故知新--深入理解Map</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            对于Java的集合认知一直以来都不够清晰，现在特地对Map做一次总结，以加深印象。
+
+
+Map接口位于java.util包下，该包下一共提供了如下具体的实现类(基于JDK1.8)，java.util包中开放的实现类如下图所示：
+
+涉及的接口
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-11-13
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/JDK/" class="post-category">
+                                    JDK
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/java/">
+                        <span class="chip bg-color">java</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2018 - 2022</span>
+            <a href="http://www.ypk1226.com" target="_blank">沉迷思考的鱼</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+
+            
+            
+            
+            
+            
+            
+            
+            <br>
+            
+
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

@@ -1,0 +1,1137 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Spring Batch 快速入门, java,spring,spring-boot,mysql,git,hibernate,jvm">
+    <meta name="description" content="这篇文章中，我们将从如下四个方面对Spring Batch进行简要介绍， 旨在使读者清楚什么是Spring Batch，以及如何使用它。
+
+Spring Batch简介
+批处理中的基础概念
+简单示例
+并行处理
+
+
+
+1. Spring Ba">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Spring Batch 快速入门 | 沉迷思考</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 7.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">沉迷思考</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">沉迷思考</div>
+        <div class="logo-desc">
+            
+            风不撑伞，雨不倾盆，就是好天气
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+<style>
+  .bg-cover:before {
+    background: url(/medias/featureimages/8.jpg) 0 / cover fixed}
+</style>
+<div class="bg-cover pd-header post-cover">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s3">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/spring/">
+                                <span class="chip bg-color">spring</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s6 page-title">
+                    Spring Batch 快速入门
+                </div>
+                <div class="col s3 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/spring-batch/" class="post-category">
+                                spring-batch
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-03-12
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.3k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    9 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>这篇文章中，我们将从如下四个方面对Spring Batch进行简要介绍， 旨在使读者清楚什么是Spring Batch，以及如何使用它。</p>
+<ul>
+<li>Spring Batch简介</li>
+<li>批处理中的基础概念</li>
+<li>简单示例</li>
+<li>并行处理</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="1-Spring-Batch简介"><a href="#1-Spring-Batch简介" class="headerlink" title="1. Spring Batch简介"></a>1. Spring Batch简介</h2><p>Spring Batch是一个轻量级的、完善的批处理框架，旨在帮助企业建立健壮、高效的批处理应用。Spring Batch提供了大量可重用的组件，包括了日志、追踪、事务、任务作业统计、任务重启、跳过、重试、资源管理。</p>
+<p>对于数据量大、需要较高处理性能的批处理任务，Spring Batch同样提供了高级功能和特性来支持，比如远程分区、远程分块功能。</p>
+<p>Spring Batch是一个批处理应用框架，不是调度框架，需要和调度框架(如 Quartz、Tivoli、Control-M、Cron 等)合作来构建完成的批处理任务。</p>
+<h3 id="1-1-为什么要使用Spring-Batch"><a href="#1-1-为什么要使用Spring-Batch" class="headerlink" title="1.1 为什么要使用Spring Batch"></a>1.1 为什么要使用Spring Batch</h3><p>假设我们有这样一个批处理需求：它需要处理大量的数据，处理较多的步骤，同时希望处理时长越短越好；第一期需求做完，第二期需求很可能就是：支持重试、事务、监控等功能。</p>
+<p>通常，批处理的需求都是类似的，在没有Spring Batch之前，由于没有统一的标准，大量企业重复开发类似的功能。而<a href="https://www.accenture.com/">Accenture</a>和SpringSource紧密合作后诞生的Spring Batch，使批处理框架和工具更加标准化了。</p>
+<blockquote>
+<p><strong>注意</strong><br/></p>
+<p>只有当场景足够复杂、数据量足够大时，使用Spring Batch才有意义；如果仅仅是简单业务处理，数据量也不大，就没有必要使用Spring Batch了。</p>
+</blockquote>
+<h3 id="1-2-架构分层及常见策略"><a href="#1-2-架构分层及常见策略" class="headerlink" title="1.2 架构分层及常见策略"></a>1.2 架构分层及常见策略</h3><p>下图是Spring Batch分层体系结构的草图:</p>
+<p><img src="/images/2019/05/architecture.png" alt="architecture"></p>
+<ul>
+<li>Application部分是开发人员根据特定业务逻辑编写的。</li>
+<li>Batch Core包含启动和控制批处理作业所需的核心运行时类，它包含JobLauncher，Job和Step实现。</li>
+<li>Batch Infrastructure提供一些基础的通用功能，Application和Batch Core都建立在Batch Infrastructure之上。</li>
+</ul>
+<p>开发人员设计批处理的Application时，业务逻辑应该可以拆分为一系列步骤，这些步骤可以使用如下标准模型实现：</p>
+<table>
+<thead>
+<tr>
+<th>策略名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>转换程序(Conversion Applications)</td>
+<td>对于外部系统提供的文件(如Excel)，必须创建转换程序，用来转换这些文件。</td>
+</tr>
+<tr>
+<td>验证程序(Validation Applications)</td>
+<td>对数据做正确性、一致性的验证，验证通常发生开头或结尾。</td>
+</tr>
+<tr>
+<td>提取程序(Extract Applications)</td>
+<td>从数据库或输入文件中读取一组记录，按照既定规则选择记录，然后将其写入到输出文件中。</td>
+</tr>
+<tr>
+<td>提取&#x2F;更新程序(Extract&#x2F;Update Applications)</td>
+<td>从数据库或输入文件中读取一组记录，根据每条记录的特点，对数据进行更改，然后将其写入到输出文件中。</td>
+</tr>
+<tr>
+<td>处理和更新程序(Processing and Updating Applications)</td>
+<td>对来自验证程序或提取程序的输入事务，执行相应的处理，通常包括读取所需数据，再更新处理结果。</td>
+</tr>
+<tr>
+<td>输出&#x2F;格式化程序(Output&#x2F;Format Applications)</td>
+<td>应用程序读取输入文件，根据标准格式从该记录中重组数据，并生成输出文件以便打印或传输到另一个程序或系统。</td>
+</tr>
+</tbody></table>
+<p>每个Application可以使一些实用工具，例如排序、拆分、合并。</p>
+<h2 id="2-批处理中的基础概念"><a href="#2-批处理中的基础概念" class="headerlink" title="2. 批处理中的基础概念"></a>2. 批处理中的基础概念</h2><p>下图是使用了几十年的批处理参考体系结构的简化版本，它包含了批处理中涉及的概念。</p>
+<p><img src="/images/2019/04/batch-stereotypes.png" alt="Batch Stereotypes"></p>
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>子类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>JobRepository</td>
+<td></td>
+<td>为JobLauncher、Job和Step实现提供CRUD操作</td>
+</tr>
+<tr>
+<td>JobLauncher</td>
+<td></td>
+<td>运行Job的入口</td>
+</tr>
+<tr>
+<td>Job</td>
+<td></td>
+<td>封装整个批处理过程的实体</td>
+</tr>
+</tbody></table>
+<pre><code>| JobInstance |  代表一个Job的运行实例，不同的运行实例，其关联的JobParameters不相同的，例如日期不同
+| JobParameters |  获得一个JobInstance时，必须指定对应的JobParameters
+| JobExecution  |  代表Job的一次实际执行情况，它可能执行成功或失败
+</code></pre>
+<p>Step | | 封装了批处理作业的一个独立的、顺序的阶段，多个Step按顺序构成了一个Job<br>  | StepExecution  |  代表Step的一次实际执行情况<br>Item Reader | | Step中使用Item Reader输入数据<br>Item Writer | | Step中使用Item Writer输出数据<br>Item Processor | | Step中使用Item Processor处理数据</p>
+<p>其中Job和Step之间的关系如下：</p>
+<p><img src="/images/2019/05/step.png" alt="Step"></p>
+<p>除了上述的7个基础概念，还有个名为<code>ExecutionContext</code>的封装类，<code>ExecutionContext</code>是一个key&#x2F;value形式的数据存储，开发人员可以向其中放入自定义的运行时数据；它有两个作用域StepExecution和JobExecution，相互之间是隔离的。</p>
+<h2 id="3-简单示例"><a href="#3-简单示例" class="headerlink" title="3. 简单示例"></a>3. 简单示例</h2><p>使用Spring Boot配置一个批处理Job比较简单，添加pom依赖后，再新增一个<code>BatchConfiguration</code>类即可，其内容如下：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
+<span class="token annotation punctuation">@EnableBatchProcessing</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">BatchConfiguration</span> <span class="token punctuation">&#123;</span>
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token keyword">public</span> <span class="token class-name">JobBuilderFactory</span> jobBuilderFactory<span class="token punctuation">;</span>
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token keyword">public</span> <span class="token class-name">StepBuilderFactory</span> stepBuilderFactory<span class="token punctuation">;</span>
+
+    <span class="token comment">// tag::readerwriterprocessor[]</span>
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token keyword">public</span> <span class="token class-name">FlatFileItemReader</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Person</span><span class="token punctuation">></span></span> <span class="token function">reader</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">FlatFileItemReaderBuilder</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Person</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string">"personItemReader"</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">resource</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ClassPathResource</span><span class="token punctuation">(</span><span class="token string">"sample-data.csv"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">delimited</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">names</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">&#123;</span><span class="token string">"firstName"</span><span class="token punctuation">,</span> <span class="token string">"lastName"</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">fieldSetMapper</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">BeanWrapperFieldSetMapper</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Person</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span>
+                <span class="token function">setTargetType</span><span class="token punctuation">(</span><span class="token class-name">Person</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token keyword">public</span> <span class="token class-name">PersonItemProcessor</span> <span class="token function">processor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">PersonItemProcessor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token keyword">public</span> <span class="token class-name">JdbcBatchItemWriter</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Person</span><span class="token punctuation">></span></span> <span class="token function">writer</span><span class="token punctuation">(</span><span class="token class-name">DataSource</span> dataSource<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">JdbcBatchItemWriterBuilder</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Person</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">itemSqlParameterSourceProvider</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">BeanPropertyItemSqlParameterSourceProvider</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">sql</span><span class="token punctuation">(</span><span class="token string">"INSERT INTO people (first_name, last_name) VALUES (:firstName, :lastName)"</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">dataSource</span><span class="token punctuation">(</span>dataSource<span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token comment">// end::readerwriterprocessor[]</span>
+
+    <span class="token comment">// tag::jobstep[]</span>
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token keyword">public</span> <span class="token class-name">Job</span> <span class="token function">importUserJob</span><span class="token punctuation">(</span><span class="token class-name">JobCompletionNotificationListener</span> listener<span class="token punctuation">,</span> <span class="token class-name">Step</span> step1<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> jobBuilderFactory<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"importUserJob"</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">incrementer</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">RunIdIncrementer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">listener</span><span class="token punctuation">(</span>listener<span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">flow</span><span class="token punctuation">(</span>step1<span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token keyword">public</span> <span class="token class-name">Step</span> <span class="token function">step1</span><span class="token punctuation">(</span><span class="token class-name">JdbcBatchItemWriter</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Person</span><span class="token punctuation">></span></span> writer<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> stepBuilderFactory<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"step1"</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Person</span><span class="token punctuation">,</span> <span class="token class-name">Person</span><span class="token punctuation">></span></span> <span class="token function">chunk</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">reader</span><span class="token punctuation">(</span><span class="token function">reader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">processor</span><span class="token punctuation">(</span><span class="token function">processor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">writer</span><span class="token punctuation">(</span>writer<span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token comment">// end::jobstep[]</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>不难看出，配置一个简单的批处理任务需要的创建的Bean依次是：<code>ItemReader</code>、<code>ItemProcessor</code>、<code>ItemWriter</code>、<code>Step</code>、<code>Job</code>，这与上文提到概念大体相符(<a href="https://gitee.com/ypk1226/sample-spring-batch/tree/master/simple">查看完整示例</a>)。</p>
+<p>以<code>SpringApplication.run(Application.class, args)</code>的方式启动服务后，Job将通过<code>JobLauncherCommandLineRunner</code>自动运行已配置的Job，因此不需要再使用<code>JobLauncher</code>显式启动任务。</p>
+<h3 id="3-1-分片处理-Chunk-oriented-Processing"><a href="#3-1-分片处理-Chunk-oriented-Processing" class="headerlink" title="3.1 分片处理(Chunk-oriented Processing)"></a>3.1 分片处理(Chunk-oriented Processing)</h3><p>Spring batch在配置Step时采用的是面向Chunk处理的机制，即每次读取一条数据，再处理一条数据，累积到一定数量后再一次性交给writer进行写入操作。这样可以最大化的优化写入效率，整个事务也是基于Chunk来进行。其流程如下:</p>
+<p><img src="/images/2019/05/chunk-oriented.png" alt="chunk-oriented"></p>
+<h3 id="3-2-监听-Listener"><a href="#3-2-监听-Listener" class="headerlink" title="3.2 监听(Listener)"></a>3.2 监听(Listener)</h3><p>可以实现Spring Batch提供的Listener接口(位于<code>org.springframework.batch.core.listener</code>包内)，监听任务的运行情况。上述示例中使用了<code>JobExecutionListenerSupport</code>，它用于监听Job的开始与结束。</p>
+<h2 id="4-并行处理"><a href="#4-并行处理" class="headerlink" title="4. 并行处理"></a>4. 并行处理</h2><p>为了加快处理速度，批处理任务通常需要并行处理，一般情况下，这也是在设计批处理任务时最复杂的地方。 Spring Batch为任务的并行处理提供了强有力的支持。</p>
+<p>并行处理在顶层可以分为以下两类：</p>
+<ul>
+<li>单进程，多线程</li>
+<li>多进程</li>
+</ul>
+<p>这两类可以继续细分为如下四类：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>多线程Step(单进程)</td>
+<td>在一个Step内部，使用多线程并行执行。</td>
+</tr>
+<tr>
+<td>并行Step(单进程)</td>
+<td>在多个Step之间，使用多线程并行执行。</td>
+</tr>
+<tr>
+<td>远程分块(多进程)</td>
+<td>分割一个Step，使其在多个进程中同时运行。</td>
+</tr>
+<tr>
+<td>远程分区(多进程)</td>
+<td>为Step分区，每个区是一个单独的进程，各个分区内都包含ItemReader、ItemWriter、ItemProcessor。</td>
+</tr>
+</tbody></table>
+<h3 id="4-1-多线程Step-单进程"><a href="#4-1-多线程Step-单进程" class="headerlink" title="4.1 多线程Step(单进程)"></a>4.1 多线程Step(单进程)</h3><p>在一个Step内部使用多线程的方式运行，通过指定<code>TaskExecutor</code>开启多线程处理。另外，使用Spring Batch提供的ItemWriter和ItemReader的一些实现时，需要留意是否是线程安全的。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Bean</span>
+<span class="token keyword">public</span> <span class="token class-name">TaskExecutor</span> <span class="token function">taskExecutor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">SimpleAsyncTaskExecutor</span><span class="token punctuation">(</span><span class="token string">"spring_batch"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token annotation punctuation">@Bean</span>
+<span class="token keyword">public</span> <span class="token class-name">Step</span> <span class="token function">sampleStep</span><span class="token punctuation">(</span><span class="token class-name">TaskExecutor</span> taskExecutor<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>stepBuilderFactory<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"sampleStep"</span><span class="token punctuation">)</span>
+                                <span class="token punctuation">.</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">></span></span><span class="token function">chunk</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+                                <span class="token punctuation">.</span><span class="token function">reader</span><span class="token punctuation">(</span><span class="token function">itemReader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                                <span class="token punctuation">.</span><span class="token function">writer</span><span class="token punctuation">(</span><span class="token function">itemWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                                <span class="token punctuation">.</span><span class="token function">taskExecutor</span><span class="token punctuation">(</span>taskExecutor<span class="token punctuation">)</span>
+                                <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="4-2-并行Step-单进程"><a href="#4-2-并行Step-单进程" class="headerlink" title="4.2 并行Step(单进程)"></a>4.2 并行Step(单进程)</h3><p>通过<code>Flow</code>提供的机制，开发人员可以方便地组合Step，使多个Step并行执行。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Bean</span>
+<span class="token keyword">public</span> <span class="token class-name">Job</span> <span class="token function">job</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> jobBuilderFactory<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"job"</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token function">splitFlow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token function">step4</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span>        <span class="token comment">//builds FlowJobBuilder instance</span>
+        <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>       <span class="token comment">//builds Job instance</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token annotation punctuation">@Bean</span>
+<span class="token keyword">public</span> <span class="token class-name">Flow</span> <span class="token function">splitFlow</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">FlowBuilder</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">SimpleFlow</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token string">"splitFlow"</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token function">taskExecutor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token function">flow1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">flow2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token annotation punctuation">@Bean</span>
+<span class="token keyword">public</span> <span class="token class-name">Flow</span> <span class="token function">flow1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">FlowBuilder</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">SimpleFlow</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token string">"flow1"</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token function">step1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token function">step2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token annotation punctuation">@Bean</span>
+<span class="token keyword">public</span> <span class="token class-name">Flow</span> <span class="token function">flow2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">FlowBuilder</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">SimpleFlow</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token string">"flow2"</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token function">step3</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token annotation punctuation">@Bean</span>
+<span class="token keyword">public</span> <span class="token class-name">TaskExecutor</span> <span class="token function">taskExecutor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">SimpleAsyncTaskExecutor</span><span class="token punctuation">(</span><span class="token string">"spring_batch"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="4-3-远程分块-多进程"><a href="#4-3-远程分块-多进程" class="headerlink" title="4.3 远程分块(多进程)"></a>4.3 远程分块(多进程)</h3><p>有时单进程并不能满足性能需求，尤其是ItemProcessor处理耗时较长时，Spring Batch提供了所谓“远程分块”的功能，即将Step处理分割为多个进程，通过一些中间件相互通信。</p>
+<p><img src="/images/2019/05/remote-chunk.png" alt="remote-chunk"></p>
+<h3 id="4-4-远程分区-多进程"><a href="#4-4-远程分区-多进程" class="headerlink" title="4.4 远程分区(多进程)"></a>4.4 远程分区(多进程)</h3><p>当ItemProcessor不是导致瓶颈的相关I&#x2F;O时，可以使用远程分区，它将Step拆分到了不同的进程中。</p>
+<p><img src="/images/2019/05/remote-chunk2.png" alt="remote-chunk2"></p>
+<h2 id="5-小结"><a href="#5-小结" class="headerlink" title="5. 小结"></a>5. 小结</h2><p>本文介绍了Spring Batch的基本概念、基础使用方式以及Spring Batch对并行处理的支持。除此之外，Spring Batch还有很多其它功能，例如事务管理、重启、重试、跳过、日志等功能。</p>
+<p>希望通过阅读本文，读者可以对Spring Batch有一个整体的印象，以便在需要解决复杂批处理问题时，能够联想到该框架。</p>
+<h2 id="参考的文章"><a href="#参考的文章" class="headerlink" title="参考的文章"></a>参考的文章</h2><p><a href="https://baike.baidu.com/item/Spring%20Batch/7914867?fr=aladdin">Spring Batch_百度百科</a><br><a href="https://docs.spring.io/spring-batch/4.1.x/reference/html/index-single.html">Spring Batch - Reference Documentation</a></p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://www.ypk1226.com" rel="external nofollow noreferrer">沉迷思考的鱼</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://www.ypk1226.com/2019/03/12/spring-batch/spring-batch-1/">http://www.ypk1226.com/2019/03/12/spring-batch/spring-batch-1/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="http://www.ypk1226.com" target="_blank">沉迷思考的鱼</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/spring/">
+                                    <span class="chip bg-color">spring</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/04/17/java/cpu-usage/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="认识CPU">
+                        
+                        <span class="card-title">认识CPU</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            以前听说过一个面试题：如何使CPU使用率达到100%的JAVA代码应该如何编写？笔者心想开几个死循环的线程也就差不多了，启动6个死循环线程，在mac系统中使用top查看，发现cpu达到了600%+，机器CPU是4核的，跑到400%还能接受，
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-04-17
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/system/" class="post-category">
+                                    system
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/cpu/">
+                        <span class="chip bg-color">cpu</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/02/24/workflow/activiti-1/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="工作流引擎Activiti快速入门">
+                        
+                        <span class="card-title">工作流引擎Activiti快速入门</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Activiti是一个用Java编写的开源工作流引擎，可以执行BPMN 2.0中描述的业务流程。Activiti是Alfresco的Alfresco Process Services (APS)的基础，而Alfresco是Activiti项
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-02-24
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/workflow/" class="post-category">
+                                    workflow
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/activiti/">
+                        <span class="chip bg-color">activiti</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2018 - 2022</span>
+            <a href="http://www.ypk1226.com" target="_blank">沉迷思考的鱼</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+
+            
+            
+            
+            
+            
+            
+            
+            <br>
+            
+
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

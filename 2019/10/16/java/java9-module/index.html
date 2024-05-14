@@ -1,0 +1,1034 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Java模块系统介绍, java,spring,spring-boot,mysql,git,hibernate,jvm">
+    <meta name="description" content="上篇文章介绍了什么是模块化，以及Java模块化解决的问题。本文将介绍Java模块化的相关概念及具体写法。本文将从如下两个方面介绍模块化：
+
+模块描述符
+服务
+
+
+
+1. 模块描述符为了体现模块之间的关系，必须定义全新的模块描述文件，类似于M">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Java模块系统介绍 | 沉迷思考</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 7.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">沉迷思考</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">沉迷思考</div>
+        <div class="logo-desc">
+            
+            风不撑伞，雨不倾盆，就是好天气
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+<style>
+  .bg-cover:before {
+    background: url(/medias/featureimages/18.jpg) 0 / cover fixed}
+</style>
+<div class="bg-cover pd-header post-cover">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s3">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/java/">
+                                <span class="chip bg-color">java</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s6 page-title">
+                    Java模块系统介绍
+                </div>
+                <div class="col s3 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/JDK/" class="post-category">
+                                JDK
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-10-16
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    1.8k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    6 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>上篇文章介绍了什么是模块化，以及Java模块化解决的问题。本文将介绍Java模块化的相关概念及具体写法。本文将从如下两个方面介绍模块化：</p>
+<ol>
+<li>模块描述符</li>
+<li>服务</li>
+</ol>
+<span id="more"></span>
+
+<h2 id="1-模块描述符"><a href="#1-模块描述符" class="headerlink" title="1. 模块描述符"></a>1. 模块描述符</h2><p>为了体现模块之间的关系，必须定义全新的模块描述文件，类似于Maven中的pom文件，Java9称之为模块描述符。</p>
+<p>模块描述符是一个固定名称的java文件，所有的模块描述符文件名称固定位 <strong>module-info.java</strong>，其内部存在特定的结构。</p>
+<p>下面是两个示例，其中<code>easytext.cli</code>模块依赖<code>easytext.analysis</code>模块。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">module</span> <span class="token namespace">easytext<span class="token punctuation">.</span>analysis</span> <span class="token punctuation">&#123;</span>
+   <span class="token keyword">exports</span> <span class="token namespace">javamodularity<span class="token punctuation">.</span>easytext<span class="token punctuation">.</span>analysis</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">module</span> <span class="token namespace">easytext<span class="token punctuation">.</span>cli</span> <span class="token punctuation">&#123;</span>
+   <span class="token keyword">requires</span> <span class="token namespace">easytext<span class="token punctuation">.</span>analysis</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>上面示例中一共有三个新增的关键字，这三个关键字也是模块化系统中最常用的关键字。</p>
+<ol>
+<li>module: 用来定义一个模块，后面紧跟模块名称，在同一个模块路径下，模块名称不允许相同。</li>
+<li>exports: 用来指定开放那个包作为API供外部调用，没有开放的api不允许被调用。</li>
+<li>requires: 用来执行依赖的模块，依赖必须显示指定。</li>
+</ol>
+<p>通过exports和requires的配合使用，达到模块化的目的，即强封装、显式依赖。</p>
+<p>为了描述这种依赖关系，Java9新增了一个概念，名为<code>可读性（readability）</code>，<code>easytext.cli</code>模块依赖<code>easytext.analysis</code>模块，也可以说 <code>easytext.cli</code>模块可以读取<code>easytext.analysis</code>模块。</p>
+<blockquote>
+<p><strong>模块路径(module path) 和 类路径(class path)</strong><br/></p>
+<p>类路径(class path)是指Java编译和运行的基础目录，类路径下所有文件都是平行的，不存在层级关系，一旦服务启动，所有类都可能会被加载。<br>模块路(module path)径是指存放Java模块的目录，并不是模块路径下的所有模块都会被加载，其以根模块(root module)为起点，使用模块描述符递归查找依赖的模块，它存在层级关系，是一个树状结构。</p>
+</blockquote>
+<blockquote>
+<p><strong>可读性(readability) 和 可访问性(accessible)</strong><br/></p>
+<p>可访问性(accessible)是指public、protected、(default)、private这四个级别，它们作用在类与类之间，提供访问控制。<br>可读性(readability)则提供模块与模块之间的访问控制，是对可访问性的功能补充。<br>可读性(readability)不止作用于运行阶段，与可访问性一样也作用于编译阶段，即未明确指定依赖的模块，编译将直接报错。</p>
+</blockquote>
+<p><strong>隐式可读性</strong></p>
+<p>有时候简单的依赖关系不能满足一些特定场景，比如依赖传递特性。模块化系统通过<code>transitive</code>关系字，解决依赖的传递问题，这也称为<code>隐式可读性</code>。</p>
+<p>如下所示，<code>java.se</code>模块中隐式依赖了一些模块，当其它模块依赖<code>java.se</code>时，会自动依赖这些模块。通过隐式可读性，我们可以聚合不同的模块，为模块分组，<code>java.se</code>就是一个最常用的模块组合。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">module</span> <span class="token namespace">java<span class="token punctuation">.</span>se</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">requires</span> <span class="token keyword">transitive</span> <span class="token namespace">java<span class="token punctuation">.</span>desktop</span><span class="token punctuation">;</span>
+  <span class="token keyword">requires</span> <span class="token keyword">transitive</span> <span class="token namespace">java<span class="token punctuation">.</span>sql</span><span class="token punctuation">;</span>
+  <span class="token keyword">requires</span> <span class="token keyword">transitive</span> <span class="token namespace">java<span class="token punctuation">.</span>xml</span><span class="token punctuation">;</span>
+  <span class="token comment">// 省略</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>限制导出</strong></p>
+<p>在某些情况下，可能只需要将包暴露给特定的某些模块。此时，可以在模块描述符中使用限制导出。可以在java.xml模块中找到限制导出的示例：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">module</span> <span class="token namespace">java<span class="token punctuation">.</span>xml</span><span class="token punctuation">&#123;</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+  <span class="token keyword">exports</span> <span class="token namespace">com<span class="token punctuation">.</span>sun<span class="token punctuation">.</span>xml<span class="token punctuation">.</span>internal<span class="token punctuation">.</span>stream<span class="token punctuation">.</span>writers</span> <span class="token keyword">to</span> <span class="token namespace">java<span class="token punctuation">.</span>xml<span class="token punctuation">.</span>ws</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>一般来说，<strong>应该避免在模块之间使用限制导出</strong>。使用限制导出意味着在导出模块和允许的使用者之间建立了直接的联系。该特性最大的目的是为了处理历史问题，如对旧版本JDK模块化。</p>
+<h2 id="2-服务-Service"><a href="#2-服务-Service" class="headerlink" title="2. 服务(Service)"></a>2. 服务(Service)</h2><p>应用程序模块化后，被exports的包，通常仅包含接口，不包含具体实现，且实现类的个数可能是一个或多个。</p>
+<p>为了充分解耦，接口的实现类不能由客户端创建，仅能由服务端提供，即<code>Analyzer analyzer = ???</code>。对于这种情况，工厂模式是一个方案。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AnalyzerFactory</span> <span class="token punctuation">&#123;</span>
+
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> <span class="token function">getSupportedAnalyses</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+     <span class="token keyword">return</span> <span class="token class-name">List</span><span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token class-name">FleschKincaid</span><span class="token punctuation">.</span><span class="token constant">NAME</span><span class="token punctuation">,</span> <span class="token class-name">Coleman</span><span class="token punctuation">.</span><span class="token constant">NAME</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Analyzer</span> <span class="token function">getAnalyzer</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">switch</span> <span class="token punctuation">(</span>name<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+         <span class="token keyword">case</span> <span class="token class-name">FleschKincaid</span><span class="token punctuation">.</span><span class="token constant">NAME</span><span class="token operator">:</span> <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">FleschKincaid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token keyword">case</span> <span class="token class-name">Coleman</span><span class="token punctuation">.</span><span class="token constant">NAME</span><span class="token operator">:</span> <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Coleman</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token keyword">default</span><span class="token operator">:</span> <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalArgumentException</span><span class="token punctuation">(</span><span class="token string">"No such analyzer!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+   <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>通过引入工厂模式，客户端只需获得服务名称列表后，根据名称选择使用哪个服务即可，而无需知道具体的实现类。</p>
+<p>当我们想为<code>Analyzer</code>增加一个实现类时，必须要修改<code>AnalyzerFactory</code>才能实现，这违背了开闭原则。同时<code>AnalyzerFactory</code>自身也必须依赖所有的实现，这样exports的包中也包含了实现类。</p>
+<p>为了解决这个问题，模块化系统提供了服务(Service)的功能。通过使用<code>ServiceLoader API</code>可在模块描述符和代码中表示服务。</p>
+<p>服务提供者的模块描述符如下，通过<code>provides with</code>关键字，确定了接口的实现类。可以通过<code>ServiceLoader.load</code>的方式获得所有的<code>Analyzer</code>实现。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">module</span> <span class="token namespace">easytext<span class="token punctuation">.</span>analysis<span class="token punctuation">.</span>coleman</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">requires</span> <span class="token namespace">easytext<span class="token punctuation">.</span>analysis<span class="token punctuation">.</span>api</span><span class="token punctuation">;</span>
+  <span class="token keyword">provides</span> <span class="token namespace">javamodularity<span class="token punctuation">.</span>easytext<span class="token punctuation">.</span>analysis<span class="token punctuation">.</span>api<span class="token punctuation">.</span></span><span class="token class-name">Analyzer</span>
+      <span class="token keyword">with</span>
+        <span class="token namespace">javamodularity<span class="token punctuation">.</span>easytext<span class="token punctuation">.</span>analysis<span class="token punctuation">.</span>coleman<span class="token punctuation">.</span></span><span class="token class-name">ColemanAnalyzer</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Analyzer</span> <span class="token punctuation">&#123;</span>
+
+   <span class="token class-name">String</span> <span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+   <span class="token keyword">double</span> <span class="token function">analyze</span><span class="token punctuation">(</span><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">List</span><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span><span class="token punctuation">></span></span> text<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+   <span class="token keyword">static</span> <span class="token class-name">Iterable</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Analyzer</span><span class="token punctuation">></span></span> <span class="token function">getAnalyzers</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+     <span class="token keyword">return</span> <span class="token class-name">ServiceLoader</span><span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span><span class="token class-name">Analyzer</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>客户端的模块描述符如下，通过<code>uses</code>关键字，指定想要使用的接口。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">module</span> <span class="token namespace">easytext<span class="token punctuation">.</span>cli</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">requires</span> <span class="token namespace">easytext<span class="token punctuation">.</span>analysis<span class="token punctuation">.</span>api</span><span class="token punctuation">;</span>
+  <span class="token keyword">uses</span> <span class="token namespace">javamodularity<span class="token punctuation">.</span>easytext<span class="token punctuation">.</span>analysis<span class="token punctuation">.</span>api<span class="token punctuation">.</span></span><span class="token class-name">Analyzer</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Iterable</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Analyzer</span><span class="token punctuation">></span></span> analyzers <span class="token operator">=</span> <span class="token class-name">Analyzer</span><span class="token punctuation">.</span><span class="token function">getAnalyzers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>如果存在多个提供者，但只对“最好的”实现感兴趣，该怎么做呢？Java模块系统不可能知道哪个实现最合适，所以只能由应用程序自己决定。</p>
+<blockquote>
+<p><strong>服务绑定的模块解析</strong><br/></p>
+<p>服务的<code>provides with</code>为解析过程添加了另一个维度。模块路径中使用<code>provides with</code>关键字的模块，将被自动加载，而无需再使用<code>requires</code>显示声明。</p>
+</blockquote>
+<blockquote>
+<p><strong>服务(Service)是可选的</strong><br/></p>
+<p>与<code>requires</code>和<code>exports</code>不同，服务(Service)是可选的，只有在需要的时候采用即可。</p>
+</blockquote>
+<h2 id="3-小结"><a href="#3-小结" class="headerlink" title="3. 小结"></a>3. 小结</h2><p>本文介绍了Java模块化的基本使用方式，过程中涉及的关键字汇总如下。</p>
+<table>
+<thead>
+<tr>
+<th>关键字</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>module</code></td>
+<td>声明模块名称，在模块路径下，模块名称必须是唯一的。</td>
+</tr>
+<tr>
+<td><code>requires</code></td>
+<td>声明依赖的模块，只有模块被依赖后才能正常使用。</td>
+</tr>
+<tr>
+<td><code>transitive</code></td>
+<td>跟随<code>requires</code>使用，时依赖可以传递。</td>
+</tr>
+<tr>
+<td><code>exports</code></td>
+<td>声明当前模块开放的package，只有被开放的package才能正常使用。</td>
+</tr>
+<tr>
+<td><code>uses</code></td>
+<td>声明要使用的服务，该关键字没有<code>requires</code>的功能，必须单独声明<code>requires</code>指定<code>uses</code>接口的所在的模块。</td>
+</tr>
+<tr>
+<td><code>provides with</code></td>
+<td>声明服务的提供者，模块解析过程中，将自动解析服务提供者所在的模块，类似服务提供者被<code>requires</code>了。</td>
+</tr>
+</tbody></table>
+<h2 id="参考的文章"><a href="#参考的文章" class="headerlink" title="参考的文章"></a>参考的文章</h2><p><a href="https://www.amazon.cn/dp/B07F6Y9L4K/ref=sr_1_2?__mk_zh_CN=%E4%BA%9A%E9%A9%AC%E9%80%8A%E7%BD%91%E7%AB%99&keywords=java+9&qid=1571215579&sr=8-2">Java 9模块化开发：核心原则与实践 (O’Reilly精品图书系列)</a><br><a href="https://github.com/java9-modularity/examples">java9-modularity&#x2F;examples</a></p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://www.ypk1226.com" rel="external nofollow noreferrer">沉迷思考的鱼</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://www.ypk1226.com/2019/10/16/java/java9-module/">http://www.ypk1226.com/2019/10/16/java/java9-module/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="http://www.ypk1226.com" target="_blank">沉迷思考的鱼</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/java/">
+                                    <span class="chip bg-color">java</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/10/28/java/java9-module-design/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Java模块化开发通用设计指南">
+                        
+                        <span class="card-title">Java模块化开发通用设计指南</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            模块化不仅仅是一个实现问题，也是一个设计和架构的问题。通过模块化，可以应对需求、环境、团队以及其他不可预见事件所带来的变化。
+本章将讨论模块化开发通用设计指南，以提高使用模块所构建系统的可维护性、灵活性和可重用性，这些模式和设计实践中的大部
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-10-28
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/JDK/" class="post-category">
+                                    JDK
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/java/">
+                        <span class="chip bg-color">java</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/09/14/java/java9/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Java 9 新特性概述">
+                        
+                        <span class="card-title">Java 9 新特性概述</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Java9正式发布于2017年9月21日，作为Java8之后3年半才发布的新版本，Java9带来了很多重大的变化，其中最重要的改动是Java模块化的引入。
+本文对Java9中包含的新特性做了概括性的介绍，可以帮助你快速了解Java9。
+
+
+
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-09-14
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/JDK/" class="post-category">
+                                    JDK
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/java/">
+                        <span class="chip bg-color">java</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2018 - 2022</span>
+            <a href="http://www.ypk1226.com" target="_blank">沉迷思考的鱼</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+
+            
+            
+            
+            
+            
+            
+            
+            <br>
+            
+
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

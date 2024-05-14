@@ -1,0 +1,1148 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Spring Boot Staters 详解, java,spring,spring-boot,mysql,git,hibernate,jvm">
+    <meta name="description" content="Maven和Gradle为Java开发者解决了依赖管理的心头大患，已然成为事实上的依赖管理标准。但贪心的开发者还想更“懒”，有没有办法使依赖管理更简单、更快捷？
+答案是肯定的，Spring Boot项目中引入了Starter的概念。
+
+">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Spring Boot Staters 详解 | 沉迷思考</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 7.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">沉迷思考</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">沉迷思考</div>
+        <div class="logo-desc">
+            
+            风不撑伞，雨不倾盆，就是好天气
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+<style>
+  .bg-cover:before {
+    background: url(/medias/featureimages/2.jpg) 0 / cover fixed}
+</style>
+<div class="bg-cover pd-header post-cover">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s3">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/spring/">
+                                <span class="chip bg-color">spring</span>
+                            </a>
+                        
+                            <a href="/tags/spring-boot/">
+                                <span class="chip bg-color">spring-boot</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s6 page-title">
+                    Spring Boot Staters 详解
+                </div>
+                <div class="col s3 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/spring-boot/" class="post-category">
+                                spring-boot
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2018-11-29
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    1.8k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    7 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>Maven和Gradle为Java开发者解决了依赖管理的心头大患，已然成为事实上的依赖管理标准。但贪心的开发者还想更“懒”，有没有办法使依赖管理更简单、更快捷？</p>
+<p>答案是肯定的，Spring Boot项目中引入了Starter的概念。</p>
+<span id="more"></span>
+
+<h2 id="1-诞生背景"><a href="#1-诞生背景" class="headerlink" title="1. 诞生背景"></a>1. 诞生背景</h2><p>以往开发者想要集成第三方组件，通常需要将对应的依赖添加进pom，然后进行相应集成配置工作。以jackson为例，需要的dependency有4个之多，如下：</p>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>com.fasterxml.jackson.core<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>jackson-databind<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>2.9.7<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>com.fasterxml.jackson.datatype<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>jackson-datatype-jdk8<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>2.9.7<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>com.fasterxml.jackson.datatype<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>jackson-datatype-jsr310<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>2.9.7<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>com.fasterxml.jackson.module<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>jackson-module-parameter-names<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>2.9.7<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>通常这些组件需要的依赖和配置差别不大，但每次使用都要做一遍，这对于“懒惰的”开发者门，实在非常不友好。于是Spring团队在分析总结常用的组件模型后，提出了Starter这个概念用以打包这些依赖和配置，从而达到了第三方组件的一站式集成的目的。</p>
+<h2 id="2-Stater是什么"><a href="#2-Stater是什么" class="headerlink" title="2. Stater是什么"></a>2. Stater是什么</h2><p>Stater是一组依赖描述符，使开发者可以一站式依赖一些组件（包括默认配置），而不必根据这些组件的示例拷贝粘贴相关依赖配置。换言之，Starter就是Maven的一个artifact，它包含两部分内容：</p>
+<p>1、聚合多个dependency，使依赖更方便<br>2、增加Auto-configuration特性，提供组件的默认配置，达到开箱即用的目的</p>
+<p>现在以spring-boot-starter-web为例，其将web应用需要的包都加载进classpath，同时依赖spring-boot-starter开启了Auto-configuration，结构如下图：</p>
+<p><img src="/images/2018/11/starter-web-case.png" alt="starter-web-case"></p>
+<p><strong>封装为Stater后的优点</strong></p>
+<p>1、使用Starter使依赖变得简单<br>2、在pom的parent约定好了版本，使开发者免除版本冲突的困扰<br>3、与另外一个特性Auto-configuration完美搭配，减少配置困扰</p>
+<blockquote>
+<h5 id="与Auto-configuration的关系"><a href="#与Auto-configuration的关系" class="headerlink" title="与Auto-configuration的关系"></a>与Auto-configuration的关系</h5><p>所有的Starters都必须依赖一个Auto-configuration，且Auto-configuration只应提供配置相关的内容，不应管理依赖。<br>Starter和Auto-configuration和配合使用后，应用程序有了一丝智能的感觉，具体情况将在另外一篇文章中详细介绍。</p>
+</blockquote>
+<blockquote>
+<h5 id="版本控制"><a href="#版本控制" class="headerlink" title="版本控制"></a>版本控制</h5><p>观察发现所有的依赖都没有version，这些版本号都继承了spring-boot-dependencies，在其中统一管理。<br>不止Starter，所有其它的Spring Boot模块都继承了spring-boot-dependencies</p>
+</blockquote>
+<blockquote>
+<h5 id="已提供的Starters"><a href="#已提供的Starters" class="headerlink" title="已提供的Starters"></a>已提供的Starters</h5><ol>
+<li><a href="https://docs.spring.io/spring-boot/docs/2.1.0.RELEASE/reference/htmlsingle/#using-boot-starter">官网内置的Staters</a></li>
+<li><a href="https://github.com/spring-projects/spring-boot/blob/master/spring-boot-project/spring-boot-starters/README.adoc">社区贡献的Staters</a><br>在文章最后将官网的Starters复制了出来，以供参考。</li>
+</ol>
+</blockquote>
+<h2 id="3-自定义Starter"><a href="#3-自定义Starter" class="headerlink" title="3. 自定义Starter"></a>3. 自定义Starter</h2><p>构建一个自定义Starter，需要完成两个必要条件：聚合多个dependency、增加Auto-configuration特性。本文只介绍聚合多个dependency，至于Auto-configuration将在另外一篇文章中详细介绍。</p>
+<p><strong>聚合多个dependency</strong></p>
+<p>定义一个pom.xml文件，在其中依赖该模块需要的所有的依赖（包含Auto-configuration的依赖）。下图是Spring Boot中定义的Starter结构：</p>
+<p><img src="/images/2018/11/starter-case-png.png" alt="starter-case.png"></p>
+<p>这些pom.xml运行install后产生一个空jar，这样使Stater和Auto-configuration分离。</p>
+<p>如果不太关注分离这两点，两者确实可以放在一起，例如Apache Wicket实现的<a href="https://github.com/MarcGiffing/wicket-spring-boot/blob/master/wicket-spring-boot-starter/pom.xml">wicket-spring-boot-starter</a>，可以发现它不像官方的Starter一样内部只有一个pom文件，而是将Auto-configuration相关的代码也放了进去。</p>
+<blockquote>
+<p><strong>命名规范</strong><br>官方提供的Starters命名格式为：spring-boot-starter-*<br>官方文档建议自定义Starter时命名为：*-spring-boot-starter，例如thirdpartyproject-spring-boot-starter，不建议以spring-boot开头。</p>
+</blockquote>
+<h2 id="4-小结"><a href="#4-小结" class="headerlink" title="4. 小结"></a>4. 小结</h2><p>本文主要介绍了Spring Boot Starter的定义及其内部构成，最后又说明了如何创建自定义的Starter。</p>
+<p>Starter中的两个重要部分：聚合到Stater中的多个dependency、Auto-configuration特性。其中多个dependency往往根据业务场景或功能模块划分边界，而Auto-configuration为这些模块提供自动配置的特性。</p>
+<h2 id="附录-官网Starter列表"><a href="#附录-官网Starter列表" class="headerlink" title="附录 官网Starter列表"></a>附录 官网Starter列表</h2><h3 id="应用程序starters"><a href="#应用程序starters" class="headerlink" title="应用程序starters"></a>应用程序starters</h3><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>spring-boot-starter</td>
+<td>核心Spring Boot starter，包括自动配置支持，日志和YAML</td>
+</tr>
+<tr>
+<td>spring-boot-starter-actuator</td>
+<td>生产准备的特性，用于帮我们监控和管理应用</td>
+</tr>
+<tr>
+<td>spring-boot-starter-amqp</td>
+<td>对”高级消息队列协议”的支持，通过spring-rabbit实现</td>
+</tr>
+<tr>
+<td>spring-boot-starter-aop</td>
+<td>对面向切面编程的支持，包括spring-aop和AspectJ</td>
+</tr>
+<tr>
+<td>spring-boot-starter-batch</td>
+<td>对Spring Batch的支持，包括HSQLDB数据库</td>
+</tr>
+<tr>
+<td>spring-boot-starter-cloud-connectors</td>
+<td>对Spring Cloud Connectors的支持，简化在云平台下（例如，Cloud Foundry 和Heroku）服务的连接</td>
+</tr>
+<tr>
+<td>spring-boot-starter-data-elasticsearch</td>
+<td>对Elasticsearch搜索和分析引擎的支持，包括spring-data-elasticsearch</td>
+</tr>
+<tr>
+<td>spring-boot-starter-data-gemfire</td>
+<td>对GemFire分布式数据存储的支持，包括spring-data-gemfire</td>
+</tr>
+<tr>
+<td>spring-boot-starter-data-jpa</td>
+<td>对”Java持久化API”的支持，包括spring-data-jpa，spring-orm和Hibernate</td>
+</tr>
+<tr>
+<td>spring-boot-starter-data-mongodb</td>
+<td>对MongoDB NOSQL数据库的支持，包括spring-data-mongodb</td>
+</tr>
+<tr>
+<td>spring-boot-starter-data-rest</td>
+<td>对通过REST暴露Spring Data仓库的支持，通过spring-data-rest-webmvc实现</td>
+</tr>
+<tr>
+<td>spring-boot-starter-data-solr</td>
+<td>对Apache Solr搜索平台的支持，包括spring-data-solr</td>
+</tr>
+<tr>
+<td>spring-boot-starter-freemarker</td>
+<td>对FreeMarker模板引擎的支持</td>
+</tr>
+<tr>
+<td>spring-boot-starter-groovy-templates</td>
+<td>对Groovy模板引擎的支持</td>
+</tr>
+<tr>
+<td>spring-boot-starter-hateoas</td>
+<td>对基于HATEOAS的RESTful服务的支持，通过spring-hateoas实现</td>
+</tr>
+<tr>
+<td>spring-boot-starter-hornetq</td>
+<td>对”Java消息服务API”的支持，通过HornetQ实现</td>
+</tr>
+<tr>
+<td>spring-boot-starter-integration</td>
+<td>对普通spring-integration模块的支持</td>
+</tr>
+<tr>
+<td>spring-boot-starter-jdbc</td>
+<td>对JDBC数据库的支持</td>
+</tr>
+<tr>
+<td>spring-boot-starter-jersey</td>
+<td>对Jersey RESTful Web服务框架的支持</td>
+</tr>
+<tr>
+<td>spring-boot-starter-jta-atomikos</td>
+<td>对JTA分布式事务的支持，通过Atomikos实现</td>
+</tr>
+<tr>
+<td>spring-boot-starter-jta-bitronix</td>
+<td>对JTA分布式事务的支持，通过Bitronix实现</td>
+</tr>
+<tr>
+<td>spring-boot-starter-mail</td>
+<td>对javax.mail的支持</td>
+</tr>
+<tr>
+<td>spring-boot-starter-mobile</td>
+<td>对spring-mobile的支持</td>
+</tr>
+<tr>
+<td>spring-boot-starter-mustache</td>
+<td>对Mustache模板引擎的支持</td>
+</tr>
+<tr>
+<td>spring-boot-starter-redis</td>
+<td>对REDIS键值数据存储的支持，包括spring-redis</td>
+</tr>
+<tr>
+<td>spring-boot-starter-security</td>
+<td>对spring-security的支持</td>
+</tr>
+<tr>
+<td>spring-boot-starter-social-facebook</td>
+<td>对spring-social-facebook的支持</td>
+</tr>
+<tr>
+<td>spring-boot-starter-social-linkedin</td>
+<td>对spring-social-linkedin的支持</td>
+</tr>
+<tr>
+<td>spring-boot-starter-social-twitter</td>
+<td>对spring-social-twitter的支持</td>
+</tr>
+<tr>
+<td>spring-boot-starter-test</td>
+<td>对常用测试依赖的支持，包括JUnit, Hamcrest和Mockito，还有spring-test模块</td>
+</tr>
+<tr>
+<td>spring-boot-starter-thymeleaf</td>
+<td>对Thymeleaf模板引擎的支持，包括和Spring的集成</td>
+</tr>
+<tr>
+<td>spring-boot-starter-velocity</td>
+<td>对Velocity模板引擎的支持</td>
+</tr>
+<tr>
+<td>spring-boot-starter-web</td>
+<td>对全栈web开发的支持， 包括Tomcat和spring-webmvc</td>
+</tr>
+<tr>
+<td>spring-boot-starter-websocket</td>
+<td>对WebSocket开发的支持</td>
+</tr>
+<tr>
+<td>spring-boot-starter-ws</td>
+<td>对Spring Web服务的支持</td>
+</tr>
+</tbody></table>
+<h3 id="Spring-Boot生产准备的starters"><a href="#Spring-Boot生产准备的starters" class="headerlink" title="Spring Boot生产准备的starters"></a>Spring Boot生产准备的starters</h3><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>spring-boot-starter-actuator</td>
+<td>添加生产准备特性，比如指标和监控</td>
+</tr>
+<tr>
+<td>spring-boot-starter-remote-shell</td>
+<td>添加远程ssh shell支持</td>
+</tr>
+</tbody></table>
+<h3 id="排除或交换具体技术方面的starters"><a href="#排除或交换具体技术方面的starters" class="headerlink" title="排除或交换具体技术方面的starters"></a>排除或交换具体技术方面的starters</h3><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>spring-boot-starter-jetty</td>
+<td>导入Jetty HTTP引擎（作为Tomcat的替代）</td>
+</tr>
+<tr>
+<td>spring-boot-starter-log4j</td>
+<td>对Log4J日志系统的支持</td>
+</tr>
+<tr>
+<td>spring-boot-starter-logging</td>
+<td>导入Spring Boot的默认日志系统</td>
+</tr>
+<tr>
+<td>spring-boot-starter-tomcat</td>
+<td>导入Spring Boot的默认HTTP引擎</td>
+</tr>
+<tr>
+<td>spring-boot-starter-undertow</td>
+<td>导入Undertow HTTP引擎（作为Tomcat的替代）</td>
+</tr>
+</tbody></table>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://www.ypk1226.com" rel="external nofollow noreferrer">沉迷思考的鱼</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://www.ypk1226.com/2018/11/29/spring-boot/spring-boot-staters/">http://www.ypk1226.com/2018/11/29/spring-boot/spring-boot-staters/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="http://www.ypk1226.com" target="_blank">沉迷思考的鱼</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/spring/">
+                                    <span class="chip bg-color">spring</span>
+                                </a>
+                            
+                                <a href="/tags/spring-boot/">
+                                    <span class="chip bg-color">spring-boot</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2018/12/05/spring-boot/spring-boot-auto-configuration-1/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Spring Boot Auto-configuration 自动配置详解">
+                        
+                        <span class="card-title">Spring Boot Auto-configuration 自动配置详解</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            毋庸置疑，Auto-configuration是Spring Boot的核心特性，其约定大于配置的思想，赋予了Spring Boot开箱即用的强大能力。本文从诞生背景、使用方式、实现原理这几个方面详细介绍这一特性。
+
+
+1. 诞生背景一直以
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-12-05
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/spring-boot/" class="post-category">
+                                    spring-boot
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/spring/">
+                        <span class="chip bg-color">spring</span>
+                    </a>
+                    
+                    <a href="/tags/spring-boot/">
+                        <span class="chip bg-color">spring-boot</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/11/27/spring-boot/spring-boot-index/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Spring Boot 入门介绍">
+                        
+                        <span class="card-title">Spring Boot 入门介绍</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            一个完善的应用程序，常常需要这些特性：精简明确的配置，快速集成第三方组件，统一的打包部署方式，方便单元测试&#x2F;功能测试，良好的监控能力等。Spring Boot出现之前，这些都需要开发者自行摸索解决，得到的方案可能大同小异，在尝到“
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-11-27
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/spring-boot/" class="post-category">
+                                    spring-boot
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/spring/">
+                        <span class="chip bg-color">spring</span>
+                    </a>
+                    
+                    <a href="/tags/spring-boot/">
+                        <span class="chip bg-color">spring-boot</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2018 - 2022</span>
+            <a href="http://www.ypk1226.com" target="_blank">沉迷思考的鱼</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+
+            
+            
+            
+            
+            
+            
+            
+            <br>
+            
+
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

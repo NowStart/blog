@@ -1,0 +1,1284 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Java Logging Framework 现状, java,spring,spring-boot,mysql,git,hibernate,jvm">
+    <meta name="description" content="某日笔者心情不错，写代码时没有复制粘贴，打算手敲logger的相关代码，在IDE获得的提示是这样的：
+
+尽管知道ch.qos.logback.classic.Logger在项目中是正确的选择，上图中Logger同名类的数量确实确实让笔者惊讶">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Java Logging Framework 现状 | 沉迷思考</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 7.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">沉迷思考</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">沉迷思考</div>
+        <div class="logo-desc">
+            
+            风不撑伞，雨不倾盆，就是好天气
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+<style>
+  .bg-cover:before {
+    background: url(/medias/featureimages/15.jpg) 0 / cover fixed}
+</style>
+<div class="bg-cover pd-header post-cover">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s3">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/java/">
+                                <span class="chip bg-color">java</span>
+                            </a>
+                        
+                            <a href="/tags/logging/">
+                                <span class="chip bg-color">logging</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s6 page-title">
+                    Java Logging Framework 现状
+                </div>
+                <div class="col s3 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Logging-Framework/" class="post-category">
+                                Logging Framework
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2018-12-22
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    4.8k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    18 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>某日笔者心情不错，写代码时没有复制粘贴，打算手敲logger的相关代码，在IDE获得的提示是这样的：</p>
+<p><img src="/images/2018/12/ide-tip.png" alt="IED的日志提示"></p>
+<p>尽管知道<code>ch.qos.logback.classic.Logger</code>在项目中是正确的选择，上图中Logger同名类的数量确实确实让笔者惊讶了一番，为什么这么多同名类？于是就有了这一篇文章。</p>
+<span id="more"></span>
+
+<p>逐一观察上述的Logger列表后，笔者发现很多jar包的编译版本是Java5、Java6，以<code>com.alibaba.nacos.client.logger.Logger</code>接口为例，它有这几个三个实现类<code>Log4j2Logger</code>,<code>NopLogger</code>,<code>Slf4jLogger</code>，不难看出alibaba这个Logger类是为了灵活切换Log4j2和Slf4j的调用。</p>
+<p>由此笔者推测，老旧的Logger如此之多，多半是由于java.util.logging提供的功能太弱，且当时市面上流行的日志框互相之间的兼容性并不好，开发者们只好自己动手，丰衣足食。而时至今日，Java主流的日志框架发展到了什么程度？旧版本的兼容问题是如何处理的？带着这些问题，我们一起来分析下Java Logging Framework现状。</p>
+<p>本文将从流行的日志框架、日志框架实现、日志框架通用API、常见问题这四个方面进行叙述。</p>
+<h2 id="1-流行的Java日志框架"><a href="#1-流行的Java日志框架" class="headerlink" title="1. 流行的Java日志框架"></a>1. 流行的Java日志框架</h2><p>如何确定哪些框架是最流行的日志框架呢，<a href="https://mvnrepository.com/">mvnrepository</a>是一个很好的参考，该网站<a href="https://mvnrepository.com/open-source/logging-frameworks?p=1">logging-frameworks</a>分类下被使用次数最多的artifact整理如下(统计日期为2018-12-22)：</p>
+<table>
+<thead>
+<tr>
+<th>groupId</th>
+<th align="center">artifactId</th>
+<th align="center">使用次数</th>
+<th align="center">占比</th>
+<th align="center">最后更新日期</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>org.slf4j</td>
+<td align="center">slf4j-api</td>
+<td align="center">33401</td>
+<td align="center"><img src="http://progressed.io/bar/37"></td>
+<td align="center">2018年3月21日</td>
+</tr>
+<tr>
+<td>ch.qos.logback</td>
+<td align="center">logback-classic</td>
+<td align="center">14366</td>
+<td align="center"><img src="http://progressed.io/bar/17"></td>
+<td align="center">2018年2月11日</td>
+</tr>
+<tr>
+<td>log4j</td>
+<td align="center">log4j</td>
+<td align="center">13931</td>
+<td align="center"><img src="http://progressed.io/bar/16"></td>
+<td align="center">2012年5月26日</td>
+</tr>
+<tr>
+<td>commons-logging</td>
+<td align="center">commons-logging</td>
+<td align="center">8278</td>
+<td align="center"><img src="http://progressed.io/bar/8"></td>
+<td align="center">2014年7月5日</td>
+</tr>
+<tr>
+<td>org.slf4j</td>
+<td align="center">slf4j-simple</td>
+<td align="center">7368</td>
+<td align="center"><img src="http://progressed.io/bar/8"></td>
+<td align="center">2018年3月21日</td>
+</tr>
+<tr>
+<td>org.apache.logging.log4j</td>
+<td align="center">log4j-core</td>
+<td align="center">3709</td>
+<td align="center"><img src="http://progressed.io/bar/4"></td>
+<td align="center">2018年7月30日</td>
+</tr>
+<tr>
+<td>org.apache.logging.log4j</td>
+<td align="center">log4j-api</td>
+<td align="center">2930</td>
+<td align="center"><img src="http://progressed.io/bar/3"></td>
+<td align="center">2018年7月30日</td>
+</tr>
+<tr>
+<td>ch.qos.logback</td>
+<td align="center">logback-core</td>
+<td align="center">2925</td>
+<td align="center"><img src="http://progressed.io/bar/3"></td>
+<td align="center">2018年2月11日</td>
+</tr>
+<tr>
+<td>org.jboss.logging</td>
+<td align="center">jboss-logging</td>
+<td align="center">1734</td>
+<td align="center"><img src="http://progressed.io/bar/2"></td>
+<td align="center">2018年2月14日</td>
+</tr>
+<tr>
+<td>org.clojure</td>
+<td align="center">tools.logging</td>
+<td align="center">1258</td>
+<td align="center"><img src="http://progressed.io/bar/1"></td>
+<td align="center">2018年3月19日</td>
+</tr>
+</tbody></table>
+<p>其中slf4j-api、logback-classic和log4j遥遥领先其它框架；commons-logging和log4j的最后更新时间都是几年前，明显已停止维护了。另外，apache大名鼎鼎的log4j-api和log4j-core竟然排在后面，确实出人意料。至于排在末两位的org.jboss.logging和org.clojure在此略作说明，后续不再做讨论。</p>
+<p>上述日志框架可以分为两类：具体实现、通用API。日志通用API仅提供一套通用API，不提供具体实现，也不包装具体实现的配置(logback.xml或log4j.xml等)，从而达到快速切换具体实现的目的。</p>
+<p>日志框架具体实现有：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://logback.qos.ch/manual/configuration.html">logback-classic</a></td>
+<td>Log4j 1.x项目发起人离开apache后，主导开发出的一套日志框架实现，默认实现slf4j-api，现在已经是最热门的日志框架。</td>
+</tr>
+<tr>
+<td><a href="https://logging.apache.org/log4j/1.2/manual.html">Log4j 1.x</a></td>
+<td>又名log4j12，意为1.x的最后一个版本1.2，apache早期推出的日志实现，奠定了Java日志框架的基础，大量老项目使用了该框架，目前已停止更新。</td>
+</tr>
+<tr>
+<td><a href="https://logging.apache.org/log4j/2.x/">log4j 2.x</a></td>
+<td>apache最近几年新推出的日志框架，功能齐全、性能强劲、文档齐全。</td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/logging/Logger.html">Java Util Logging</a></td>
+<td>又名JUL(首字母缩写)、JDK logging、jdk14(发布于jdk1.4)，包含在JDK内部java.util.logging包下的日志实现，每个服务都包含这个实现，因此不包含在上面的排行榜中。</td>
+</tr>
+</tbody></table>
+<p>日志框架通用API(又名Logging Shim或Logging Bridge)有：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://www.slf4j.org/manual.html">slf4j-api</a></td>
+<td>当下如日中天的日志API，大量的开发者依赖此api编写日志相关代码，后文将展开详细解读。</td>
+</tr>
+<tr>
+<td><a href="https://commons.apache.org/proper/commons-logging/guide.html">commons-logging</a></td>
+<td>又名<strong>JCL</strong>(Jakarta Commons Logging)，apache早期提供的日志api，由于种种原因没有发展起来，现在已停止更新。</td>
+</tr>
+<tr>
+<td><a href="http://docs.jboss.org/hibernate/orm/4.3/topical/html/logging/Logging">org.jboss.logging</a></td>
+<td>由于其支持国际化功能，hibernate从4.0开始一直使用该框架，本文后续不讨论该框架。</td>
+</tr>
+<tr>
+<td><a href="https://clojure.github.io/tools.logging/">org.clojure</a></td>
+<td>在Clojure语言中使用，本文后续不讨论该框架。</td>
+</tr>
+</tbody></table>
+<h2 id="2-日志框架具体实现"><a href="#2-日志框架具体实现" class="headerlink" title="2. 日志框架具体实现"></a>2. 日志框架具体实现</h2><p>日志框架一般主要由三部分构成：Logger、Formatter和Handler(又名Appender)；其中Logger负责收集需要记录的信息和一些元数据，随后Formatter将收集到的信息进行格式化，最后由Handler(又名Appender)决定日志输出的方式，输出方式多种多样，可以控制台、磁盘文件等。</p>
+<p>一个Logger可以同时关联到多个Appender，因此一份日志可以同时以多种方式输出；一个Appender再关联到一个Formatter以指定其格式。多个Logger之间具有特定的层次结构，下面笔者对这种层次结构进行详细介绍。</p>
+<p><strong>Named的层次结构</strong><br/></p>
+<p>Logger的名称通常具有层次结构，如下方所示，com.sun是com的子级，com.sun.some是com.sun的子级。</p>
+<ul>
+<li>com</li>
+<li>com.sun</li>
+<li>com.sun.some</li>
+</ul>
+<p><strong>Level的层次结构</strong><br/></p>
+<p>若当前Logger没有设置日志级别，则从父级继承；若当前Logger已设置日志级别，则忽略父级的日志级别，举例如下：</p>
+<table>
+<thead>
+<tr>
+<th>Logger名称</th>
+<th align="center">声明的Level</th>
+<th align="center">继承的Level</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>root</td>
+<td align="center">Proot</td>
+<td align="center">Proot</td>
+</tr>
+<tr>
+<td>X</td>
+<td align="center">Px</td>
+<td align="center">Px</td>
+</tr>
+<tr>
+<td>X.Y</td>
+<td align="center">none</td>
+<td align="center">Px</td>
+</tr>
+<tr>
+<td>X.Y.Z</td>
+<td align="center">Pxyz</td>
+<td align="center">Pxyz</td>
+</tr>
+</tbody></table>
+<p><strong>Appender的可叠加性</strong><br/></p>
+<p>子级Logger会从父级继承关联的Appender作为自己的Appender，与子级自身关联的Appender叠加起来(即Appender使是相同的)，距离如下：</p>
+<table>
+<thead>
+<tr>
+<th>Logger名称</th>
+<th align="center">叠加的Appender</th>
+<th align="center">叠加性是标识</th>
+<th align="center">输出目标</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>root</td>
+<td align="center">A1</td>
+<td align="center">不可配置</td>
+<td align="center">A1</td>
+</tr>
+<tr>
+<td>x</td>
+<td align="center">A-x1, A-x2</td>
+<td align="center">true</td>
+<td align="center">A1, A-x1, A-x2</td>
+</tr>
+<tr>
+<td>x.y</td>
+<td align="center">none</td>
+<td align="center">true</td>
+<td align="center">A1, A-x1, A-x2</td>
+</tr>
+<tr>
+<td>x.y.z</td>
+<td align="center">A-xyz1</td>
+<td align="center">true</td>
+<td align="center">A1, A-x1, A-x2, A-xyz1</td>
+</tr>
+<tr>
+<td>security</td>
+<td align="center">A-sec</td>
+<td align="center">false</td>
+<td align="center">A-sec</td>
+</tr>
+<tr>
+<td>security.access</td>
+<td align="center">none</td>
+<td align="center">true</td>
+<td align="center">A-sec</td>
+</tr>
+</tbody></table>
+<p>最后，让我们回到上文所述的四个日志框架的具体实现上来，下面将按照框架诞生的时间顺序，进行逐一介绍；其中logback和log4j 2.x社区都非常活跃，是Java日志框架的主力军，笔者将进行重点介绍。</p>
+<h3 id="2-1-Log4j-1-x（始于1999）"><a href="#2-1-Log4j-1-x（始于1999）" class="headerlink" title="2.1 Log4j 1.x（始于1999）"></a>2.1 Log4j 1.x（始于1999）</h3><p><a href="https://logging.apache.org/log4j/1.2/manual.html">Log4j 1.x</a>是由Ceki Gülcü在ASF(Apache Software Foundation)发起的开源项目，其第一个版本发布于1999年，一经发布就在开源社区中得到了广泛的使用，包括一些大名鼎鼎的项目，如JBoss和Hibernate。Log4j的体系结构是围绕三个主要概念构建的：loggers、appenders和layouts，在此之后的日志框架，大多也采用了这个结构。</p>
+<p><a href="https://logging.apache.org/log4j/1.2/manual.html">Log4j 1.x</a>最后更新时间为2012年5月26日(版本为1.2.17)，于2015年8月5日正式宣布停止更新。 时至今日，Log4j 1.x的引用比例仍有16%，开发者们更多的考虑的是如何兼容旧版本，除了这个理由之外，不会再选择该框架了。</p>
+<h3 id="2-2-Java-Util-Logging（始于2002）"><a href="#2-2-Java-Util-Logging（始于2002）" class="headerlink" title="2.2 Java Util Logging（始于2002）"></a>2.2 Java Util Logging（始于2002）</h3><p><a href="https://docs.oracle.com/javase/8/docs/api/java/util/logging/Logger.html">Java Util Logging</a>是2002年发布的Java1.4新增的特性，其模仿log4j实现了基本的日志输出功能，但由于发布时间相比Log4j 1.x晚一些，且功能上不如Log4j完善，一直没有真正流行起来；目前对于该框架，多数项目考虑的也是兼容性。</p>
+<h3 id="2-3-logback（始于2006）"><a href="#2-3-logback（始于2006）" class="headerlink" title="2.3 logback（始于2006）"></a>2.3 logback（始于2006）</h3><p><a href="https://logging.apache.org/log4j/1.2/manual.html">Log4j 1.x</a>项目开展到后期，项目发起者Ceki Gülcü觉得自己失去了对框架的控制，新特性的决定变的复杂，提意见的人太多了，陷入了无休止的邮件往来之中；后来Ceki Gülcü决定脱离ASF，打算重头开始再写一个日志框架，于是<a href="https://logback.qos.ch/index.html">logback</a>诞生了。</p>
+<p>2006年7月26日，<a href="https://logback.qos.ch/index.html">logback</a>的第一个release版本正式发布，随后快速地迭代发布新版本，目前是<a href="https://mvnrepository.com/">mvnrepository</a>上显示的日志框架中最为流行的；而该项目发起人Ceki Gülcü着实是个牛人，笔者特地找了其本人的两张照片放在下面（侵删）。</p>
+<p><img src="/images/2018/12/ceki-gulcu.png" alt="Ceki Gülcü"></p>
+<p>logback分为三个模块，logback-core, logback-classic和logback-access。其中logback-core模块为其他两个模块提供了基础功能；logback-classic模块可以视为log4j的改进版本，同时logback-classic天生就实现了SLF4J API，这样开发者就可以在不修改客户端代码的前提下，随时切换底层具体实现。</p>
+<p>logback-access模块可以与Servlet容器(如Tomcat和Jetty)集成，以提供HTTP-access日志功能。logback具有以下优秀特性：</p>
+<ul>
+<li>速度快且占用内存少</li>
+<li>经过了大量的测试</li>
+<li>天生实现了SLF4J API，使用SLF4J API时不会存在任何性能损失</li>
+<li>丰富完善的文档</li>
+<li>配置文件支持XML或Groovy</li>
+<li>自动重新加载配置文件</li>
+<li>可以从I&#x2F;O故障中进行优雅的恢复</li>
+<li>可以自动删除旧日志档案</li>
+<li>可以压缩日志文件</li>
+<li>谨慎模式下，可以让多个JVM写入同一个文件</li>
+<li>提供名为Lilith的日志查看器，可以查看大日志文件</li>
+<li>配置文件支持if-then-else的判断</li>
+<li>过滤器(Filter)机制提供的扩展，比如可以在不改变日志level的前提下，输出某些level更低的日志</li>
+<li>SiftingAppender可以根据运行时属性拆分日志文件，比如为每个用户单独创建一份日志文件</li>
+<li>发生异常时，打印完整的堆栈信息，精确到对应jar包的版本号</li>
+<li>logback-access对HTTP-access日志提供了强有力的支持</li>
+</ul>
+<h3 id="2-4-Log4j-2-x（始于2014"><a href="#2-4-Log4j-2-x（始于2014" class="headerlink" title="2.4 Log4j 2.x（始于2014)"></a>2.4 Log4j 2.x（始于2014)</h3><p><a href="https://logging.apache.org/log4j/2.x/">Log4j 2.x</a>(又名log4j2)是ASF对<a href="https://logging.apache.org/log4j/1.2/manual.html">Log4j 1.x</a>的重构和升级，并且不再与之前的版本兼容。该项目始于2012年07月29日，2014年07月12日发布了第一个release版本，Log4j2是这四个日志实现框架中最年轻的一个，它综合了Log4j 1.x和logback的优点，并改进它们已知的不足，可以说是这四个日志框架中最新先进的。它具有以下优秀特性：</p>
+<ul>
+<li>API与实现分离，使开发者清楚地知道可以使用哪些类和方法，同时确保向前兼容</li>
+<li>性能显著提示，官网文档宣称在多线程场景下，性能明显优于其他三个日志框架</li>
+<li>支持多种API，支持Log4j 1.2、SLF4J、Commons Logging和java.util.logging (JUL) APIs</li>
+<li>避免锁定实现，提供log4j-to-slf4j适配器，可以重定向访问Log4j2的请求</li>
+<li>支持配置文件自动重载，并且解决了logback自动重载配置文件时的问题</li>
+<li>更加先进的过滤器(Filter)，在logback之上做了优化</li>
+<li>支持插件机制</li>
+<li>配置属性支持</li>
+<li>Java 8 Lambda表达式支持</li>
+<li>自定义日志级别</li>
+<li>在运行的程序中不产生内存垃圾，在web程序中产生少量内存垃圾，减轻了垃圾回收的压力</li>
+<li>提供与应用服务器集成的能力，如tomcat和netty</li>
+</ul>
+<p>作为最晚出现的日志框架，Log4j 2.x的细节特性优于以往的任何框架，但为何<a href="https://mvnrepository.com/">mvnrepository</a>中使用量如此低呢？笔者分析，可能是SLF4J API的深入人心，而logback默认实现了该API，使用起来性能不存在损耗，所以多数开发者习惯性选择了logback作为其实现。</p>
+<p>不管怎样，Log4j2是一个强大而健壮的日志记录框架，具有非常灵活的配置选项，相信未来会有越来越多的人使用该框架。</p>
+<h2 id="3-日志框架API"><a href="#3-日志框架API" class="headerlink" title="3. 日志框架API"></a>3. 日志框架API</h2><p>日志框架API，又名Logging Shim或Logging Bridge，设计目的是解决应用程序切换日志实现框架不方便的问题，API不提供日志输出的配置功能，如何编写配置文件需要具体的日志实现框架决定。 使用最广泛的API是<a href="https://www.slf4j.org/manual.html">slf4j-api</a>和<a href="https://commons.apache.org/proper/commons-logging/guide.html">Apache Commons Logging</a>(又名<strong>JCL</strong>，Jakarta Commons Logging)。一般情况下，通过API调用日志框架实现的流程如下：</p>
+<p><img src="/images/2018/12/log-api.png" alt="调用日志框架API流程"></p>
+<h3 id="3-1-JCL（Jakarta-Commons-Logging）（始于2002"><a href="#3-1-JCL（Jakarta-Commons-Logging）（始于2002" class="headerlink" title="3.1 JCL（Jakarta Commons Logging）（始于2002)"></a>3.1 JCL（Jakarta Commons Logging）（始于2002)</h3><p>JCL是Apache与2002年发布的一个日志API，最后一次更新时间为2014年07月11日， 使用它可以隔离具体的日志实现，使底层日志实现代码不侵入项目，方便进行切换。当引入了common-logging之后，它将自动查找当前classpath下包含的，用户不需要任何配置。查找的顺序如下：</p>
+<ol>
+<li>寻找配置文件中是否为org.apache.common.logging.Log配置的值</li>
+<li>是否包含log4j</li>
+<li>是否包含JDK Logger</li>
+<li>使用Common-logging自带的SimpleLog</li>
+</ol>
+<p>如上所述，如果想要指定使用哪个实现，可以在classpath目录下新增common-logging.properties文件，指定Log4j示例如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">org.apache.commons.logging.Log&#x3D;org.apache.commons.logging.impl.Log4JLogger<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="3-2-SLF4J（Simple-Logging-Facade-for-Java）（始于2005"><a href="#3-2-SLF4J（Simple-Logging-Facade-for-Java）（始于2005" class="headerlink" title="3.2 SLF4J（Simple Logging Facade for Java）（始于2005)"></a>3.2 SLF4J（Simple Logging Facade for Java）（始于2005)</h3><p>SLF4J始于2005年，是目前使用最为广泛的日志API，该API也是由Ceki Gülcü主导发起的；与JCL不同的是，API转换过程不包含在SLF4J API中，SLF4J运用了Java提供的<a href="https://docs.oracle.com/javase/7/docs/api/java/util/ServiceLoader.html">Service Loader</a>机制，将SLF4J API和实际的转换映射过程在依赖上完全分离，在runtime时才使用具体实现。</p>
+<h3 id="3-2-1-SLF4J-API绑定日志实现"><a href="#3-2-1-SLF4J-API绑定日志实现" class="headerlink" title="3.2.1 SLF4J API绑定日志实现"></a>3.2.1 SLF4J API绑定日志实现</h3><p>SLF4J API需要一些用于绑定日志实现的jar包，来确定到底使用哪个日志框架，这些Jar包也包含了对应日志实现框架的依赖；已有的Jar包整理汇总如下：</p>
+<table>
+<thead>
+<tr>
+<th>JAR</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>slf4j-log4j12</td>
+<td>用于绑定Log4j 1.2版本，即调用SLF4J API时，重定向到Log4j 1.2</td>
+</tr>
+<tr>
+<td>slf4j-jdk14</td>
+<td>用于绑定JUL，即调用SLF4J API时，重定向到JUL（java.util.logging）</td>
+</tr>
+<tr>
+<td>slf4j-jcl</td>
+<td>用于绑定JCL，调用SLF4J API时，重定向到JCL（apache的Jakarta Commons Logging）</td>
+</tr>
+<tr>
+<td>slf4j-nop</td>
+<td>绑定一个空实现，默认忽略掉所有的日志</td>
+</tr>
+<tr>
+<td>slf4j-simple</td>
+<td>绑定简单实现，直接输入日志到控制台</td>
+</tr>
+<tr>
+<td>logback-classic</td>
+<td>天生实现SLF4J API，调用SLF4J API时，使用logback相关库</td>
+</tr>
+<tr>
+<td>log4j-slf4j-impl</td>
+<td>该库是由apache提供，作用是调用SLF4J API时，重定向到Log4J 2.x</td>
+</tr>
+</tbody></table>
+<p>SLF4J API在运行时会进行自动检测当前classpath中是否包含绑定日志实现的Jar包，若存在则实例化该Jar包指向的的日志实现。注意SLF4J API不支持同时使用多个日志实现，当classpath中出现多个实现时，SLF4J API只会选择使用其中一个并打印警告信息。下图说明了绑定过程：</p>
+<img src="/images/2018/12/slf4j-binding.png" width=800>
+
+<h3 id="3-2-2-SLF4J-桥接遗留的API"><a href="#3-2-2-SLF4J-桥接遗留的API" class="headerlink" title="3.2.2 SLF4J 桥接遗留的API"></a>3.2.2 SLF4J 桥接遗留的API</h3><p>SLF4J除了以API的身份包装底层接口外，还有<strong>桥接遗留API</strong>的功能；假设某个项目中包含了JUL、JCL、Log4j 1.x这些日志框架的日志调用，其中明确引入了具体的框架实现，SLF4J可以把这些框架的调用强行重定向到已经绑定的日志实现，从而使项目中所有的日志调用全部指向一个唯一的实现。可以用桥接遗留API的Jar包整理如下：</p>
+<table>
+<thead>
+<tr>
+<th>JAR</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>jcl-over-slf4j</td>
+<td>桥接JCL到SLF4J，将使用JCL相关代码的日志调用重定向到SLF4J</td>
+</tr>
+<tr>
+<td>jul-to-slf4j</td>
+<td>桥接JUL到SLF4J，将使用JUL相关代码的日志调用重定向到SLF4J；此转换会有额外的性能开销，需要做一定处理才行，详见<a href="https://www.slf4j.org/legacy.html#jclRecursion">Bridging legacy APIs</a></td>
+</tr>
+<tr>
+<td>log4j-over-slf4j</td>
+<td>桥接Log4j 1.x到SLF4J，将使用Log4j 1.x相关代码的日志调用重定向到SLF4J</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>jcl-over-slf4j vs slf4j-jcl</strong><br/><br>注意这两个Jar不能同时使用，前者是将JCL的调用重定向到SLF4J绑定的日志实现，后者又将日志实现指定为了JCL，这是自相矛盾的；而JUL和Log4j 1.x也是如此。</p>
+</blockquote>
+<p>若读者觉得不好理解，可以直接查看笔者在码云上的示例代码<a href="https://gitee.com/ypk1226/sample-logging-framework/blob/master/together-slf4j-log4j2-cover-others/src/main/java/com/learn/together/slf4j/log4j/cover/others/SLF4jLog4jCoverOthers.java"><code>SLF4jLog4jCoverOthers</code></a>。该功能对于SLF4J API的<strong>快速传播</strong>起到了重要作用，它的流程是这样的：</p>
+<img src="/images/2018/12/bridging-legacy-apis.png" width=800>
+
+<h2 id="4-常见问题"><a href="#4-常见问题" class="headerlink" title="4. 常见问题"></a>4. 常见问题</h2><p>常见问题中的相关代码，笔者已提交至码云，有需要可以查看<a href="https://gitee.com/ypk1226/sample-logging-framework">sample-logging-framework</a>。</p>
+<h3 id="4-1-为SLF4J绑定多个日志实现"><a href="#4-1-为SLF4J绑定多个日志实现" class="headerlink" title="4.1 为SLF4J绑定多个日志实现"></a>4.1 为SLF4J绑定多个日志实现</h3><p>由于SLF4J API仅支持绑定一个日志实现，在pom中同时指定两个日志实现会得到如下的错误信息，此时去掉一种一个实现的依赖即可，比如下面的场景去除<code>slf4j-log4j12</code>的依赖。</p>
+<pre class="line-numbers language-none"><code class="language-none">SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:&#x2F;Users&#x2F;ypk&#x2F;.m2&#x2F;repository&#x2F;ch&#x2F;qos&#x2F;logback&#x2F;logback-classic&#x2F;1.2.3&#x2F;logback-classic-1.2.3.jar!&#x2F;org&#x2F;slf4j&#x2F;impl&#x2F;StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:&#x2F;Users&#x2F;ypk&#x2F;.m2&#x2F;repository&#x2F;org&#x2F;slf4j&#x2F;slf4j-log4j12&#x2F;1.7.25&#x2F;slf4j-log4j12-1.7.25.jar!&#x2F;org&#x2F;slf4j&#x2F;impl&#x2F;StaticLoggerBinder.class]
+SLF4J: See http:&#x2F;&#x2F;www.slf4j.org&#x2F;codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [ch.qos.logback.classic.util.ContextSelectorStaticBinder]<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="4-2-日志重复打印"><a href="#4-2-日志重复打印" class="headerlink" title="4.2 日志重复打印"></a>4.2 日志重复打印</h3><p>有时候我们会发现一行日志被重复打印了多次，这是由于Appender的可叠加性导致的（详见上文），子级和父级Logger同时绑定了Appender；解决办法一般是在子级关闭Appender的可叠加性，以Log4j 2.x的配置为例，指定additivity为false：</p>
+<pre class="line-numbers language-none"><code class="language-none">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;
+&lt;Configuration status&#x3D;&quot;WARN&quot;&gt;
+    &lt;Appenders&gt;
+        &lt;Console name&#x3D;&quot;Console&quot; target&#x3D;&quot;SYSTEM_OUT&quot;&gt;
+            &lt;PatternLayout pattern&#x3D;&quot;%d&#123;HH:mm:ss.SSS&#125; [%t] %-5level %logger&#123;36&#125; - %msg%n&quot;&#x2F;&gt;
+        &lt;&#x2F;Console&gt;
+    &lt;&#x2F;Appenders&gt;
+    &lt;Loggers&gt;
+        &lt;Logger name&#x3D;&quot;com.learn.log4j2.trace&quot; level&#x3D;&quot;trace&quot; additivity&#x3D;&quot;false&quot;&gt;&lt;!-- additivity关闭继承特性 --&gt;
+            &lt;AppenderRef ref&#x3D;&quot;Console&quot;&#x2F;&gt;
+        &lt;&#x2F;Logger&gt;
+        &lt;Root level&#x3D;&quot;info&quot;&gt;
+            &lt;AppenderRef ref&#x3D;&quot;Console&quot;&#x2F;&gt;
+        &lt;&#x2F;Root&gt;
+    &lt;&#x2F;Loggers&gt;
+&lt;&#x2F;Configuration&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="4-3-自相矛盾的依赖"><a href="#4-3-自相矛盾的依赖" class="headerlink" title="4.3 自相矛盾的依赖"></a>4.3 自相矛盾的依赖</h3><p>同时指定自相矛盾的 jcl-over-slf4j 和 slf4j-jcl，将会得到下面的异常；解决办法是去掉一种的一个。</p>
+<pre class="line-numbers language-none"><code class="language-none">Caused by: java.lang.IllegalStateException: Detected both jcl-over-slf4j.jar AND bound slf4j-jcl.jar on the class path, preempting StackOverflowError. See also http:&#x2F;&#x2F;www.slf4j.org&#x2F;codes.html#jclDelegationLoop for more details.
+	at org.slf4j.impl.JCLLoggerFactory.&lt;clinit&gt;(JCLLoggerFactory.java:54)
+	... 30 more<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="5-小结"><a href="#5-小结" class="headerlink" title="5. 小结"></a>5. 小结</h2><p>本文介绍了Java当下流行的Logging Framework，旨在使读者对Java日志框架有一个整体印象。Logger实现一般分为三部分：Logger、Formatter和Handler(又名Appender)，Logger之间存在层级关系。</p>
+<p>在日志框架的具体实现中，可选的有logback和Log4j 2.x；目前选择logback选择的人更多，其与SL4J API无缝集成；Log4j 2.x出现时间较晚，改进了前面的问题并更进一步做了很多特性提升，预期使用的人会越来越多。</p>
+<p>而日志API，SLF4J API使用最为广泛，它不仅解决了通常意义上的日志框架切换问题，还提供了“桥接遗留的API”的功能，使项目内所有的日志输出被统一到了同一个日志实现中。</p>
+<p>最后，我们列出了几个日志配置常见的异常，希望可以帮到读者。</p>
+<h2 id="关于转载"><a href="#关于转载" class="headerlink" title="关于转载"></a>关于转载</h2><p>原创文章，转载请注明出处： <a href='/2018/12/22/java/java-loging-framework/' target='_blank'>http://www.ypk1226.com/2018/12/22/java/java-loging-framework/</a></p>
+<h1 id="参考的文章："><a href="#参考的文章：" class="headerlink" title="参考的文章："></a>参考的文章：</h1><p><a href="https://en.wikipedia.org/wiki/Java_logging_framework">Java logging framework - Wikipedia</a><br><a href="https://logging.apache.org/log4j/1.2/manual.html">Apache log4j 1.2 -Short introduction to log4j</a><br><a href="http://java.sys-con.com/node/48541">Cover Story: Log4j vs java.util.logging</a><br><a href="https://news.ycombinator.com/item?id=7823148">Curious, why Ceki Gülcü (Log4J author) is no longer in team? | Hacker News</a><br><a href="https://www.sitepoint.com/which-java-logging-framework-has-the-best-performance/">Which Java Logging Framework Has the Best Performance?</a><br><a href="https://stackify.com/logging-java/">The State of Logging in Java</a><br><a href="https://www.slf4j.org/legacy.html#jclRecursion">Bridging legacy APIs</a></p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://www.ypk1226.com" rel="external nofollow noreferrer">沉迷思考的鱼</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://www.ypk1226.com/2018/12/22/java/java-loging-framework/">http://www.ypk1226.com/2018/12/22/java/java-loging-framework/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="http://www.ypk1226.com" target="_blank">沉迷思考的鱼</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/java/">
+                                    <span class="chip bg-color">java</span>
+                                </a>
+                            
+                                <a href="/tags/logging/">
+                                    <span class="chip bg-color">logging</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/01/05/biz/loan-scheme/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="常见还款计划介绍">
+                        
+                        <span class="card-title">常见还款计划介绍</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            由于工作关系，最近对贷款的分期还款计划接触较多，发现其中具有一定的复杂性，而且它们名称看起来都差不多，来回念几遍整个人就蒙圈了。由此，笔者整理了最常见的几种还款方式，并以图表的形式进行对比，希望可以帮助对这方面知识有需要的读者。
+另外为了加
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-01-05
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E4%B8%9A%E5%8A%A1%E7%9F%A5%E8%AF%86/" class="post-category">
+                                    业务知识
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E8%BF%98%E6%AC%BE%E8%AE%A1%E5%88%92/">
+                        <span class="chip bg-color">还款计划</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/12/12/spring-boot/spring-boot-auto-configuration-2/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Spring Boot 自定义Auto-configuration">
+                        
+                        <span class="card-title">Spring Boot 自定义Auto-configuration</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Spring Boot的Auto-configuration以其易用性和实用性，得到了开发者们的广泛认可；但与此同时，Spring Boot内置的Auto-configuration仅能满足基本需求，对于企业级的应用生态来说是不够的，所以自
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-12-12
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/spring-boot/" class="post-category">
+                                    spring-boot
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/spring/">
+                        <span class="chip bg-color">spring</span>
+                    </a>
+                    
+                    <a href="/tags/spring-boot/">
+                        <span class="chip bg-color">spring-boot</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2018 - 2022</span>
+            <a href="http://www.ypk1226.com" target="_blank">沉迷思考的鱼</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+
+            
+            
+            
+            
+            
+            
+            
+            <br>
+            
+
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
