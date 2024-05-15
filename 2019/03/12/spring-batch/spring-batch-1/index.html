@@ -514,12 +514,47 @@ Spring Batch简介
 <td></td>
 <td>封装整个批处理过程的实体</td>
 </tr>
+<tr>
+<td>JobInstance</td>
+<td>代表一个Job的运行实例，不同的运行实例，其关联的JobParameters不相同的，例如日期不同</td>
+<td></td>
+</tr>
+<tr>
+<td>JobParameters</td>
+<td>获得一个JobInstance时，必须指定对应的JobParameters</td>
+<td></td>
+</tr>
+<tr>
+<td>JobExecution</td>
+<td>代表Job的一次实际执行情况，它可能执行成功或失败</td>
+<td></td>
+</tr>
+<tr>
+<td>Step</td>
+<td></td>
+<td>封装了批处理作业的一个独立的、顺序的阶段，多个Step按顺序构成了一个Job</td>
+</tr>
+<tr>
+<td>StepExecution</td>
+<td>代表Step的一次实际执行情况</td>
+<td></td>
+</tr>
+<tr>
+<td>Item Reader</td>
+<td></td>
+<td>Step中使用Item Reader输入数据</td>
+</tr>
+<tr>
+<td>Item Writer</td>
+<td></td>
+<td>Step中使用Item Writer输出数据</td>
+</tr>
+<tr>
+<td>Item Processor</td>
+<td></td>
+<td>Step中使用Item Processor处理数据</td>
+</tr>
 </tbody></table>
-<pre><code>| JobInstance |  代表一个Job的运行实例，不同的运行实例，其关联的JobParameters不相同的，例如日期不同
-| JobParameters |  获得一个JobInstance时，必须指定对应的JobParameters
-| JobExecution  |  代表Job的一次实际执行情况，它可能执行成功或失败
-</code></pre>
-<p>Step | | 封装了批处理作业的一个独立的、顺序的阶段，多个Step按顺序构成了一个Job<br>  | StepExecution  |  代表Step的一次实际执行情况<br>Item Reader | | Step中使用Item Reader输入数据<br>Item Writer | | Step中使用Item Writer输出数据<br>Item Processor | | Step中使用Item Processor处理数据</p>
 <p>其中Job和Step之间的关系如下：</p>
 <p><img src="/images/2019/05/step.png" alt="Step"></p>
 <p>除了上述的7个基础概念，还有个名为<code>ExecutionContext</code>的封装类，<code>ExecutionContext</code>是一个key&#x2F;value形式的数据存储，开发人员可以向其中放入自定义的运行时数据；它有两个作用域StepExecution和JobExecution，相互之间是隔离的。</p>

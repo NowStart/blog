@@ -388,7 +388,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    754
+                    755
                 </div>
                 
 
@@ -424,7 +424,28 @@
 <p>首先，使用各类客户端插件，获得关注接口的元数据，这份元数据包含类的所有信息，包含类、方法、请求参数、相应参数、注解，注释(文档注释+单行多行注释)等，有了元数据，再为特定的输出方做适配。</p>
 <p>元数据本身也具备一定价值，它不止可以用来生成文档，也可以做其它用途，比如支撑自动化测试等。</p>
 <h2 id="1-元数据采集"><a href="#1-元数据采集" class="headerlink" title="1. 元数据采集"></a>1. 元数据采集</h2><p>对于元数据采集，希望用最简单的方式，采集到足够全的元数据，不同的采集方式罗列如下。</p>
-<p>采集方式 | 范围锁定方式 | 原理 | 特点<br>– | – | –<br>Maven插件 | pom中参数配置 | Javadoc解析、硬解析行注释 | 适合批量更新文档，可以考虑与CICD集成<br>IDEA插件&#x2F;Eclipse插件 | 鼠标选中的类、方法 | IDE提供的API，硬解析行注释 | 适合单个文件处理，更灵活</p>
+<table>
+<thead>
+<tr>
+<th>采集方式</th>
+<th>范围锁定方式</th>
+<th>原理</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Maven插件</td>
+<td>pom中参数配置</td>
+<td>Javadoc解析、硬解析行注释</td>
+<td>适合批量更新文档，可以考虑与CICD集成</td>
+</tr>
+<tr>
+<td>IDEA插件&#x2F;Eclipse插件</td>
+<td>鼠标选中的类、方法</td>
+<td>IDE提供的API，硬解析行注释</td>
+<td>适合单个文件处理，更灵活</td>
+</tr>
+</tbody></table>
 <blockquote>
 <p><strong>扫描范围的确认</strong><br/><br>默认情况下，插件应自动扫描被<code>@Controller</code>或<code>@RestController</code>注解的类。<br>支持增加特定的注解，父类、父接口、包，以扩大扫描范围。<br>支持排除特定的注解、类&#x2F;接口、包，以减少扫描范围。</p>
 </blockquote>

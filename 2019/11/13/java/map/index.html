@@ -432,7 +432,38 @@ Map接口位于java.util包下，该包下一共提供了如下具体的实现�
 <p><code>Map</code>接口位于java.util包下，该包下一共提供了如下具体的实现类(基于JDK1.8)，java.util包中开放的实现类如下图所示：</p>
 <p><img src="/images/2019/12/map2.png" alt="Map"></p>
 <p>涉及的接口和抽象类有如下几个：</p>
-<p>名称 | 说明<br>– | – | –<br>Map | 提供存放键值对的对象，要求key不能重复，包含get、put等方法<br>SortedMap | 提供有序的Map<br>NavigableMap | 在 SortedMap 基础上，支持快速搜索符合条件的最近的元素<br>ConcurrentMap | 提供线程安全和原子性的Map<br>ConcurrentNavigableMap | 继承自NavigableMap和ConcurrentMap，提供线程安全的同时，支持快速搜索<br>AbstractMap | 提供Map接口的框架实现</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Map</td>
+<td>提供存放键值对的对象，要求key不能重复，包含get、put等方法</td>
+</tr>
+<tr>
+<td>SortedMap</td>
+<td>提供有序的Map</td>
+</tr>
+<tr>
+<td>NavigableMap</td>
+<td>在 SortedMap 基础上，支持快速搜索符合条件的最近的元素</td>
+</tr>
+<tr>
+<td>ConcurrentMap</td>
+<td>提供线程安全和原子性的Map</td>
+</tr>
+<tr>
+<td>ConcurrentNavigableMap</td>
+<td>继承自NavigableMap和ConcurrentMap，提供线程安全的同时，支持快速搜索</td>
+</tr>
+<tr>
+<td>AbstractMap</td>
+<td>提供Map接口的框架实现</td>
+</tr>
+</tbody></table>
 <blockquote>
 <p><strong><code>AbstractMap</code></strong><br>如果想要开发自定义的Map，建议扩展AbstractMap，其中提供了一些默认实现。除了 Hashtable 和 Properties，其它实现类都继承自AbstractMap。</p>
 </blockquote>

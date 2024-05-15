@@ -506,7 +506,38 @@
 <p>从技术组成来看，Activiti最大的优势是采用了PVM（流程虚拟机），支持除了BPMN2.0规范之外的流程格式，与外部服务有良好的集成能力，延续了jBPM3、jBPM4良好的社区支持，服务接口清晰，链式API更为优雅；劣势是持久化层没有遵循JPA规范。</p>
 <p>jBPM最大的优势是采用了Apache Mina异步通信技术，采用JPA&#x2F;JTA持久化方面的标准，以功能齐全的Guvnor作为流程仓库，有RedHat的专业化支持；但其劣势也很明显，对自身技术依赖过紧且目前仅支持BPMN2。</p>
 <p>至于Camunda BPM 7战略目标是“开发者友好”，jBPM则致力于“零代码”的思想，而Camunda BPM与Activiti的区别零碎且不明显。</p>
-<p>项目名称 | 企业 | 开始时间 | 开源方式 | 部署方式<br>– | – | – | – | – | –<br>jBPM | Red Hat | 2006 | 社区版和企业版相同 | 支持嵌入式和独立部署<br>Activiti | Alfresco | 2010 | 社区版和企业版不同 | 支持嵌入式和独立部署<br>Camunda BPM| Camunda | 2012 | 社区版和企业版不同 | 支持嵌入式和独立部署</p>
+<table>
+<thead>
+<tr>
+<th>项目名称</th>
+<th>企业</th>
+<th>开始时间</th>
+<th>开源方式</th>
+<th>部署方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>jBPM</td>
+<td>Red Hat</td>
+<td>2006</td>
+<td>社区版和企业版相同</td>
+<td>支持嵌入式和独立部署</td>
+</tr>
+<tr>
+<td>Activiti</td>
+<td>Alfresco</td>
+<td>2010</td>
+<td>社区版和企业版不同</td>
+<td>支持嵌入式和独立部署</td>
+</tr>
+<tr>
+<td>Camunda BPM</td>
+<td>Camunda</td>
+<td>2012</td>
+<td>社区版和企业版不同</td>
+<td>支持嵌入式和独立部署</td>
+</tr>
+</tbody></table>
 <p>事实上三者的区别非常多，但随时时间的推移和版本迅速迭代，很多功能存在重叠，现在很难说哪个项目更强一些。当然，Camunda BPM出现时间最晚，社区也比较有活力，有文章(<a href="http://www.bpm-guide.de/2016/10/19/5-reasons-to-switch-from-activiti-to-camunda/">5 Reasons to switch from Activiti to Camunda</a>)声称其比Activiti更具优势。</p>
 <p>Activiti的发展历史：</p>
 <p>2010年3月，jBPM的两位主要开发人员Tom Baeyens和Joram Barrez 离开了Red Hat，并成为了Alfresco员工的Activiti 。Activiti基于他们使用jBPM的工作流程经验，但它是一个新的代码库，不基于任何以前的jBPM 代码。</p>
