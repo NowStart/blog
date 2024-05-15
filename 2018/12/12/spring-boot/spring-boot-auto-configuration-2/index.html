@@ -402,7 +402,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.6k
+                    2.7k
                 </div>
                 
 
@@ -476,61 +476,66 @@
 <blockquote>
 <p><strong>注意</strong><br/></p>
 <p>另外，除了上述的Java代码之外，还需要配在classpath目录下的<code>META-INF/spring.factories</code>文件中，存在如下配置, Spring Boot启动时将检查文件中是否存在如上配置，若不存在则不加载该自动配置。</p>
-<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">org.springframework.boot.autoconfigure.EnableAutoConfiguration</span><span class="token punctuation">=</span><span class="token value attr-value">\
-org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class=" language-properties"><code class="language-properties"><span class="token attr-name"> org.springframework.boot.autoconfigure.EnableAutoConfiguration</span><span class="token punctuation">=</span><span class="token attr-value">\
+ org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration</span>
+</code></pre>
 </blockquote>
-<h3 id="2-1-Configuration类"><a href="#2-1-Configuration类" class="headerlink" title="2.1 @Configuration类"></a>2.1 @Configuration类</h3><ol>
-<li><code>@Configuration类</code>类中指定若启用该自动配置后，创建哪些Bean；同时添加@Conditional*和@EnableConfigurationProperties注解，用于限制条件和指定属性。</li>
-</ol>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
-<span class="token annotation punctuation">@ConditionalOnClass</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token class-name">Servlet</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token class-name">StandardServletMultipartResolver</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span>
-		<span class="token class-name">MultipartConfigElement</span><span class="token punctuation">.</span><span class="token keyword">class</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-<span class="token annotation punctuation">@ConditionalOnProperty</span><span class="token punctuation">(</span>prefix <span class="token operator">=</span> <span class="token string">"spring.servlet.multipart"</span><span class="token punctuation">,</span> name <span class="token operator">=</span> <span class="token string">"enabled"</span><span class="token punctuation">,</span> matchIfMissing <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
-<span class="token annotation punctuation">@ConditionalOnWebApplication</span><span class="token punctuation">(</span>type <span class="token operator">=</span> <span class="token class-name">Type</span><span class="token punctuation">.</span><span class="token constant">SERVLET</span><span class="token punctuation">)</span>
-<span class="token annotation punctuation">@EnableConfigurationProperties</span><span class="token punctuation">(</span><span class="token class-name">MultipartProperties</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MultipartAutoConfiguration</span> <span class="token punctuation">&#123;</span>
+<pre><code>
+### 2.1 @Configuration类
 
-	<span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">MultipartProperties</span> multipartProperties<span class="token punctuation">;</span>
+1. &lt;code&gt;@Configuration类&lt;/code&gt;类中指定若启用该自动配置后，创建哪些Bean；同时添加@Conditional\*和@EnableConfigurationProperties注解，用于限制条件和指定属性。
 
-	<span class="token keyword">public</span> <span class="token class-name">MultipartAutoConfiguration</span><span class="token punctuation">(</span><span class="token class-name">MultipartProperties</span> multipartProperties<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-		<span class="token keyword">this</span><span class="token punctuation">.</span>multipartProperties <span class="token operator">=</span> multipartProperties<span class="token punctuation">;</span>
-	<span class="token punctuation">&#125;</span>
+````java
+@Configuration
+@ConditionalOnClass(&#123; Servlet.class, StandardServletMultipartResolver.class,
+        MultipartConfigElement.class &#125;)
+@ConditionalOnProperty(prefix = &quot;spring.servlet.multipart&quot;, name = &quot;enabled&quot;, matchIfMissing = true)
+@ConditionalOnWebApplication(type = Type.SERVLET)
+@EnableConfigurationProperties(MultipartProperties.class)
+public class MultipartAutoConfiguration &#123;
 
-	<span class="token annotation punctuation">@Bean</span>
-	<span class="token annotation punctuation">@ConditionalOnMissingBean</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token class-name">MultipartConfigElement</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span>
-			<span class="token class-name">CommonsMultipartResolver</span><span class="token punctuation">.</span><span class="token keyword">class</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-	<span class="token keyword">public</span> <span class="token class-name">MultipartConfigElement</span> <span class="token function">multipartConfigElement</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-		<span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>multipartProperties<span class="token punctuation">.</span><span class="token function">createMultipartConfig</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token punctuation">&#125;</span>
+    private final MultipartProperties multipartProperties;
 
-	<span class="token annotation punctuation">@Bean</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token class-name">DispatcherServlet</span><span class="token punctuation">.</span><span class="token constant">MULTIPART_RESOLVER_BEAN_NAME</span><span class="token punctuation">)</span>
-	<span class="token annotation punctuation">@ConditionalOnMissingBean</span><span class="token punctuation">(</span><span class="token class-name">MultipartResolver</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
-	<span class="token keyword">public</span> <span class="token class-name">StandardServletMultipartResolver</span> <span class="token function">multipartResolver</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-		<span class="token class-name">StandardServletMultipartResolver</span> multipartResolver <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StandardServletMultipartResolver</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-		multipartResolver<span class="token punctuation">.</span><span class="token function">setResolveLazily</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>multipartProperties<span class="token punctuation">.</span><span class="token function">isResolveLazily</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-		<span class="token keyword">return</span> multipartResolver<span class="token punctuation">;</span>
-	<span class="token punctuation">&#125;</span>
+    public MultipartAutoConfiguration(MultipartProperties multipartProperties) &#123;
+        this.multipartProperties = multipartProperties;
+    &#125;
 
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    @Bean
+    @ConditionalOnMissingBean(&#123; MultipartConfigElement.class,
+            CommonsMultipartResolver.class &#125;)
+    public MultipartConfigElement multipartConfigElement() &#123;
+        return this.multipartProperties.createMultipartConfig();
+    &#125;
 
+    @Bean(name = DispatcherServlet.MULTIPART_RESOLVER_BEAN_NAME)
+    @ConditionalOnMissingBean(MultipartResolver.class)
+    public StandardServletMultipartResolver multipartResolver() &#123;
+        StandardServletMultipartResolver multipartResolver = new StandardServletMultipartResolver();
+        multipartResolver.setResolveLazily(this.multipartProperties.isResolveLazily());
+        return multipartResolver;
+    &#125;
+
+&#125;
+</code></pre>
 <h3 id="2-2-Conditional-注解"><a href="#2-2-Conditional-注解" class="headerlink" title="2.2 @Conditional*注解"></a>2.2 @Conditional*注解</h3><p>指定自动配置需要经过哪些条件的筛选，可以定义多个<code>@Conditional*注解</code>，必须同时满足这些条件，才允许开启自动配置。这类注解的作用，通常是收集参数，再讲决定权委托到<code>@Conditional</code>的value中，如<code>OnClassCondition</code>、<code>OnPropertyCondition</code>等。</p>
 <p>在<code>MultipartAutoConfiguration</code>中使用的<code>@ConditionalOnProperty</code>如下：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span><span class="token class-name">RetentionPolicy</span><span class="token punctuation">.</span><span class="token constant">RUNTIME</span><span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token class-name">ElementType</span><span class="token punctuation">.</span><span class="token constant">TYPE</span><span class="token punctuation">,</span> <span class="token class-name">ElementType</span><span class="token punctuation">.</span><span class="token constant">METHOD</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<pre class=" language-java"><code class="language-java"><span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> ElementType<span class="token punctuation">.</span>TYPE<span class="token punctuation">,</span> ElementType<span class="token punctuation">.</span>METHOD <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
 <span class="token annotation punctuation">@Documented</span>
-<span class="token annotation punctuation">@Conditional</span><span class="token punctuation">(</span><span class="token class-name">OnPropertyCondition</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token annotation punctuation">@interface</span> <span class="token class-name">ConditionalOnProperty</span> <span class="token punctuation">&#123;</span>
+<span class="token annotation punctuation">@Conditional</span><span class="token punctuation">(</span>OnPropertyCondition<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">ConditionalOnProperty</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
 
-	<span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    String<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span><span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">;</span>
 
-	<span class="token class-name">String</span> <span class="token function">prefix</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
+    String <span class="token function">prefix</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
 
-	<span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    String<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span><span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">;</span>
 
-	<span class="token class-name">String</span> <span class="token function">havingValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
+    String <span class="token function">havingValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
 
-	<span class="token keyword">boolean</span> <span class="token function">matchIfMissing</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    <span class="token keyword">boolean</span> <span class="token function">matchIfMissing</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+</code></pre>
 <p>String Boot已经提供的<code>@Conditional*注解</code>注解如下：</p>
 <p>@ConditionalOnClass ： classpath中存在该类时起效<br>@ConditionalOnMissingClass ： classpath中不存在该类时起效<br>@ConditionalOnBean ： DI容器中存在该类型Bean时起效<br>@ConditionalOnMissingBean ： DI容器中不存在该类型Bean时起效<br>@ConditionalOnSingleCandidate ： DI容器中该类型Bean只有一个或@Primary的只有一个时起效<br>@ConditionalOnExpression ： SpEL表达式结果为true时<br>@ConditionalOnProperty ： 参数设置或者值一致时起效<br>@ConditionalOnResource ： 指定的文件存在时起效<br>@ConditionalOnJndi ： 指定的JNDI存在时起效<br>@ConditionalOnJava ： 指定的Java版本存在时起效<br>@ConditionalOnWebApplication ： Web应用环境下起效<br>@ConditionalOnNotWebApplication ： 非Web应用环境下起效</p>
 <h3 id="2-3-On-Condition类"><a href="#2-3-On-Condition类" class="headerlink" title="2.3 On*Condition类"></a>2.3 On*Condition类</h3><p>与<code>@Conditional*注解</code>是一对一的关系，接受<code>@Conditional*注解</code>的委托，同时获得传递过来的参数，<code>Condition</code>接口实现类根据参数返回一个boolean值，为true代表通过了该条件的校验。</p>
@@ -538,18 +543,18 @@ org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration</s
 <p>其中抽象类<code>SpringBootCondition</code>提供了日志上的优化，提供了合理的日志记录和一致的异常处理。</p>
 <h3 id="2-4-ConfigurationProperties类"><a href="#2-4-ConfigurationProperties类" class="headerlink" title="2.4 @ConfigurationProperties类"></a>2.4 @ConfigurationProperties类</h3><p><code>@ConfigurationProperties类</code>是通过<code>@EnableConfigurationProperties</code>开启的，它声明了一些属性，这些属性都可以在application.properties&#x2F;application.yml进行设置；同时，当前的自动配置也可以获得用户配置的属性值，根据不同的配置做出不同的动作。</p>
 <p><code>MultipartProperties</code>的代码片段如下：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@ConfigurationProperties</span><span class="token punctuation">(</span>prefix <span class="token operator">=</span> <span class="token string">"spring.servlet.multipart"</span><span class="token punctuation">,</span> ignoreUnknownFields <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MultipartProperties</span> <span class="token punctuation">&#123;</span>
+<pre class=" language-java"><code class="language-java"><span class="token annotation punctuation">@ConfigurationProperties</span><span class="token punctuation">(</span>prefix <span class="token operator">=</span> <span class="token string">"spring.servlet.multipart"</span><span class="token punctuation">,</span> ignoreUnknownFields <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MultipartProperties</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
 
-	<span class="token keyword">private</span> <span class="token keyword">boolean</span> enabled <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">boolean</span> enabled <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
 
-	<span class="token keyword">private</span> <span class="token class-name">String</span> location<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> String location<span class="token punctuation">;</span>
 
-	<span class="token keyword">private</span> <span class="token class-name">DataSize</span> maxFileSize <span class="token operator">=</span> <span class="token class-name">DataSize</span><span class="token punctuation">.</span><span class="token function">ofMegabytes</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> DataSize maxFileSize <span class="token operator">=</span> DataSize<span class="token punctuation">.</span><span class="token function">ofMegabytes</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+</code></pre>
 <h2 id="3-实战步骤"><a href="#3-实战步骤" class="headerlink" title="3. 实战步骤"></a>3. 实战步骤</h2><p>实现一个自定义自动配置，通常需要考虑这几个问题：</p>
 <ol>
 <li>自动配置到底配置了什么，内容有哪些；</li>
@@ -561,14 +566,15 @@ org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration</s
 </ol>
 <p>下面我们将搭配示例代码，对每一个问题进行详细阐述；整个工程代码已经提交到码云，点击<a href='https://gitee.com/ypk1226/custom-sample-spring-boot-auto-configuration' target='\_blank'>示例源码</a>查看；</p>
 <h3 id="3-1-定义自动配置的内容-Configuration类"><a href="#3-1-定义自动配置的内容-Configuration类" class="headerlink" title="3.1 定义自动配置的内容--@Configuration类"></a>3.1 定义自动配置的内容--@Configuration类</h3><p>定义自动配置的内容，即配置一个<code>@Configuration</code>类，在其内部声明想要创建的配置项；声明什么好呢，我们声明个girlfriend吧！</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//省略包</span>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">//省略包</span>
 <span class="token annotation punctuation">@Configuration</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GirlfriendAutoConfiguration</span> <span class="token punctuation">&#123;</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GirlfriendAutoConfiguration</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
     <span class="token annotation punctuation">@Bean</span>
-    <span class="token keyword">public</span> <span class="token class-name">GirlfriendAtHome</span> <span class="token function">girlfriendAtHome</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> GirlfriendAtHome <span class="token function">girlfriendAtHome</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
         <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">GirlfriendAtHome</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+</code></pre>
 <p>如此，一个简单的配置类就创建完了，当然目前它还只是个配置，不是自动的。</p>
 <h3 id="3-2-设定开启自动配置的条件-ConditionalOn-注解"><a href="#3-2-设定开启自动配置的条件-ConditionalOn-注解" class="headerlink" title="3.2 设定开启自动配置的条件--@ConditionalOn*注解"></a>3.2 设定开启自动配置的条件--@ConditionalOn*注解</h3><p>给<code>@Configuration</code>类增加<code>@ConditionalOn*</code>注解，设置条件。现在给<code>GirlfriendAutoConfiguration</code>增加条件<code>@ConditionalOnClass</code>和<code>@ConditionalOnMotherInLaw</code>，这样创建<code>GirlfriendAutoConfiguration</code>就多出了两个条件。</p>
 <ol>
@@ -576,97 +582,98 @@ org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration</s
 <li><code>@ConditionalOnMotherInLaw</code> 是我们自己创建的注解，用来校验岳母的信息，参数中传入心情为HAPPY；同时，为实现这个自定义条件，我们还创建了<code>OnMotherInLawCondition</code>类，该类继承自<code>SpringBootCondition</code>。</li>
 </ol>
 <p>此时代码是这样的：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//省略包</span>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">//省略包</span>
 <span class="token annotation punctuation">@Configuration</span>
-<span class="token annotation punctuation">@ConditionalOnClass</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">GirlfriendAtHome</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token comment">//必须在家</span>
-<span class="token annotation punctuation">@ConditionalOnMotherInLaw</span><span class="token punctuation">(</span>mood <span class="token operator">=</span> <span class="token class-name">MoodConst</span><span class="token punctuation">.</span><span class="token constant">HAPPY</span><span class="token punctuation">)</span><span class="token comment">//必须高兴才加载这个自动配置</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GirlfriendAutoConfiguration</span> <span class="token punctuation">&#123;</span>
+<span class="token annotation punctuation">@ConditionalOnClass</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>GirlfriendAtHome<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">//必须在家</span>
+<span class="token annotation punctuation">@ConditionalOnMotherInLaw</span><span class="token punctuation">(</span>mood <span class="token operator">=</span> MoodConst<span class="token punctuation">.</span>HAPPY<span class="token punctuation">)</span><span class="token comment" spellcheck="true">//必须高兴才加载这个自动配置</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GirlfriendAutoConfiguration</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
     <span class="token annotation punctuation">@Bean</span>
-    <span class="token keyword">public</span> <span class="token class-name">GirlfriendAtHome</span> <span class="token function">girlfriendAtHome</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> GirlfriendAtHome <span class="token function">girlfriendAtHome</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
         <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">GirlfriendAtHome</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//省略包</span>
-<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">ElementType</span><span class="token punctuation">.</span><span class="token constant">TYPE</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span><span class="token class-name">RetentionPolicy</span><span class="token punctuation">.</span><span class="token constant">RUNTIME</span><span class="token punctuation">)</span>
+    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+</code></pre>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">//省略包</span>
+<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>ElementType<span class="token punctuation">.</span>TYPE<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
 <span class="token annotation punctuation">@Documented</span>
-<span class="token annotation punctuation">@Conditional</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">OnMotherInLawCondition</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token annotation punctuation">@interface</span> <span class="token class-name">ConditionalOnMotherInLaw</span> <span class="token punctuation">&#123;</span>
-    <span class="token class-name">String</span> <span class="token function">mood</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//岳母心情</span>
+<span class="token annotation punctuation">@Conditional</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>OnMotherInLawCondition<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">ConditionalOnMotherInLaw</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    String <span class="token function">mood</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//岳母心情</span>
 
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//省略包</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">OnMotherInLawCondition</span> <span class="token keyword">extends</span> <span class="token class-name">SpringBootCondition</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">String</span> <span class="token constant">DEFAULT_MOOD</span> <span class="token operator">=</span> <span class="token class-name">MoodConst</span><span class="token punctuation">.</span><span class="token constant">HAPPY</span><span class="token punctuation">;</span><span class="token comment">//假定一直很开心</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+</code></pre>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">//省略包</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">OnMotherInLawCondition</span> <span class="token keyword">extends</span> <span class="token class-name">SpringBootCondition</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> String DEFAULT_MOOD <span class="token operator">=</span> MoodConst<span class="token punctuation">.</span>HAPPY<span class="token punctuation">;</span><span class="token comment" spellcheck="true">//假定一直很开心</span>
 
     <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token class-name">ConditionOutcome</span> <span class="token function">getMatchOutcome</span><span class="token punctuation">(</span><span class="token class-name">ConditionContext</span> context<span class="token punctuation">,</span> <span class="token class-name">AnnotatedTypeMetadata</span> metadata<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> attributes <span class="token operator">=</span> metadata<span class="token punctuation">.</span><span class="token function">getAnnotationAttributes</span><span class="token punctuation">(</span><span class="token class-name">ConditionalOnMotherInLaw</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">String</span> mood <span class="token operator">=</span> attributes<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"mood"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">boolean</span> match <span class="token operator">=</span> <span class="token constant">DEFAULT_MOOD</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>mood<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">String</span> message <span class="token operator">=</span> match <span class="token operator">?</span> <span class="token string">"心情匹配"</span> <span class="token operator">:</span> <span class="token string">"心情不匹配"</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> ConditionOutcome <span class="token function">getMatchOutcome</span><span class="token punctuation">(</span>ConditionContext context<span class="token punctuation">,</span> AnnotatedTypeMetadata metadata<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">></span> attributes <span class="token operator">=</span> metadata<span class="token punctuation">.</span><span class="token function">getAnnotationAttributes</span><span class="token punctuation">(</span>ConditionalOnMotherInLaw<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        String mood <span class="token operator">=</span> attributes<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"mood"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">boolean</span> match <span class="token operator">=</span> DEFAULT_MOOD<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>mood<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        String message <span class="token operator">=</span> match <span class="token operator">?</span> <span class="token string">"心情匹配"</span> <span class="token operator">:</span> <span class="token string">"心情不匹配"</span><span class="token punctuation">;</span>
         <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ConditionOutcome</span><span class="token punctuation">(</span>match<span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
 
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+</code></pre>
 <p>至此，这个普通的<code>@Configuration</code>类拥有了两个限制条件，只有在两个条件都成立时才会被创建。</p>
 <h3 id="3-3-设计支持定制的参数-EnableConfigurationProperties"><a href="#3-3-设计支持定制的参数-EnableConfigurationProperties" class="headerlink" title="3.3 设计支持定制的参数--@EnableConfigurationProperties"></a>3.3 设计支持定制的参数--@EnableConfigurationProperties</h3><p>有时候，girlfriend的心情会发生变化，所以我们也要支持用户在application.properties&#x2F;application.yaml中定制心情，<code>@EnableConfigurationProperties</code>注解专门用来完成配置项的创建。</p>
 <p>为<code>GirlfriendAutoConfiguration</code>增加注解<code>@EnableConfigurationProperties</code>，同时指定具体的配置实现类<code>GirlfriendProperties</code>，代码如下：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//省略包</span>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">//省略包</span>
 <span class="token annotation punctuation">@Configuration</span>
-<span class="token annotation punctuation">@ConditionalOnClass</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">GirlfriendAtHome</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token comment">//必须在家</span>
-<span class="token annotation punctuation">@ConditionalOnMotherInLaw</span><span class="token punctuation">(</span>mood <span class="token operator">=</span> <span class="token class-name">MoodConst</span><span class="token punctuation">.</span><span class="token constant">HAPPY</span><span class="token punctuation">)</span><span class="token comment">//必须高兴才加载这个自动配置</span>
-<span class="token annotation punctuation">@EnableConfigurationProperties</span><span class="token punctuation">(</span><span class="token class-name">GirlfriendProperties</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GirlfriendAutoConfiguration</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">GirlfriendProperties</span> properties<span class="token punctuation">;</span>
+<span class="token annotation punctuation">@ConditionalOnClass</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>GirlfriendAtHome<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">//必须在家</span>
+<span class="token annotation punctuation">@ConditionalOnMotherInLaw</span><span class="token punctuation">(</span>mood <span class="token operator">=</span> MoodConst<span class="token punctuation">.</span>HAPPY<span class="token punctuation">)</span><span class="token comment" spellcheck="true">//必须高兴才加载这个自动配置</span>
+<span class="token annotation punctuation">@EnableConfigurationProperties</span><span class="token punctuation">(</span>GirlfriendProperties<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GirlfriendAutoConfiguration</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> GirlfriendProperties properties<span class="token punctuation">;</span>
     <span class="token annotation punctuation">@Autowired</span>
-    <span class="token keyword">public</span> <span class="token class-name">GirlfriendAutoConfiguration</span><span class="token punctuation">(</span><span class="token class-name">GirlfriendProperties</span> properties<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token function">GirlfriendAutoConfiguration</span><span class="token punctuation">(</span>GirlfriendProperties properties<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
         <span class="token keyword">this</span><span class="token punctuation">.</span>properties <span class="token operator">=</span> properties<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
     <span class="token annotation punctuation">@Bean</span>
-    <span class="token keyword">public</span> <span class="token class-name">GirlfriendAtHome</span> <span class="token function">girlfriendAtHome</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">String</span> mood <span class="token operator">=</span> properties<span class="token punctuation">.</span><span class="token function">getMood</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        mood <span class="token operator">=</span> mood <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">?</span> <span class="token string">"未知"</span> <span class="token operator">:</span> mood<span class="token punctuation">;</span>
-        <span class="token class-name">GirlfriendAtHome</span> girlfriendAtHome <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">GirlfriendAtHome</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> GirlfriendAtHome <span class="token function">girlfriendAtHome</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        String mood <span class="token operator">=</span> properties<span class="token punctuation">.</span><span class="token function">getMood</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        mood <span class="token operator">=</span> mood <span class="token operator">==</span> null <span class="token operator">?</span> <span class="token string">"未知"</span> <span class="token operator">:</span> mood<span class="token punctuation">;</span>
+        GirlfriendAtHome girlfriendAtHome <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">GirlfriendAtHome</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         girlfriendAtHome<span class="token punctuation">.</span><span class="token function">setMood</span><span class="token punctuation">(</span>mood<span class="token punctuation">)</span><span class="token punctuation">;</span>
         girlfriendAtHome<span class="token punctuation">.</span><span class="token function">setName</span><span class="token punctuation">(</span><span class="token string">"甄姬"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         girlfriendAtHome<span class="token punctuation">.</span><span class="token function">setAge</span><span class="token punctuation">(</span><span class="token string">"18"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token keyword">return</span> girlfriendAtHome<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//省略包</span>
+    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+</code></pre>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">//省略包</span>
 <span class="token annotation punctuation">@ConfigurationProperties</span><span class="token punctuation">(</span><span class="token string">"third.party.girlfriend"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GirlfriendProperties</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">private</span> <span class="token class-name">String</span> mood<span class="token punctuation">;</span><span class="token comment">//心情</span>
-    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getMood</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GirlfriendProperties</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> String mood<span class="token punctuation">;</span><span class="token comment" spellcheck="true">//心情</span>
+    <span class="token keyword">public</span> String <span class="token function">getMood</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
         <span class="token keyword">return</span> mood<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setMood</span><span class="token punctuation">(</span><span class="token class-name">String</span> mood<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setMood</span><span class="token punctuation">(</span>String mood<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
         <span class="token keyword">this</span><span class="token punctuation">.</span>mood <span class="token operator">=</span> mood<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+</code></pre>
 <p>这样，我们就可以在application.properties&#x2F;application.yaml中指定girlfriend的心情了：third.party.girlfriend.mood&#x3D;happy</p>
 <h3 id="3-4-确定加载顺序"><a href="#3-4-确定加载顺序" class="headerlink" title="3.4 确定加载顺序"></a>3.4 确定加载顺序</h3><p>Spring Boot为开发者提供了几个注解，专门用于指定自动配置的先后顺序，这些注解使用时注解在<code>@Configuration</code>类上即可。</p>
 <p><code>@AutoConfigureAfter</code>：在指定的配置类初始化后再加载, 如@AutoConfigureAfter(JacksonAutoConfiguration.class)<br><code>@AutoConfigureBefore</code>：在指定的配置类初始化前加载, 如@AutoConfigureBefore(JacksonAutoConfiguration.class)<br><code>@AutoConfigureOrder</code>：数越小越先初始化， 如@AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE)</p>
 <p>我们为<code>GirlfriendAutoConfiguration</code>增加<code>@AutoConfigureOrder</code>，使其优先级最高^_^。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//省略包</span>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">//省略包</span>
 <span class="token annotation punctuation">@Configuration</span>
-<span class="token annotation punctuation">@ConditionalOnClass</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">GirlfriendAtHome</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-<span class="token annotation punctuation">@ConditionalOnMotherInLaw</span><span class="token punctuation">(</span>mood <span class="token operator">=</span> <span class="token class-name">MoodConst</span><span class="token punctuation">.</span><span class="token constant">HAPPY</span><span class="token punctuation">)</span><span class="token comment">//必须高兴才加载这个自动配置</span>
-<span class="token annotation punctuation">@EnableConfigurationProperties</span><span class="token punctuation">(</span><span class="token class-name">GirlfriendProperties</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
-<span class="token annotation punctuation">@AutoConfigureOrder</span><span class="token punctuation">(</span><span class="token class-name">Ordered</span><span class="token punctuation">.</span><span class="token constant">HIGHEST_PRECEDENCE</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GirlfriendAutoConfiguration</span> <span class="token punctuation">&#123;</span>
-  <span class="token comment">//省略</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<span class="token annotation punctuation">@ConditionalOnClass</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>GirlfriendAtHome<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@ConditionalOnMotherInLaw</span><span class="token punctuation">(</span>mood <span class="token operator">=</span> MoodConst<span class="token punctuation">.</span>HAPPY<span class="token punctuation">)</span><span class="token comment" spellcheck="true">//必须高兴才加载这个自动配置</span>
+<span class="token annotation punctuation">@EnableConfigurationProperties</span><span class="token punctuation">(</span>GirlfriendProperties<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@AutoConfigureOrder</span><span class="token punctuation">(</span>Ordered<span class="token punctuation">.</span>HIGHEST_PRECEDENCE<span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GirlfriendAutoConfiguration</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">//省略</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+</code></pre>
 <h3 id="3-5-使自定义的自动配置被Spring纳入管理范围–META-INF-spring-factories"><a href="#3-5-使自定义的自动配置被Spring纳入管理范围–META-INF-spring-factories" class="headerlink" title="3.5 使自定义的自动配置被Spring纳入管理范围–META-INF&#x2F;spring.factories"></a>3.5 使自定义的自动配置被Spring纳入管理范围–META-INF&#x2F;spring.factories</h3><p>现在万事具备，只欠东风，Spring Boot在<code>META-INF/spring.factories</code>中设置有总开关，必须开启开行。增加如下配置</p>
-<pre class="line-numbers language-none"><code class="language-none">org.springframework.boot.autoconfigure.EnableAutoConfiguration&#x3D;\
-com.example.learn.girlfriend.spring.boot.autoconfigure.GirlfriendAutoConfiguration<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
+<pre><code>org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.example.learn.girlfriend.spring.boot.autoconfigure.GirlfriendAutoConfiguration
+</code></pre>
 <h3 id="3-6-用户如何确认系统是否开启了该自动配置–使用-Ddebug参数启动"><a href="#3-6-用户如何确认系统是否开启了该自动配置–使用-Ddebug参数启动" class="headerlink" title="3.6 用户如何确认系统是否开启了该自动配置–使用-Ddebug参数启动"></a>3.6 用户如何确认系统是否开启了该自动配置–使用-Ddebug参数启动</h3><p>启动服务时，增加VM参数-Ddebug，就能看到我们的girlfriend是否正常加载了：<br><img src="/images/2018/12/auto-configuration-result-check.png" alt="auto-configuration-result-check"></p>
 <h2 id="4-小结"><a href="#4-小结" class="headerlink" title="4. 小结"></a>4. 小结</h2><p>本文从这几个方面阐述如何自定义一个Auto-configuration： 原理、结构、实战步骤；在理解内部原理和结构之后，再实现了一个简单的自动配置。</p>
 <p>原理：基于Spring Framework的扩展机制<code>@Import</code>和<code>ImportSelector</code>、<code>@Conditional</code>和<code>Condition</code>，实现自动配置功能。</p>

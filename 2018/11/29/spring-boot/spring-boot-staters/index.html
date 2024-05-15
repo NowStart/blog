@@ -433,7 +433,7 @@
 <span id="more"></span>
 
 <h2 id="1-诞生背景"><a href="#1-诞生背景" class="headerlink" title="1. 诞生背景"></a>1. 诞生背景</h2><p>以往开发者想要集成第三方组件，通常需要将对应的依赖添加进pom，然后进行相应集成配置工作。以jackson为例，需要的dependency有4个之多，如下：</p>
-<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+<pre class=" language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>com.fasterxml.jackson.core<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>jackson-databind<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>2.9.7<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
@@ -452,8 +452,8 @@
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>com.fasterxml.jackson.module<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>jackson-module-parameter-names<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>2.9.7<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+</code></pre>
 <p>通常这些组件需要的依赖和配置差别不大，但每次使用都要做一遍，这对于“懒惰的”开发者门，实在非常不友好。于是Spring团队在分析总结常用的组件模型后，提出了Starter这个概念用以打包这些依赖和配置，从而达到了第三方组件的一站式集成的目的。</p>
 <h2 id="2-Stater是什么"><a href="#2-Stater是什么" class="headerlink" title="2. Stater是什么"></a>2. Stater是什么</h2><p>Stater是一组依赖描述符，使开发者可以一站式依赖一些组件（包括默认配置），而不必根据这些组件的示例拷贝粘贴相关依赖配置。换言之，Starter就是Maven的一个artifact，它包含两部分内容：</p>
 <p>1、聚合多个dependency，使依赖更方便<br>2、增加Auto-configuration特性，提供组件的默认配置，达到开箱即用的目的</p>

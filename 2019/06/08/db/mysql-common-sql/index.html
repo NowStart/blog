@@ -429,7 +429,7 @@ select t.* from (">
                 <p>写一些Mysql脚本时，总会忘记部分具体语法，此时不得不面向浏览器编程，这个体验很糟糕。鉴于此，这里做一个简要的记录，以便快速查看。</p>
 <span id="more"></span>
 
-<h2 id="查询相邻的两条数据"><a href="#查询相邻的两条数据" class="headerlink" title="查询相邻的两条数据"></a>查询相邻的两条数据</h2><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> s1<span class="token punctuation">.</span><span class="token operator">*</span><span class="token punctuation">,</span> s2<span class="token punctuation">.</span><span class="token operator">*</span> <span class="token keyword">from</span>
+<h2 id="查询相邻的两条数据"><a href="#查询相邻的两条数据" class="headerlink" title="查询相邻的两条数据"></a>查询相邻的两条数据</h2><pre class=" language-sql"><code class="language-sql"><span class="token keyword">select</span> s1<span class="token punctuation">.</span><span class="token operator">*</span><span class="token punctuation">,</span> s2<span class="token punctuation">.</span><span class="token operator">*</span> <span class="token keyword">from</span>
 <span class="token punctuation">(</span>
 <span class="token keyword">select</span> t<span class="token punctuation">.</span><span class="token operator">*</span> <span class="token keyword">from</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token variable">@rownum1</span> :<span class="token operator">=</span> <span class="token variable">@rownum2</span> <span class="token operator">+</span> <span class="token number">1</span> <span class="token keyword">AS</span> rank1<span class="token punctuation">,</span>	id_<span class="token punctuation">,</span> name_  <span class="token keyword">FROM</span>	<span class="token punctuation">(</span> <span class="token keyword">SELECT</span> <span class="token variable">@rownum2</span> :<span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">)</span> r<span class="token punctuation">,</span>	ACT_HI_TASKINST<span class="token punctuation">)</span> t
 <span class="token keyword">where</span> t<span class="token punctuation">.</span>name_ <span class="token operator">=</span> <span class="token string">'补充材料'</span><span class="token punctuation">)</span> s1
@@ -437,34 +437,34 @@ select t.* from (">
 <span class="token punctuation">(</span>
 <span class="token keyword">select</span> t<span class="token punctuation">.</span><span class="token operator">*</span> <span class="token keyword">from</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token variable">@rownum2</span> :<span class="token operator">=</span> <span class="token variable">@rownum2</span> <span class="token operator">+</span> <span class="token number">1</span> <span class="token keyword">AS</span> rank2<span class="token punctuation">,</span>	id_<span class="token punctuation">,</span> name_  <span class="token keyword">FROM</span>	<span class="token punctuation">(</span> <span class="token keyword">SELECT</span> <span class="token variable">@rownum2</span> :<span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span> r<span class="token punctuation">,</span>	ACT_HI_TASKINST<span class="token punctuation">)</span> t
 <span class="token punctuation">)</span> s2
-<span class="token keyword">on</span> s1<span class="token punctuation">.</span>rank1 <span class="token operator">=</span> s2<span class="token punctuation">.</span>rank2<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token keyword">on</span> s1<span class="token punctuation">.</span>rank1 <span class="token operator">=</span> s2<span class="token punctuation">.</span>rank2<span class="token punctuation">;</span>
+</code></pre>
+<h2 id="常见函数"><a href="#常见函数" class="headerlink" title="常见函数"></a>常见函数</h2><pre class=" language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> curdate<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<h2 id="常见函数"><a href="#常见函数" class="headerlink" title="常见函数"></a>常见函数</h2><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> curdate<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token comment">-- 逗号隔开，列转行</span>
+<span class="token comment" spellcheck="true">-- 逗号隔开，列转行</span>
 <span class="token keyword">select</span> group_concat<span class="token punctuation">(</span>id<span class="token punctuation">)</span> <span class="token keyword">from</span> Test<span class="token punctuation">;</span>
 
-<span class="token comment">-- 计算时间差、格式化日期</span>
-TIMESTAMPDIFF<span class="token punctuation">(</span><span class="token keyword">DAY</span><span class="token punctuation">,</span> DATE_FORMAT<span class="token punctuation">(</span>t1<span class="token punctuation">.</span>START_TIME_<span class="token punctuation">,</span><span class="token string">'%y-%m-%d'</span><span class="token punctuation">)</span>  <span class="token punctuation">,</span> <span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">-- 计算时间差、格式化日期</span>
+TIMESTAMPDIFF<span class="token punctuation">(</span>DAY<span class="token punctuation">,</span> DATE_FORMAT<span class="token punctuation">(</span>t1<span class="token punctuation">.</span>START_TIME_<span class="token punctuation">,</span><span class="token string">'%y-%m-%d'</span><span class="token punctuation">)</span>  <span class="token punctuation">,</span> <span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-<span class="token comment">-- 60分钟内的数据</span>
-updateTime <span class="token operator">></span> date_add<span class="token punctuation">(</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token keyword">interval</span> <span class="token operator">-</span><span class="token number">60</span> <span class="token keyword">minute</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">-- 60分钟内的数据</span>
+updateTime <span class="token operator">></span> date_add<span class="token punctuation">(</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>interval <span class="token operator">-</span><span class="token number">60</span> minute<span class="token punctuation">)</span>
 
-<span class="token comment">-- if函数</span>
-<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token keyword">boolean</span><span class="token punctuation">,</span> str2<span class="token punctuation">,</span> str3<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="操作字段"><a href="#操作字段" class="headerlink" title="操作字段"></a>操作字段</h2><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 修改表名</span>
+<span class="token comment" spellcheck="true">-- if函数</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token keyword">boolean</span><span class="token punctuation">,</span> str2<span class="token punctuation">,</span> str3<span class="token punctuation">)</span>
+</code></pre>
+<h2 id="操作字段"><a href="#操作字段" class="headerlink" title="操作字段"></a>操作字段</h2><pre class=" language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 修改表名</span>
 <span class="token keyword">alter</span> <span class="token keyword">table</span> Test <span class="token keyword">rename</span> <span class="token keyword">to</span> Test1<span class="token punctuation">;</span>
-<span class="token comment">-- 增加列</span>
+<span class="token comment" spellcheck="true">-- 增加列</span>
 <span class="token keyword">alter</span> <span class="token keyword">table</span> Test <span class="token keyword">add</span> <span class="token keyword">column</span> username <span class="token keyword">int</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">)</span> <span class="token keyword">comment</span> <span class="token string">'ID'</span> <span class="token keyword">after</span> id<span class="token punctuation">;</span>
-<span class="token comment">-- 修改列属性</span>
+<span class="token comment" spellcheck="true">-- 修改列属性</span>
 <span class="token keyword">alter</span> <span class="token keyword">table</span> Test <span class="token keyword">modify</span> <span class="token keyword">column</span> username <span class="token keyword">int</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">)</span> <span class="token keyword">comment</span> <span class="token string">'ID'</span><span class="token punctuation">;</span>
-<span class="token comment">-- 修改列名和属性</span>
+<span class="token comment" spellcheck="true">-- 修改列名和属性</span>
 <span class="token keyword">alter</span> <span class="token keyword">table</span> Test change <span class="token keyword">column</span> username username1 <span class="token keyword">int</span><span class="token punctuation">(</span><span class="token number">13</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment">-- 删除列</span>
-<span class="token keyword">alter</span> <span class="token keyword">table</span> Test <span class="token keyword">drop</span> <span class="token keyword">column</span> username<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="操作索引"><a href="#操作索引" class="headerlink" title="操作索引"></a>操作索引</h2><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 创建索引</span>
+<span class="token comment" spellcheck="true">-- 删除列</span>
+<span class="token keyword">alter</span> <span class="token keyword">table</span> Test <span class="token keyword">drop</span> <span class="token keyword">column</span> username<span class="token punctuation">;</span>
+</code></pre>
+<h2 id="操作索引"><a href="#操作索引" class="headerlink" title="操作索引"></a>操作索引</h2><pre class=" language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 创建索引</span>
 <span class="token keyword">alter</span> <span class="token keyword">table</span> Test <span class="token keyword">add</span> <span class="token keyword">index</span> index_id <span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">alter</span> <span class="token keyword">table</span> Test <span class="token keyword">add</span> <span class="token keyword">unique</span> <span class="token keyword">index</span> index_id <span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">alter</span> <span class="token keyword">table</span> Test <span class="token keyword">add</span> fulltext <span class="token keyword">index</span> index_id <span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -473,9 +473,10 @@ updateTime <span class="token operator">></span> date_add<span class="token punc
 <span class="token keyword">create</span> <span class="token keyword">unique</span> <span class="token keyword">index</span> index_id <span class="token keyword">on</span> Test <span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">create</span> fulltext <span class="token keyword">index</span> index_id <span class="token keyword">on</span> Test <span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment">-- 删除索引</span>
+<span class="token comment" spellcheck="true">-- 删除索引</span>
 <span class="token keyword">alter</span> <span class="token keyword">table</span> Test <span class="token keyword">drop</span> <span class="token keyword">index</span> index_id <span class="token punctuation">;</span>
-<span class="token keyword">drop</span> <span class="token keyword">index</span> index_id <span class="token keyword">on</span> Test <span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token keyword">drop</span> <span class="token keyword">index</span> index_id <span class="token keyword">on</span> Test <span class="token punctuation">;</span>
+</code></pre>
 
             </div>
             <hr/>

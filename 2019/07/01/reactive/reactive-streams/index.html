@@ -448,26 +448,26 @@
 <p>Reactive Streams API的范围是找到一组最小的接口，方法和协议，这些接口，方法和协议将描述必要的操作和实体，<strong>从而实现具有非阻塞背压的异步数据流</strong>。</p>
 <p>从代码结构上看，它主要包含两部分：<code>reactive-streams</code>和<code>reactive-streams-tck</code>。其中TCK意为技术兼容包（Technology Compatibility Kit ），为实现Reactive Streams接口提供帮助。</p>
 <p><code>Reactive Streams API</code>中仅仅包含了如下四个接口：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//发布者</span>
-<span class="token keyword">public</span>  <span class="token keyword">interface</span>  <span class="token class-name">Publisher</span> <span class="token generics"><span class="token punctuation">&lt;</span> <span class="token class-name">T</span> <span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">public</span>  <span class="token keyword">void</span>  subscribe（<span class="token class-name">Subscriber</span> <span class="token operator">&lt;</span>？ <span class="token keyword">super</span>  <span class="token class-name">T</span> <span class="token operator">></span>  s）<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
-<span class="token comment">//订阅者</span>
-<span class="token keyword">public</span>  <span class="token keyword">interface</span>  <span class="token class-name">Subscriber</span> <span class="token generics"><span class="token punctuation">&lt;</span> <span class="token class-name">T</span> <span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">public</span>  <span class="token keyword">void</span>  onSubscribe（<span class="token class-name">Subscription</span>  s）<span class="token punctuation">;</span>
-    <span class="token keyword">public</span>  <span class="token keyword">void</span>  onNext（<span class="token class-name">T</span>  t）<span class="token punctuation">;</span>
-    <span class="token keyword">public</span>  <span class="token keyword">void</span>  onError（<span class="token class-name">Throwable</span>  t）<span class="token punctuation">;</span>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">//发布者</span>
+<span class="token keyword">public</span>  <span class="token keyword">interface</span>  <span class="token class-name">Publisher</span> <span class="token operator">&lt;</span> T <span class="token operator">></span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span>  <span class="token keyword">void</span>  subscribe（Subscriber <span class="token operator">&lt;</span>？ <span class="token keyword">super</span>  T <span class="token operator">></span>  s）<span class="token punctuation">;</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//订阅者</span>
+<span class="token keyword">public</span>  <span class="token keyword">interface</span>  <span class="token class-name">Subscriber</span> <span class="token operator">&lt;</span> T <span class="token operator">></span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span>  <span class="token keyword">void</span>  onSubscribe（Subscription  s）<span class="token punctuation">;</span>
+    <span class="token keyword">public</span>  <span class="token keyword">void</span>  onNext（T  t）<span class="token punctuation">;</span>
+    <span class="token keyword">public</span>  <span class="token keyword">void</span>  onError（Throwable  t）<span class="token punctuation">;</span>
     <span class="token keyword">public</span>  <span class="token keyword">void</span>  onComplete（）<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
-<span class="token comment">//表示Subscriber消费Publisher发布的一个消息的生命周期</span>
-<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Subscription</span> <span class="token punctuation">&#123;</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//表示Subscriber消费Publisher发布的一个消息的生命周期</span>
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Subscription</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">request</span><span class="token punctuation">(</span><span class="token keyword">long</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">cancel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
-<span class="token comment">//处理器，表示一个处理阶段，它既是订阅者也是发布者，并且遵守两者的契约</span>
-<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Processor</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">,</span> <span class="token class-name">R</span><span class="token punctuation">></span></span> <span class="token keyword">extends</span> <span class="token class-name">Subscriber</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span><span class="token punctuation">,</span> <span class="token class-name">Publisher</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">R</span><span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//处理器，表示一个处理阶段，它既是订阅者也是发布者，并且遵守两者的契约</span>
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Processor</span><span class="token operator">&lt;</span>T<span class="token punctuation">,</span> R<span class="token operator">></span> <span class="token keyword">extends</span> <span class="token class-name">Subscriber</span><span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">,</span> Publisher<span class="token operator">&lt;</span>R<span class="token operator">></span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+</code></pre>
 <h2 id="3-目标"><a href="#3-目标" class="headerlink" title="3. 目标"></a>3. 目标</h2><p>Reactive Streams的主要目标有这两个：</p>
 <ol>
 <li>管理跨异步边界的流数据交换 - 即将元素传递到另一个线程或线程池；</li>

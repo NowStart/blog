@@ -399,7 +399,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    924
+                    936
                 </div>
                 
 
@@ -451,58 +451,58 @@
 <p><strong>ECMAScript 和 TypeScript</strong><br/></p>
 <p><a href="https://www.typescriptlang.org/index.html">TypeScript</a>支持<a href="https://www.ecma-international.org/ecma-262/6.0/index.html">ECMAScript6</a>标准（实际上相当于是对ECMAScript6的提前实现），并且能将代码根据需求转换为 ES3&#x2F;5&#x2F;6。这意味着开发者可以通过TypeScript使用最新的ECMAScript特性，无需再考虑兼容性的问题。</p>
 </blockquote>
-<h2 id="3-基础类型"><a href="#3-基础类型" class="headerlink" title="3. 基础类型"></a>3. 基础类型</h2><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">//布尔值</span>
-<span class="token keyword">let</span> <span class="token literal-property property">isDone</span><span class="token operator">:</span> boolean <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-<span class="token comment">//数字</span>
-<span class="token keyword">let</span> <span class="token literal-property property">decLiteral</span><span class="token operator">:</span> number <span class="token operator">=</span> <span class="token number">6</span><span class="token punctuation">;</span>
-<span class="token comment">//字符串</span>
-<span class="token keyword">let</span> <span class="token literal-property property">name</span><span class="token operator">:</span> string <span class="token operator">=</span> <span class="token string">"bob"</span><span class="token punctuation">;</span>
-<span class="token comment">//数组</span>
-<span class="token keyword">let</span> <span class="token literal-property property">list</span><span class="token operator">:</span> number<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token keyword">let</span> <span class="token literal-property property">list</span><span class="token operator">:</span> Array<span class="token operator">&lt;</span>number<span class="token operator">></span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token comment">//元组</span>
-<span class="token keyword">let</span> <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token punctuation">[</span>string<span class="token punctuation">,</span> number<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token comment">// Declare a tuple type</span>
-x <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'hello'</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// Initialize it OK</span>
-x <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token string">'hello'</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// Initialize it incorrectly Error</span>
-<span class="token comment">//枚举 enum</span>
-<span class="token keyword">enum</span> Color <span class="token punctuation">&#123;</span>Red<span class="token punctuation">,</span> Green<span class="token punctuation">,</span> Blue<span class="token punctuation">&#125;</span>
-<span class="token keyword">let</span> <span class="token literal-property property">c</span><span class="token operator">:</span> Color <span class="token operator">=</span> Color<span class="token punctuation">.</span>Green<span class="token punctuation">;</span>
+<h2 id="3-基础类型"><a href="#3-基础类型" class="headerlink" title="3. 基础类型"></a>3. 基础类型</h2><pre class=" language-js"><code class="language-js"><span class="token comment" spellcheck="true">//布尔值</span>
+<span class="token keyword">let</span> isDone<span class="token punctuation">:</span> boolean <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//数字</span>
+<span class="token keyword">let</span> decLiteral<span class="token punctuation">:</span> number <span class="token operator">=</span> <span class="token number">6</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//字符串</span>
+<span class="token keyword">let</span> name<span class="token punctuation">:</span> string <span class="token operator">=</span> <span class="token string">"bob"</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//数组</span>
+<span class="token keyword">let</span> list<span class="token punctuation">:</span> number<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> list<span class="token punctuation">:</span> Array<span class="token operator">&lt;</span>number<span class="token operator">></span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//元组</span>
+<span class="token keyword">let</span> x<span class="token punctuation">:</span> <span class="token punctuation">[</span>string<span class="token punctuation">,</span> number<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// Declare a tuple type</span>
+x <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'hello'</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// Initialize it OK</span>
+x <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token string">'hello'</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// Initialize it incorrectly Error</span>
+<span class="token comment" spellcheck="true">//枚举 enum</span>
+<span class="token keyword">enum</span> Color <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>Red<span class="token punctuation">,</span> Green<span class="token punctuation">,</span> Blue<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> c<span class="token punctuation">:</span> Color <span class="token operator">=</span> Color<span class="token punctuation">.</span>Green<span class="token punctuation">;</span>
 
-<span class="token comment">//任意值 any</span>
-<span class="token keyword">let</span> <span class="token literal-property property">notSure</span><span class="token operator">:</span> any <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
-notSure<span class="token punctuation">.</span><span class="token function">ifItExists</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// okay, ifItExists might exist at runtime</span>
-notSure<span class="token punctuation">.</span><span class="token function">toFixed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// okay, toFixed exists (but the compiler doesn't check)</span>
-<span class="token keyword">let</span> <span class="token literal-property property">prettySure</span><span class="token operator">:</span> Object <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
-prettySure<span class="token punctuation">.</span><span class="token function">toFixed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Error: Property 'toFixed' doesn't exist on type 'Object'.</span>
+<span class="token comment" spellcheck="true">//任意值 any</span>
+<span class="token keyword">let</span> notSure<span class="token punctuation">:</span> any <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+notSure<span class="token punctuation">.</span><span class="token function">ifItExists</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// okay, ifItExists might exist at runtime</span>
+notSure<span class="token punctuation">.</span><span class="token function">toFixed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// okay, toFixed exists (but the compiler doesn't check)</span>
+<span class="token keyword">let</span> prettySure<span class="token punctuation">:</span> Object <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+prettySure<span class="token punctuation">.</span><span class="token function">toFixed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// Error: Property 'toFixed' doesn't exist on type 'Object'.</span>
 
-<span class="token comment">//空值 void</span>
-<span class="token keyword">function</span> <span class="token function">warnUser</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token keyword">void</span> <span class="token punctuation">&#123;</span>
+<span class="token comment" spellcheck="true">//空值 void</span>
+<span class="token keyword">function</span> <span class="token function">warnUser</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword">void</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
     <span class="token function">alert</span><span class="token punctuation">(</span><span class="token string">"This is my warning message"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
 
-<span class="token comment">//Null 和 Undefined</span>
-<span class="token keyword">let</span> <span class="token literal-property property">u</span><span class="token operator">:</span> <span class="token keyword">undefined</span> <span class="token operator">=</span> <span class="token keyword">undefined</span><span class="token punctuation">;</span><span class="token comment">// Not much else we can assign to these variables!</span>
-<span class="token keyword">let</span> <span class="token literal-property property">n</span><span class="token operator">:</span> <span class="token keyword">null</span> <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//Null 和 Undefined</span>
+<span class="token keyword">let</span> u<span class="token punctuation">:</span> undefined <span class="token operator">=</span> undefined<span class="token punctuation">;</span><span class="token comment" spellcheck="true">// Not much else we can assign to these variables!</span>
+<span class="token keyword">let</span> n<span class="token punctuation">:</span> <span class="token keyword">null</span> <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
 
-<span class="token comment">//Never</span>
-<span class="token keyword">function</span> <span class="token function">error</span><span class="token punctuation">(</span><span class="token parameter"><span class="token literal-property property">message</span><span class="token operator">:</span> string</span><span class="token punctuation">)</span><span class="token operator">:</span> never <span class="token punctuation">&#123;</span><span class="token comment">// 返回never的函数必须存在无法达到的终点</span>
+<span class="token comment" spellcheck="true">//Never</span>
+<span class="token keyword">function</span> <span class="token function">error</span><span class="token punctuation">(</span>message<span class="token punctuation">:</span> string<span class="token punctuation">)</span><span class="token punctuation">:</span> never <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 返回never的函数必须存在无法达到的终点</span>
     <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
-<span class="token keyword">function</span> <span class="token function">fail</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token comment">// 推断的返回值类型为never</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token keyword">function</span> <span class="token function">fail</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 推断的返回值类型为never</span>
     <span class="token keyword">return</span> <span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"Something failed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
-<span class="token keyword">function</span> <span class="token function">infiniteLoop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> never <span class="token punctuation">&#123;</span><span class="token comment">// 返回never的函数必须存在无法达到的终点</span>
-    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token keyword">function</span> <span class="token function">infiniteLoop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> never <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 返回never的函数必须存在无法达到的终点</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
 
-<span class="token comment">//类型断言</span>
-<span class="token keyword">let</span> <span class="token literal-property property">someValue</span><span class="token operator">:</span> any <span class="token operator">=</span> <span class="token string">"this is a string"</span><span class="token punctuation">;</span>
-<span class="token keyword">let</span> <span class="token literal-property property">strLength</span><span class="token operator">:</span> number <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>string<span class="token operator">></span>someValue<span class="token punctuation">)</span><span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//类型断言</span>
+<span class="token keyword">let</span> someValue<span class="token punctuation">:</span> any <span class="token operator">=</span> <span class="token string">"this is a string"</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> strLength<span class="token punctuation">:</span> number <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>string<span class="token operator">></span>someValue<span class="token punctuation">)</span><span class="token punctuation">.</span>length<span class="token punctuation">;</span>
 
-<span class="token keyword">let</span> <span class="token literal-property property">someValue</span><span class="token operator">:</span> any <span class="token operator">=</span> <span class="token string">"this is a string"</span><span class="token punctuation">;</span>
-<span class="token keyword">let</span> <span class="token literal-property property">strLength</span><span class="token operator">:</span> number <span class="token operator">=</span> <span class="token punctuation">(</span>someValue <span class="token keyword">as</span> string<span class="token punctuation">)</span><span class="token punctuation">.</span>length<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<span class="token keyword">let</span> someValue<span class="token punctuation">:</span> any <span class="token operator">=</span> <span class="token string">"this is a string"</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> strLength<span class="token punctuation">:</span> number <span class="token operator">=</span> <span class="token punctuation">(</span>someValue <span class="token keyword">as</span> string<span class="token punctuation">)</span><span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+</code></pre>
 <blockquote>
 <p>注意：我们鼓励尽可能地使用–strictNullChecks</p>
 </blockquote>

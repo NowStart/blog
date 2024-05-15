@@ -426,15 +426,15 @@
 <p><strong>注意</strong><br/><br>对于请求参数、响应参数的解析，是依赖Javadoc的API进行的，它要求参数必须有明确的结构，因此api-doc不支持以Map作为参数的方法解析。</p>
 </blockquote>
 <p><img src="/images/2020/07/api-doc-process.png" alt="api-doc-process"></p>
-<h2 id="一、三步完成api-doc的引入和使用"><a href="#一、三步完成api-doc的引入和使用" class="headerlink" title="一、三步完成api-doc的引入和使用"></a>一、三步完成api-doc的引入和使用</h2><h3 id="step-1-添加插件"><a href="#step-1-添加插件" class="headerlink" title="step 1. 添加插件"></a>step 1. 添加插件</h3><pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>plugin</span><span class="token punctuation">></span></span>
+<h2 id="一、三步完成api-doc的引入和使用"><a href="#一、三步完成api-doc的引入和使用" class="headerlink" title="一、三步完成api-doc的引入和使用"></a>一、三步完成api-doc的引入和使用</h2><h3 id="step-1-添加插件"><a href="#step-1-添加插件" class="headerlink" title="step 1. 添加插件"></a>step 1. 添加插件</h3><pre class=" language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>plugin</span><span class="token punctuation">></span></span>
       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>com.ly.fn.biz.api-doc-maven<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>api-doc-maven-plugin<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.0.0-SNAPSHOT<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>configuration</span><span class="token punctuation">></span></span>
           <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>yapiToken</span><span class="token punctuation">></span></span>a7106c02912fff91858cf721175ea16b99bff8141c29aaa1da1d4020c5d7053f<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>yapiToken</span><span class="token punctuation">></span></span>
       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>configuration</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugin</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugin</span><span class="token punctuation">></span></span>
+</code></pre>
 <p>其中<code>yapiToken</code>是从Yapi平台的项目设置中得到的，插件通过它定位具体的Yapi项目。</p>
 <h3 id="step-2-运行插件"><a href="#step-2-运行插件" class="headerlink" title="step 2. 运行插件"></a>step 2. 运行插件</h3><p>进入项目根目录，运行如下命令</p>
 <p><code>mvn api-doc:api-doc</code></p>
@@ -451,44 +451,43 @@
 <p>当前一种方式无法获得中文注释时，会自动尝试下一种获取方式。点击<a href="http://gitserver/ypk15904/biz-lw-factory-web-api-doc/raw/master/biz-lw-factory-web.properties">链接</a>查看远程字典的示例。</p>
 <p>同一个项目中的命名习惯，通常是有迹可循的，理想状况下，将远程字典调教好，代码中仅需个别的字段需要手动添加注释。</p>
 <h2 id="三、更多配置说明"><a href="#三、更多配置说明" class="headerlink" title="三、更多配置说明"></a>三、更多配置说明</h2><p>除了<code>yapiToken</code>，插件还支持一些其它配置，完整版的配置示例如下：</p>
-<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup">
+<pre class=" language-xml"><code class="language-xml">
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>configuration</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>yapiUrl</span><span class="token punctuation">></span></span>http://yapi.itcjf.com<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>yapiUrl</span><span class="token punctuation">></span></span><span class="token comment">&lt;!-- yapi 平台地址，可以不填写，默认是公司的平台地址 --></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>yapiToken</span><span class="token punctuation">></span></span>a7106c02912fff91858cf721175ea16b99bff8141c29aaa1da1d4020c5d7053f<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>yapiToken</span><span class="token punctuation">></span></span> <span class="token comment">&lt;!-- 所属项目，必录 --></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>yapiUrl</span><span class="token punctuation">></span></span>http://yapi.itcjf.com<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>yapiUrl</span><span class="token punctuation">></span></span><span class="token comment" spellcheck="true">&lt;!-- yapi 平台地址，可以不填写，默认是公司的平台地址 --></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>yapiToken</span><span class="token punctuation">></span></span>a7106c02912fff91858cf721175ea16b99bff8141c29aaa1da1d4020c5d7053f<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>yapiToken</span><span class="token punctuation">></span></span> <span class="token comment" spellcheck="true">&lt;!-- 所属项目，必录 --></span>
 
-    <span class="token comment">&lt;!-- 可选的，远程的字典目录，可以用它翻译公共的字段，避免重复写注释 --></span>
+    <span class="token comment" spellcheck="true">&lt;!-- 可选的，远程的字典目录，可以用它翻译公共的字段，避免重复写注释 --></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dictionaryUrl</span><span class="token punctuation">></span></span>
         http://gitserver/ypk15904/biz-lw-factory-web-api-doc/raw/master/biz-lw-factory-web.properties
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dictionaryUrl</span><span class="token punctuation">></span></span>
 
-    <span class="token comment">&lt;!-- 可选的，免费的百度翻译API参数，需要自行注册使用，当代码注释、远程字典都翻译失败时，将使用它 --></span>
+    <span class="token comment" spellcheck="true">&lt;!-- 可选的，免费的百度翻译API参数，需要自行注册使用，当代码注释、远程字典都翻译失败时，将使用它 --></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>baiduTransAppId</span><span class="token punctuation">></span></span>20200712000517786<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>baiduTransAppId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>baiduTransKey</span><span class="token punctuation">></span></span>6RoUOwrR86lK8X_kWYC3<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>baiduTransKey</span><span class="token punctuation">></span></span>
 
-    <span class="token comment">&lt;!-- 可选的，默认开启三种类型的扫描 --></span>
+    <span class="token comment" spellcheck="true">&lt;!-- 可选的，默认开启三种类型的扫描 --></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scanScope</span><span class="token punctuation">></span></span>spring-mvc,xpro-rpc,abstract-class<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>scanScope</span><span class="token punctuation">></span></span>
 
-    <span class="token comment">&lt;!-- 可选的，指定拥有共同父类的API接口 --></span>
+    <span class="token comment" spellcheck="true">&lt;!-- 可选的，指定拥有共同父类的API接口 --></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>abstractMethod</span><span class="token punctuation">></span></span>com.ly.api.doc.maven.handler.AbstractHandler#handle<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>abstractMethod</span><span class="token punctuation">></span></span>
 
-    <span class="token comment">&lt;!-- 可选的，指定想要排除的包，被排除后将不再生成该包下的API接口 --></span>
+    <span class="token comment" spellcheck="true">&lt;!-- 可选的，指定想要排除的包，被排除后将不再生成该包下的API接口 --></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>excludePackages</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>param</span><span class="token punctuation">></span></span>com.ly.api.doc.maven.excludepackage2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>param</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>param</span><span class="token punctuation">></span></span>com.ly.api.doc.maven.excludepackage3<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>param</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>excludePackages</span><span class="token punctuation">></span></span>
 
-    <span class="token comment">&lt;!-- 可选的，指定想要排除的类，被排除后将不再生成该类下的API接口 --></span>
+    <span class="token comment" spellcheck="true">&lt;!-- 可选的，指定想要排除的类，被排除后将不再生成该类下的API接口 --></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>excludeClassNames</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>param</span><span class="token punctuation">></span></span>com.ly.api.doc.maven.handler.Sample2Handler<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>param</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>excludeClassNames</span><span class="token punctuation">></span></span>
 
-    <span class="token comment">&lt;!-- 可选的，默认情况下插件仅解析当前项目中的源文件，通过该配置可以扩大参数的解析范围 --></span>
+    <span class="token comment" spellcheck="true">&lt;!-- 可选的，默认情况下插件仅解析当前项目中的源文件，通过该配置可以扩大参数的解析范围 --></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>extraParamsPackages</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>param</span><span class="token punctuation">></span></span>com.ly.fn.biz.lw.linen.api<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>param</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>extraParamsPackages</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>configuration</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+</code></pre>
 <h2 id="附：已知缺陷说明："><a href="#附：已知缺陷说明：" class="headerlink" title="附：已知缺陷说明："></a>附：已知缺陷说明：</h2><ol>
 <li>对泛型支持有限，仅支持集合类(Collection、List、Set)中使用泛型； 不支持集合中嵌套集合，如List&lt;List<String>&gt;</li>
 <li>对数组支持有限，推荐使用集合类(Collection、List、Set)</li>

@@ -572,15 +572,15 @@ Map接口位于java.util包下，该包下一共提供了如下具体的实现�
 <p>HashMap通过哈希函数计算key的哈希值，达到快速定位数组下标的目的。对于哈希函数，总是希望计算后的结果可以均匀分布在数组中，从而提高存取性能。</p>
 <p>一个优质的哈希函数对于HashMap的性能提升，是至关重要的。</p>
 <p>HashMap中哈希函数的伪代码如下：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span> h <span class="token operator">=</span> key<span class="token punctuation">.</span><span class="token function">hashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//1. 获得key的哈希值</span>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">int</span> h <span class="token operator">=</span> key<span class="token punctuation">.</span><span class="token function">hashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//1. 获得key的哈希值</span>
 
-<span class="token comment">// int hash ^= (h >>> 20) ^ (h >>> 12);</span>
-<span class="token comment">// hash = h ^ (h >>> 7) ^ (h >>> 4); // 2. jdk1.7中的hash计算方式，对h进行多次右移、异或运算。</span>
+<span class="token comment" spellcheck="true">// int hash ^= (h >>> 20) ^ (h >>> 12);</span>
+<span class="token comment" spellcheck="true">// hash = h ^ (h >>> 7) ^ (h >>> 4); // 2. jdk1.7中的hash计算方式，对h进行多次右移、异或运算。</span>
 
-<span class="token keyword">int</span> hash <span class="token operator">=</span> h <span class="token operator">^</span> <span class="token punctuation">(</span>h <span class="token operator">>>></span> <span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//2. jdk1.8中的hash计算方式，对h做右移、异或运算</span>
+<span class="token keyword">int</span> hash <span class="token operator">=</span> h <span class="token operator">^</span> <span class="token punctuation">(</span>h <span class="token operator">>>></span> <span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//2. jdk1.8中的hash计算方式，对h做右移、异或运算</span>
 
-<span class="token keyword">int</span> index <span class="token operator">=</span> <span class="token punctuation">(</span>table<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> hash<span class="token punctuation">;</span><span class="token comment">//3. 取模运算，获得数组下标</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<span class="token keyword">int</span> index <span class="token operator">=</span> <span class="token punctuation">(</span>table<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> hash<span class="token punctuation">;</span><span class="token comment" spellcheck="true">//3. 取模运算，获得数组下标</span>
+</code></pre>
 <p><img src="/images/2019/12/%E8%AE%A1%E7%AE%97%E8%BF%87%E7%A8%8B.png" alt="计算过程"></p>
 <blockquote>
 <p>注意：int类型是一个32位的二进制数。</p>

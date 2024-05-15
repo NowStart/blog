@@ -436,11 +436,11 @@
 <p>Actuator的定义<br/><br>中文翻译为致动器，是个制造术语，指用于移动或控制某物的机械装置，它可以从小变化中产生大量的运动。笔者理解应该是指Actuator功能虽然较小，但意义重大。</p>
 </blockquote>
 <h2 id="2-使用方式"><a href="#2-使用方式" class="headerlink" title="2. 使用方式"></a>2. 使用方式</h2><p>只需要在Spring Boot项目中添加如下Starter，即可完成集成并开启Actuator。</p>
-<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+<pre class=" language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-actuator<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+</code></pre>
 <p>此时启动服务器，然后请求&#x2F;actuator&#x2F;health，若返回{“status”:”UP”}代表Actuator已生效。</p>
 <p>上述路径中的<code>/actuator</code>为Actuator的默认根目录，health是一个监控点(endpoint)；除了使用HTTP协议访问这些监控点，还可以使用JMX来访问。</p>
 <blockquote>
@@ -452,13 +452,13 @@
 <p>启用&#x2F;禁用的默认值(2.x版本)：shutdown被禁用，其它的监控点都启用。</p>
 <p>公开&#x2F;不公开的默认值(2.x版本)：HTTP公开info和health，其它不公开；JMX公开所有监控点。</p>
 <p>启动&#x2F;禁用配置格式为<code>management.endpoint.&#123;ID&#125;.enabled</code>和<code>management.endpoints.enabled-by-default</code>，示例如下：</p>
-<pre class="line-numbers language-none"><code class="language-none"># 启用shutdown
-management.endpoint.shutdown.enabled&#x3D;true
+<pre><code># 启用shutdown
+management.endpoint.shutdown.enabled=true
 # 全部禁用
-management.endpoints.enabled-by-default&#x3D;false
+management.endpoints.enabled-by-default=false
 # 启用info
-management.endpoint.info.enabled&#x3D;true<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+management.endpoint.info.enabled=true
+</code></pre>
 <p>公开&#x2F;不公开配置格式有四个，分别控制JMX和HTTP</p>
 <ul>
 <li>management.endpoints.jmx.exposure.exclude</li>
@@ -466,13 +466,13 @@ management.endpoint.info.enabled&#x3D;true<span aria-hidden="true" class="line-n
 <li>management.endpoints.web.exposure.exclude</li>
 <li>management.endpoints.web.exposure.include</li>
 </ul>
-<pre class="line-numbers language-none"><code class="language-none"># 在JMX中，公开health和info，此时其它的监控点都不公开
-management.endpoints.jmx.exposure.include&#x3D;health,info<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<pre class="line-numbers language-none"><code class="language-none"># 在JMX中，公开除了env和beans之外的所有监控点
-management.endpoints.web.exposure.include&#x3D;*
-management.endpoints.web.exposure.exclude&#x3D;env,beans<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+<pre><code># 在JMX中，公开health和info，此时其它的监控点都不公开
+management.endpoints.jmx.exposure.include=health,info
+</code></pre>
+<pre><code># 在JMX中，公开除了env和beans之外的所有监控点
+management.endpoints.web.exposure.include=*
+management.endpoints.web.exposure.exclude=env,beans
+</code></pre>
 <p>上文虽然列出了所有内置的监控点，但看起来仍然有些空洞，这里尝试从实用功能这个维度来描述一下Spring Boot Actuator。</p>
 <ul>
 <li>支持自定义endpoint、定制端口、根路径、HTTPS。</li>
@@ -486,24 +486,24 @@ management.endpoints.web.exposure.exclude&#x3D;env,beans<span aria-hidden="true"
 <ul>
 <li>使用Spring Security的<code>WebSecurityConfigurerAdapter</code>定制不同角色的访问权限</li>
 </ul>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ActuatorSecurity</span> <span class="token keyword">extends</span> <span class="token class-name">WebSecurityConfigurerAdapter</span> <span class="token punctuation">&#123;</span>
+<pre class=" language-java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ActuatorSecurity</span> <span class="token keyword">extends</span> <span class="token class-name">WebSecurityConfigurerAdapter</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
 
-	<span class="token annotation punctuation">@Override</span>
-	<span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">configure</span><span class="token punctuation">(</span><span class="token class-name">HttpSecurity</span> http<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">&#123;</span>
-		http<span class="token punctuation">.</span><span class="token function">requestMatcher</span><span class="token punctuation">(</span><span class="token class-name">EndpointRequest</span><span class="token punctuation">.</span><span class="token function">toAnyEndpoint</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">authorizeRequests</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-				<span class="token punctuation">.</span><span class="token function">anyRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">hasRole</span><span class="token punctuation">(</span><span class="token string">"ENDPOINT_ADMIN"</span><span class="token punctuation">)</span>
-				<span class="token punctuation">.</span><span class="token function">and</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-			<span class="token punctuation">.</span><span class="token function">httpBasic</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token punctuation">&#125;</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">configure</span><span class="token punctuation">(</span>HttpSecurity http<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        http<span class="token punctuation">.</span><span class="token function">requestMatcher</span><span class="token punctuation">(</span>EndpointRequest<span class="token punctuation">.</span><span class="token function">toAnyEndpoint</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">authorizeRequests</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">anyRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">hasRole</span><span class="token punctuation">(</span><span class="token string">"ENDPOINT_ADMIN"</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">and</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">httpBasic</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
 
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+</code></pre>
 <ul>
 <li>使用<code>management.server.port</code>更改Actuator的访问端口，并限制该端口的外网访问权限</li>
 </ul>
-<pre class="line-numbers language-none"><code class="language-none">management.server.port&#x3D;8081<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
+<pre><code>management.server.port=8081
+</code></pre>
 <h2 id="3-与APMs集成"><a href="#3-与APMs集成" class="headerlink" title="3. 与APMs集成"></a>3. 与APMs集成</h2><p>Spring Boot Actuator只提供了监控和数据收集的功能，这些数据的呈现需要单独的系统来支撑，这些系统通常也称为<a href="https://en.wikipedia.org/wiki/Application_performance_management">APM(Application performance management)</a>。</p>
 <p>如果不打算自研，而是直接集成使用已有的APM相关组件，可以考虑使用下面这些（笔者对此并不熟悉，所以仅列出了一个简单的清单）。</p>
 <p><strong>Spring Boot Admin</strong></p>

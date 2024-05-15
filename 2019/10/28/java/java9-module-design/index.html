@@ -399,7 +399,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.9k
+                    2k
                 </div>
                 
 
@@ -457,54 +457,54 @@
 <h2 id="6-可选的依赖关系"><a href="#6-可选的依赖关系" class="headerlink" title="6. 可选的依赖关系"></a>6. 可选的依赖关系</h2><p>模块化应用程序的标志之一是其显式的依赖关系图。但如果一个模块在运行时不是绝对需要的，那么又该怎么办呢？</p>
 <p>一种方式是使用<code>static</code>关键字，指定该模块是编译时依赖关系，即该模块<strong>只能在编译时使用</strong>，无法在运行时使用；应用程序可以通过<code>try catch</code>和<code>Class.forName</code>的方式，对依赖的模块进行检测，以决定应该使用哪个模块。</p>
 <p>这种依赖关系检测往往意味着大量的检测，使用起来比较痛苦，并不是解耦的最佳方式。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">module</span> <span class="token namespace">framework</span><span class="token punctuation">&#123;</span>
-  <span class="token keyword">requires</span> <span class="token keyword">static</span> fastjsonlib<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+<pre class=" language-java"><code class="language-java">module framework<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+  requires <span class="token keyword">static</span> fastjsonlib<span class="token punctuation">;</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+</code></pre>
 <p>另外一种方式是使用服务(Service)，为所有可选的实现制定一套通过的API，可以实现完美的解耦；缺点是必须要对现有代码改造。</p>
 <h2 id="7-版本化"><a href="#7-版本化" class="headerlink" title="7. 版本化"></a>7. 版本化</h2><p>模块完全是由名称进行解析的，模块解析期间忽略版本，这是Java模块系统中一个慎重的设计选择。</p>
 <p>版本配置一直以来是一个复杂的问题，不管采用什么策略，都会在模块系统中变得根深蒂固，因此也会深入到编译器、语言规范和JVM中。模块版本的选择权，仍然由构建工具决定，如Maven和Gradle。</p>
 <p>在应用程序开发中，强烈建议找到一种统一依赖于单个模块版本的方法，避免同时使用多个版本。通常，运行同一模块的多个并发版本的原因是因为懒惰，而不是迫切需要。</p>
 <h2 id="8-资源封装"><a href="#8-资源封装" class="headerlink" title="8. 资源封装"></a>8. 资源封装</h2><p>模块中除了Java代码，还有很多资源文件，比如包含翻译（本地化资源包）的文件、配置文件等；模块封装了这些资源的访问，限制了跨模块资源访问。</p>
 <p>访问本模块资源的方式有如下几种，其中以<code>Module</code>的方式获取是新增的。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Class</span> clazz <span class="token operator">=</span> <span class="token class-name">ResourcesInModule</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
-<span class="token class-name">InputStream</span> cz_pkg <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getResourceAsStream</span><span class="token punctuation">(</span><span class="token string">"resource_in_package.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//&lt;1></span>
-<span class="token class-name">URL</span> cz_tl <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getResource</span><span class="token punctuation">(</span><span class="token string">"/top_level_resource.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//&lt;2></span>
+<pre class=" language-java"><code class="language-java">Class <span class="token class-name">clazz</span> <span class="token operator">=</span> ResourcesInModule<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
+InputStream cz_pkg <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getResourceAsStream</span><span class="token punctuation">(</span><span class="token string">"resource_in_package.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//&lt;1></span>
+URL cz_tl <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getResource</span><span class="token punctuation">(</span><span class="token string">"/top_level_resource.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//&lt;2></span>
 
-<span class="token class-name">Module</span> m <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getModule</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//&lt;3></span>
-<span class="token class-name">InputStream</span> m_pkg <span class="token operator">=</span> m<span class="token punctuation">.</span><span class="token function">getResourceAsStream</span><span class="token punctuation">(</span>
-  <span class="token string">"javamodularity/firstresourcemodule/resource_in_package.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//&lt;4></span>
-<span class="token class-name">InputStream</span> m_tl <span class="token operator">=</span> m<span class="token punctuation">.</span><span class="token function">getResourceAsStream</span><span class="token punctuation">(</span><span class="token string">"top_level_resource.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//&lt;5></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+Module m <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getModule</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//&lt;3></span>
+InputStream m_pkg <span class="token operator">=</span> m<span class="token punctuation">.</span><span class="token function">getResourceAsStream</span><span class="token punctuation">(</span>
+  <span class="token string">"javamodularity/firstresourcemodule/resource_in_package.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//&lt;4></span>
+InputStream m_tl <span class="token operator">=</span> m<span class="token punctuation">.</span><span class="token function">getResourceAsStream</span><span class="token punctuation">(</span><span class="token string">"top_level_resource.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//&lt;5></span>
+</code></pre>
 <p>跨模块强行访问资源，一些场景下虽然是允许的，但是并不推荐；如果确实需要来自其他模块的资源，可以考虑通过使用导出类中的方法或使用服务来公开资源的内容。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//跨模块访问获得Module</span>
-<span class="token class-name">Optional</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Module</span><span class="token punctuation">></span></span> otherModule <span class="token operator">=</span> <span class="token class-name">ModuleLayer</span><span class="token punctuation">.</span><span class="token function">boot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">findModule</span><span class="token punctuation">(</span><span class="token string">"secondresourcemodule"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//&lt;1></span>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">//跨模块访问获得Module</span>
+Optional<span class="token operator">&lt;</span>Module<span class="token operator">></span> otherModule <span class="token operator">=</span> ModuleLayer<span class="token punctuation">.</span><span class="token function">boot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">findModule</span><span class="token punctuation">(</span><span class="token string">"secondresourcemodule"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//&lt;1></span>
 
-otherModule<span class="token punctuation">.</span><span class="token function">ifPresent</span><span class="token punctuation">(</span>other <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
-   <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-      <span class="token comment">//下面三种方式，可以正常获得资源，它分为三类：模块顶级目录中的资源、非包目录下的资源、所有的class文件</span>
-      <span class="token class-name">InputStream</span> m_tl <span class="token operator">=</span> other<span class="token punctuation">.</span><span class="token function">getResourceAsStream</span><span class="token punctuation">(</span><span class="token string">"top_level_resource2.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//&lt;2></span>
-      <span class="token class-name">InputStream</span> m_class <span class="token operator">=</span> other<span class="token punctuation">.</span><span class="token function">getResourceAsStream</span><span class="token punctuation">(</span>
-              <span class="token string">"javamodularity/secondresourcemodule/A.class"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//&lt;4></span>
-      <span class="token class-name">InputStream</span> m_meta <span class="token operator">=</span> other<span class="token punctuation">.</span><span class="token function">getResourceAsStream</span><span class="token punctuation">(</span><span class="token string">"META-INF/resource_in_metainf.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//&lt;5></span>
+otherModule<span class="token punctuation">.</span><span class="token function">ifPresent</span><span class="token punctuation">(</span>other <span class="token operator">-</span><span class="token operator">></span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+   <span class="token keyword">try</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+      <span class="token comment" spellcheck="true">//下面三种方式，可以正常获得资源，它分为三类：模块顶级目录中的资源、非包目录下的资源、所有的class文件</span>
+      InputStream m_tl <span class="token operator">=</span> other<span class="token punctuation">.</span><span class="token function">getResourceAsStream</span><span class="token punctuation">(</span><span class="token string">"top_level_resource2.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//&lt;2></span>
+      InputStream m_class <span class="token operator">=</span> other<span class="token punctuation">.</span><span class="token function">getResourceAsStream</span><span class="token punctuation">(</span>
+              <span class="token string">"javamodularity/secondresourcemodule/A.class"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//&lt;4></span>
+      InputStream m_meta <span class="token operator">=</span> other<span class="token punctuation">.</span><span class="token function">getResourceAsStream</span><span class="token punctuation">(</span><span class="token string">"META-INF/resource_in_metainf.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//&lt;5></span>
 
-      <span class="token comment">//下面两种方式，都无法获得资源。模块对包路径中的资源时强封装的。</span>
-      <span class="token class-name">InputStream</span> m_pkg <span class="token operator">=</span> other<span class="token punctuation">.</span><span class="token function">getResourceAsStream</span><span class="token punctuation">(</span>
-          <span class="token string">"javamodularity/secondresourcemodule/resource_in_package2.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//&lt;3></span>
-      <span class="token class-name">InputStream</span> cz_pkg <span class="token operator">=</span>
-        <span class="token class-name">Class</span><span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"javamodularity.secondresourcemodule.A"</span><span class="token punctuation">)</span>
-             <span class="token punctuation">.</span><span class="token function">getResourceAsStream</span><span class="token punctuation">(</span><span class="token string">"resource_in_package2.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//&lt;6></span>
+      <span class="token comment" spellcheck="true">//下面两种方式，都无法获得资源。模块对包路径中的资源时强封装的。</span>
+      InputStream m_pkg <span class="token operator">=</span> other<span class="token punctuation">.</span><span class="token function">getResourceAsStream</span><span class="token punctuation">(</span>
+          <span class="token string">"javamodularity/secondresourcemodule/resource_in_package2.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//&lt;3></span>
+      InputStream cz_pkg <span class="token operator">=</span>
+        Class<span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"javamodularity.secondresourcemodule.A"</span><span class="token punctuation">)</span>
+             <span class="token punctuation">.</span><span class="token function">getResourceAsStream</span><span class="token punctuation">(</span><span class="token string">"resource_in_package2.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//&lt;6></span>
 
-      <span class="token keyword">assert</span> <span class="token class-name">Stream</span><span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>m_tl<span class="token punctuation">,</span> m_class<span class="token punctuation">,</span> m_meta<span class="token punctuation">)</span>
-                   <span class="token punctuation">.</span><span class="token function">noneMatch</span><span class="token punctuation">(</span><span class="token class-name">Objects</span><span class="token operator">::</span><span class="token function">isNull</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token keyword">assert</span> <span class="token class-name">Stream</span><span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>m_pkg<span class="token punctuation">,</span> cz_pkg<span class="token punctuation">)</span>
-                   <span class="token punctuation">.</span><span class="token function">allMatch</span><span class="token punctuation">(</span><span class="token class-name">Objects</span><span class="token operator">::</span><span class="token function">isNull</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">assert</span> Stream<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>m_tl<span class="token punctuation">,</span> m_class<span class="token punctuation">,</span> m_meta<span class="token punctuation">)</span>
+                   <span class="token punctuation">.</span><span class="token function">noneMatch</span><span class="token punctuation">(</span>Objects<span class="token operator">:</span><span class="token operator">:</span>isNull<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">assert</span> Stream<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>m_pkg<span class="token punctuation">,</span> cz_pkg<span class="token punctuation">)</span>
+                   <span class="token punctuation">.</span><span class="token function">allMatch</span><span class="token punctuation">(</span>Objects<span class="token operator">:</span><span class="token operator">:</span>isNull<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-   <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+   <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
       <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
-   <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+   <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
 <blockquote>
 <p>也可以通过使用开放式模块（open module）或开放式包（open package），向其他模块公开包中封装的资源。</p>
 </blockquote>

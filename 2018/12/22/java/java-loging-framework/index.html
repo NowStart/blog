@@ -404,7 +404,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.8k
+                    4.7k
                 </div>
                 
 
@@ -711,8 +711,8 @@
 <li>使用Common-logging自带的SimpleLog</li>
 </ol>
 <p>如上所述，如果想要指定使用哪个实现，可以在classpath目录下新增common-logging.properties文件，指定Log4j示例如下：</p>
-<pre class="line-numbers language-none"><code class="language-none">org.apache.commons.logging.Log&#x3D;org.apache.commons.logging.impl.Log4JLogger<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
+<pre><code>org.apache.commons.logging.Log=org.apache.commons.logging.impl.Log4JLogger
+</code></pre>
 <h3 id="3-2-SLF4J（Simple-Logging-Facade-for-Java）（始于2005"><a href="#3-2-SLF4J（Simple-Logging-Facade-for-Java）（始于2005" class="headerlink" title="3.2 SLF4J（Simple Logging Facade for Java）（始于2005)"></a>3.2 SLF4J（Simple Logging Facade for Java）（始于2005)</h3><p>SLF4J始于2005年，是目前使用最为广泛的日志API，该API也是由Ceki Gülcü主导发起的；与JCL不同的是，API转换过程不包含在SLF4J API中，SLF4J运用了Java提供的<a href="https://docs.oracle.com/javase/7/docs/api/java/util/ServiceLoader.html">Service Loader</a>机制，将SLF4J API和实际的转换映射过程在依赖上完全分离，在runtime时才使用具体实现。</p>
 <h3 id="3-2-1-SLF4J-API绑定日志实现"><a href="#3-2-1-SLF4J-API绑定日志实现" class="headerlink" title="3.2.1 SLF4J API绑定日志实现"></a>3.2.1 SLF4J API绑定日志实现</h3><p>SLF4J API需要一些用于绑定日志实现的jar包，来确定到底使用哪个日志框架，这些Jar包也包含了对应日志实现框架的依赖；已有的Jar包整理汇总如下：</p>
 <table>
@@ -783,35 +783,35 @@
 
 <h2 id="4-常见问题"><a href="#4-常见问题" class="headerlink" title="4. 常见问题"></a>4. 常见问题</h2><p>常见问题中的相关代码，笔者已提交至码云，有需要可以查看<a href="https://gitee.com/ypk1226/sample-logging-framework">sample-logging-framework</a>。</p>
 <h3 id="4-1-为SLF4J绑定多个日志实现"><a href="#4-1-为SLF4J绑定多个日志实现" class="headerlink" title="4.1 为SLF4J绑定多个日志实现"></a>4.1 为SLF4J绑定多个日志实现</h3><p>由于SLF4J API仅支持绑定一个日志实现，在pom中同时指定两个日志实现会得到如下的错误信息，此时去掉一种一个实现的依赖即可，比如下面的场景去除<code>slf4j-log4j12</code>的依赖。</p>
-<pre class="line-numbers language-none"><code class="language-none">SLF4J: Class path contains multiple SLF4J bindings.
-SLF4J: Found binding in [jar:file:&#x2F;Users&#x2F;ypk&#x2F;.m2&#x2F;repository&#x2F;ch&#x2F;qos&#x2F;logback&#x2F;logback-classic&#x2F;1.2.3&#x2F;logback-classic-1.2.3.jar!&#x2F;org&#x2F;slf4j&#x2F;impl&#x2F;StaticLoggerBinder.class]
-SLF4J: Found binding in [jar:file:&#x2F;Users&#x2F;ypk&#x2F;.m2&#x2F;repository&#x2F;org&#x2F;slf4j&#x2F;slf4j-log4j12&#x2F;1.7.25&#x2F;slf4j-log4j12-1.7.25.jar!&#x2F;org&#x2F;slf4j&#x2F;impl&#x2F;StaticLoggerBinder.class]
-SLF4J: See http:&#x2F;&#x2F;www.slf4j.org&#x2F;codes.html#multiple_bindings for an explanation.
-SLF4J: Actual binding is of type [ch.qos.logback.classic.util.ContextSelectorStaticBinder]<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+<pre><code>SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/Users/ypk/.m2/repository/ch/qos/logback/logback-classic/1.2.3/logback-classic-1.2.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/Users/ypk/.m2/repository/org/slf4j/slf4j-log4j12/1.7.25/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [ch.qos.logback.classic.util.ContextSelectorStaticBinder]
+</code></pre>
 <h3 id="4-2-日志重复打印"><a href="#4-2-日志重复打印" class="headerlink" title="4.2 日志重复打印"></a>4.2 日志重复打印</h3><p>有时候我们会发现一行日志被重复打印了多次，这是由于Appender的可叠加性导致的（详见上文），子级和父级Logger同时绑定了Appender；解决办法一般是在子级关闭Appender的可叠加性，以Log4j 2.x的配置为例，指定additivity为false：</p>
-<pre class="line-numbers language-none"><code class="language-none">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;
-&lt;Configuration status&#x3D;&quot;WARN&quot;&gt;
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Configuration status=&quot;WARN&quot;&gt;
     &lt;Appenders&gt;
-        &lt;Console name&#x3D;&quot;Console&quot; target&#x3D;&quot;SYSTEM_OUT&quot;&gt;
-            &lt;PatternLayout pattern&#x3D;&quot;%d&#123;HH:mm:ss.SSS&#125; [%t] %-5level %logger&#123;36&#125; - %msg%n&quot;&#x2F;&gt;
-        &lt;&#x2F;Console&gt;
-    &lt;&#x2F;Appenders&gt;
+        &lt;Console name=&quot;Console&quot; target=&quot;SYSTEM_OUT&quot;&gt;
+            &lt;PatternLayout pattern=&quot;%d&#123;HH:mm:ss.SSS&#125; [%t] %-5level %logger&#123;36&#125; - %msg%n&quot;/&gt;
+        &lt;/Console&gt;
+    &lt;/Appenders&gt;
     &lt;Loggers&gt;
-        &lt;Logger name&#x3D;&quot;com.learn.log4j2.trace&quot; level&#x3D;&quot;trace&quot; additivity&#x3D;&quot;false&quot;&gt;&lt;!-- additivity关闭继承特性 --&gt;
-            &lt;AppenderRef ref&#x3D;&quot;Console&quot;&#x2F;&gt;
-        &lt;&#x2F;Logger&gt;
-        &lt;Root level&#x3D;&quot;info&quot;&gt;
-            &lt;AppenderRef ref&#x3D;&quot;Console&quot;&#x2F;&gt;
-        &lt;&#x2F;Root&gt;
-    &lt;&#x2F;Loggers&gt;
-&lt;&#x2F;Configuration&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
+        &lt;Logger name=&quot;com.learn.log4j2.trace&quot; level=&quot;trace&quot; additivity=&quot;false&quot;&gt;&lt;!-- additivity关闭继承特性 --&gt;
+            &lt;AppenderRef ref=&quot;Console&quot;/&gt;
+        &lt;/Logger&gt;
+        &lt;Root level=&quot;info&quot;&gt;
+            &lt;AppenderRef ref=&quot;Console&quot;/&gt;
+        &lt;/Root&gt;
+    &lt;/Loggers&gt;
+&lt;/Configuration&gt;
+</code></pre>
 <h3 id="4-3-自相矛盾的依赖"><a href="#4-3-自相矛盾的依赖" class="headerlink" title="4.3 自相矛盾的依赖"></a>4.3 自相矛盾的依赖</h3><p>同时指定自相矛盾的 jcl-over-slf4j 和 slf4j-jcl，将会得到下面的异常；解决办法是去掉一种的一个。</p>
-<pre class="line-numbers language-none"><code class="language-none">Caused by: java.lang.IllegalStateException: Detected both jcl-over-slf4j.jar AND bound slf4j-jcl.jar on the class path, preempting StackOverflowError. See also http:&#x2F;&#x2F;www.slf4j.org&#x2F;codes.html#jclDelegationLoop for more details.
-	at org.slf4j.impl.JCLLoggerFactory.&lt;clinit&gt;(JCLLoggerFactory.java:54)
-	... 30 more<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
+<pre><code>Caused by: java.lang.IllegalStateException: Detected both jcl-over-slf4j.jar AND bound slf4j-jcl.jar on the class path, preempting StackOverflowError. See also http://www.slf4j.org/codes.html#jclDelegationLoop for more details.
+    at org.slf4j.impl.JCLLoggerFactory.&lt;clinit&gt;(JCLLoggerFactory.java:54)
+    ... 30 more
+</code></pre>
 <h2 id="5-小结"><a href="#5-小结" class="headerlink" title="5. 小结"></a>5. 小结</h2><p>本文介绍了Java当下流行的Logging Framework，旨在使读者对Java日志框架有一个整体印象。Logger实现一般分为三部分：Logger、Formatter和Handler(又名Appender)，Logger之间存在层级关系。</p>
 <p>在日志框架的具体实现中，可选的有logback和Log4j 2.x；目前选择logback选择的人更多，其与SL4J API无缝集成；Log4j 2.x出现时间较晚，改进了前面的问题并更进一步做了很多特性提升，预期使用的人会越来越多。</p>
 <p>而日志API，SLF4J API使用最为广泛，它不仅解决了通常意义上的日志框架切换问题，还提供了“桥接遗留的API”的功能，使项目内所有的日志输出被统一到了同一个日志实现中。</p>
